@@ -60,6 +60,8 @@
     <Compile Include="Program.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
     <Compile Include="Screens\Editor\Editor.vb" />
+    <Compile Include="Screens\Editor\Sprite.vb" />
+    <Compile Include="Screens\Editor\WorldObject.vb" />
     <Compile Include="Screens\Screen.vb" />
     <Compile Include="Screens\MainMenu\MainMenu.vb" />
     <Compile Include="Screens\ScreenHandler.vb" />
