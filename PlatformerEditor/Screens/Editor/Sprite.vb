@@ -5,9 +5,11 @@ Public Class Sprite
     Public Name As String
     Public Texture As Texture2D
     Public Position As New Vector2(0, 0)
+    Public TexturePath As String
 
-    Sub New(_content As Content.ContentManager, _name As String, _texturePath As String)
-        Texture = _content.Load(Of Texture2D)(_texturePath)
+    Sub New(_name As String, _texturePath As String)
+        Texture = GlobalContent.Load(Of Texture2D)(_texturePath)
+        TexturePath = _texturePath
         Name = _name
     End Sub
 
@@ -17,5 +19,9 @@ Public Class Sprite
 
     Public Sub Draw(theSpriteBatch As SpriteBatch)
         theSpriteBatch.Draw(Texture, Position)
+    End Sub
+
+    Public Sub getTexture()
+        Texture = GlobalContent.Load(Of Texture2D)(TexturePath)
     End Sub
 End Class
