@@ -5,7 +5,6 @@ Imports Microsoft.Xna.Framework.Content
 Imports Microsoft.Xna.Framework.Graphics
 Imports Microsoft.Xna.Framework.Input
 Imports Microsoft.Xna.Framework.Storage
-Imports Microsoft.Xna.Framework.GamerServices
 #End Region
 
 ''' <summary>
@@ -13,7 +12,7 @@ Imports Microsoft.Xna.Framework.GamerServices
 ''' </summary>
 Public Class Main
     Inherits Game
-    Private graphics As GraphicsDeviceManager
+    Public Shared graphics As GraphicsDeviceManager
     Private spriteBatch As SpriteBatch
 
     Public Sub New()
@@ -30,6 +29,7 @@ Public Class Main
     ''' </summary>
     Protected Overrides Sub Initialize()
         ' TODO: Add your initialization logic here
+        ScreenHandler.SelectedScreen = New MainMenu.MainMenu
 
         MyBase.Initialize()
     End Sub
@@ -75,7 +75,7 @@ Public Class Main
     Protected Overrides Sub Draw(gameTime As GameTime)
         GraphicsDevice.Clear(Color.CornflowerBlue)
 
-        ' TODO: Add your drawing code here
+        ScreenHandler.Draw(spriteBatch)
 
         MyBase.Draw(gameTime)
     End Sub
