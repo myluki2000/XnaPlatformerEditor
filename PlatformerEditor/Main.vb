@@ -65,7 +65,11 @@ Public Class Main
             [Exit]()
         End If
 
-        ' TODO: Add your update logic here
+
+
+
+
+
 
         MyBase.Update(gameTime)
     End Sub
@@ -79,6 +83,9 @@ Public Class Main
 
         ScreenHandler.Draw(spriteBatch)
 
+
+
+        MouseLastState = Mouse.GetState
         MyBase.Draw(gameTime)
     End Sub
 End Class

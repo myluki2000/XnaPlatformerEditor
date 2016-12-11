@@ -34,4 +34,15 @@ Public Class Misc
             Return False
         End If
     End Function
+
+    Public Shared Function ConvertToRbg(ByVal HexColor As String) As Color
+        Dim Red As Integer
+        Dim Green As Integer
+        Dim Blue As Integer
+        HexColor = Replace(HexColor, "#", "")
+        Red = CInt("&H" & Mid(HexColor, 1, 2))
+        Green = CInt("&H" & Mid(HexColor, 3, 2))
+        Blue = CInt("&H" & Mid(HexColor, 5, 2))
+        Return New Color(Red, Green, Blue, 255)
+    End Function
 End Class

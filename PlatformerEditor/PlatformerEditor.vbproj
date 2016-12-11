@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Controls\Button.vb" />
     <Compile Include="Main.vb" />
+    <Compile Include="Misc\GlobalVariables.vb" />
     <Compile Include="Misc\Misc.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
