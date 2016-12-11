@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.Xna.Framework
 Imports Microsoft.Xna.Framework.Graphics
+Imports Microsoft.Xna.Framework.Input
 
 Public Class Button
     Public Label As String = "Button"
@@ -10,6 +11,10 @@ Public Class Button
     End Sub
 
     Public Sub Draw(theSpriteBatch As SpriteBatch)
-        DrawRectangle.Draw(theSpriteBatch, rect, Color.White)
+        If Misc.PointInRect(Mouse.GetState.Position, rect) Then
+            Misc.DrawRectangle(theSpriteBatch, rect, Color.Black)
+        Else
+            Misc.DrawRectangle(theSpriteBatch, rect, Color.White)
+        End If
     End Sub
 End Class

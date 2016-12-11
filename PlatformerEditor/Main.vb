@@ -28,6 +28,8 @@ Public Class Main
     ''' and initialize them as well.
     ''' </summary>
     Protected Overrides Sub Initialize()
+        IsMouseVisible = True
+
         ' TODO: Add your initialization logic here
         ScreenHandler.SelectedScreen = New MainMenu.MainMenu
 
