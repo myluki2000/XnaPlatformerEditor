@@ -53,11 +53,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Button.vb" />
+    <Compile Include="Controls\ButtonList.vb" />
     <Compile Include="Main.vb" />
     <Compile Include="Misc\GlobalVariables.vb" />
     <Compile Include="Misc\Misc.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
+    <Compile Include="Screens\Editor\Editor.vb" />
     <Compile Include="Screens\Screen.vb" />
     <Compile Include="Screens\MainMenu\MainMenu.vb" />
     <Compile Include="Screens\ScreenHandler.vb" />

@@ -1,6 +1,6 @@
 ﻿Imports Microsoft.Xna.Framework.Graphics
 
-Public Class Screen
+Public MustInherit Class Screen
     Public Overridable Sub Draw(theSpriteBatch As SpriteBatch)
 
     End Sub

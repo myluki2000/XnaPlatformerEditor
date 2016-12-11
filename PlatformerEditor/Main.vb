@@ -31,7 +31,7 @@ Public Class Main
         IsMouseVisible = True
 
         ' TODO: Add your initialization logic here
-        ScreenHandler.SelectedScreen = New MainMenu.MainMenu
+        ScreenHandler.SelectedScreen = New Screens.MainMenu.MainMenu
 
         MyBase.Initialize()
     End Sub
