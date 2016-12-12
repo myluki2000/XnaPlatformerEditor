@@ -25,6 +25,12 @@ Public Class Misc
         theSpriteBatch.Draw(dummyTexture, destRect, sourceRect, Color, Rotation, origin, Nothing, 0)
     End Sub
 
+    Public Shared Sub DrawOutline(theSpriteBatch As SpriteBatch, destRect As Rectangle, colorOutline As Color, thicknessOutline As Integer)
+        DrawRectangle(theSpriteBatch, New Rectangle(destRect.X, destRect.Y, destRect.Width, thicknessOutline), colorOutline) ' Outline Top
+        DrawRectangle(theSpriteBatch, New Rectangle(destRect.X, destRect.Y + destRect.Height - thicknessOutline, destRect.Width, thicknessOutline), colorOutline) ' Outline Bottom
+        DrawRectangle(theSpriteBatch, New Rectangle(destRect.X, destRect.Y, thicknessOutline, destRect.Height), colorOutline) ' Outline Left
+        DrawRectangle(theSpriteBatch, New Rectangle(destRect.X + destRect.Width - thicknessOutline, destRect.Y, thicknessOutline, destRect.Height), colorOutline) ' Outline Right
+    End Sub
 
     Public Shared Function PointInRect(_point As Point, _rect As Rectangle) As Boolean
         If _rect.Left < _point.X AndAlso _point.X < _rect.Right AndAlso

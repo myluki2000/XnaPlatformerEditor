@@ -45,7 +45,7 @@ Public Class Main
             [Exit]()
         End If
 
-
+        ScreenHandler.update(gameTime)
 
 
 

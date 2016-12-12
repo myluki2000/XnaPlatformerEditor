@@ -51,11 +51,9 @@ Public Class Button
                 Misc.DrawRectangle(theSpriteBatch, New Rectangle(rect.X - 2, rect.Y - 2, rect.Width + 4, rect.Height + 4), Color.Blue)
             End If
 
-
+            Misc.DrawRectangle(theSpriteBatch, rect, BackgroundColor)
             ' Draw Background
-            If BackgroundTexture Is Nothing Then
-                Misc.DrawRectangle(theSpriteBatch, rect, BackgroundColor)
-            Else
+            If BackgroundTexture IsNot Nothing Then
                 theSpriteBatch.Draw(BackgroundTexture, rect, Color.White)
             End If
             ' Draw Button label

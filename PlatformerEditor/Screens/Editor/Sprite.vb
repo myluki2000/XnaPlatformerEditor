@@ -24,4 +24,9 @@ Public Class Sprite
     Public Sub getTexture()
         Texture = GlobalContent.Load(Of Texture2D)(TexturePath)
     End Sub
+
+    Public Function getScreenRect() As Rectangle
+        Return New Rectangle(rect.X * 30, rect.Y * 30, rect.Width, rect.Height)
+
+    End Function
 End Class
