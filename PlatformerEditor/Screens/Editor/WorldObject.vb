@@ -4,7 +4,13 @@
 Public Class WorldObject
     Inherits Sprite
 
-    Public Sub New(_name As String, _texturePath As String)
+    Public zIndex As Integer = 0
+
+    Sub New(_name As String, _texturePath As String)
         MyBase.New(_name, _texturePath)
+    End Sub
+
+    Sub New()
+
     End Sub
 End Class

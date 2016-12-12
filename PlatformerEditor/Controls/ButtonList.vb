@@ -3,17 +3,17 @@ Imports Microsoft.Xna.Framework
 Imports Microsoft.Xna.Framework.Graphics
 
 Public Class ButtonList
+    Inherits UIElement
     Public WithEvents btnList As New List(Of Button)
-    Public rect As New Rectangle(0, 0, 100, 50)
-    Public Visible As Boolean = False
     Public btnWidth As Integer = 60
     Public btnHeight As Integer = 20
 
     Public Sub New()
-
+        rect = New Rectangle(0, 0, 100, 50)
+        Visible = False
     End Sub
 
-    Public Sub Draw(theSpriteBatch As SpriteBatch)
+    Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
 
 
         Dim _btnPos As New Vector2(rect.X, rect.Y + 10)
