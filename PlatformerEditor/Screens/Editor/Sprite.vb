@@ -6,6 +6,7 @@ Public Class Sprite
     Public Texture As Texture2D
     Public TexturePath As String
     Public rect As Rectangle
+    Public Scale As Integer = 1
 
     Sub New(_name As String, _texturePath As String)
         Texture = GlobalContent.Load(Of Texture2D)(_texturePath)
@@ -18,7 +19,7 @@ Public Class Sprite
     End Sub
 
     Public Sub Draw(theSpriteBatch As SpriteBatch)
-        theSpriteBatch.Draw(Texture, New Vector2(CInt(rect.X * 30), CInt(rect.Y * 30)), Color.White)
+        theSpriteBatch.Draw(Texture, New Rectangle(CInt(rect.X * 30), CInt(rect.Y * 30), CInt(rect.Width * Scale), CInt(rect.Height * Scale)), Color.White)
     End Sub
 
     Public Sub getTexture()
@@ -26,7 +27,7 @@ Public Class Sprite
     End Sub
 
     Public Function getScreenRect() As Rectangle
-        Return New Rectangle(rect.X * 30, rect.Y * 30, rect.Width, rect.Height)
+        Return New Rectangle(rect.X * 30, rect.Y * 30, CInt(rect.Width * Scale), CInt(rect.Height * Scale))
 
     End Function
 End Class

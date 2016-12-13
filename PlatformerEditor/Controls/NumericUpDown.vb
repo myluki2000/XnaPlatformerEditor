@@ -7,6 +7,7 @@ Public Class NumericUpDown
     Public Value As Integer = 0
     Public NUDArrows As Texture2D
     Public Label As String = ""
+    Event ValueChanged()
 
     Sub New(_destRect As Rectangle, _label As String)
         Label = _label
@@ -26,9 +27,10 @@ Public Class NumericUpDown
             If Mouse.GetState.LeftButton = ButtonState.Released AndAlso MouseLastState.LeftButton = ButtonState.Pressed Then
                 If Misc.PointInRect(Mouse.GetState.Position, New Rectangle(rect.Right - 15, rect.Top, 15, 15)) Then
                     Value += 1
+                    RaiseEvent ValueChanged()
                 ElseIf Misc.PointInRect(Mouse.GetState.Position, New Rectangle(rect.Right - 15, rect.Top + 15, 15, 15)) Then
                     Value -= 1
-
+                    RaiseEvent ValueChanged()
                 End If
             End If
         End If
