@@ -27,6 +27,7 @@ Namespace Screens
             Dim SelectedObject As WorldObject
 
             Dim Dragging As Drag
+            Dim DragMouseShift As Point
             Private Enum Drag
                 worldObject
                 corner
@@ -111,23 +112,33 @@ Namespace Screens
                     UIele.Draw(theSpriteBatch)
                 Next
 
+                Diagnostics.Debug.WriteLine(Dragging)
                 If Mouse.GetState.LeftButton = ButtonState.Pressed Then
-                    If SelectedObject IsNot Nothing AndAlso Misc.PointInRect(Mouse.GetState.Position, SelectedObject.getScreenRect) Then
-                        If Dragging <> Drag.corner Then
+
+                    If SelectedObject IsNot Nothing AndAlso Misc.PointInRect(Mouse.GetState.Position, SelectedObject.getScreenRect) AndAlso
+                        Misc.PointInRect(Mouse.GetState.Position, New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6)) = False Then
+                        If MouseLastState.LeftButton = ButtonState.Released Then
+                            ' Drag Start
+
+                            DragMouseShift = Mouse.GetState.Position - SelectedObject.rect.Location * New Point(30, 30)
+                        End If
+
+                        If Dragging = Drag.None Then
                             Dragging = Drag.worldObject
                         End If
-                        If Misc.PointInRect(Mouse.GetState.Position, New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6)) Then
-                                Dragging = Drag.corner
-                            End If
-                        End If
                     End If
+                    If SelectedObject IsNot Nothing AndAlso Misc.PointInRect(Mouse.GetState.Position, New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6)) _
+                        AndAlso Dragging = Drag.None Then
+                        Dragging = Drag.corner
+                    End If
+                End If
 
                 Dim index As Integer = PlacedObjects.IndexOf(SelectedObject)
                 If SelectedObject IsNot Nothing AndAlso index > -1 Then
                     Select Case Dragging
                         Case Drag.worldObject
-                            PlacedObjects(index).rect.X = CInt(Math.Floor(Mouse.GetState.Position.X / 30))
-                            PlacedObjects(index).rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
+                            PlacedObjects(index).rect.X = CInt(Math.Floor((Mouse.GetState.Position.X - DragMouseShift.X) / 30))
+                            PlacedObjects(index).rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - DragMouseShift.Y) / 30))
                             SelectedObject = PlacedObjects(index)
 
                         Case Drag.corner
@@ -173,6 +184,7 @@ Namespace Screens
                             If BlockFound = False Then
                                 SelectedObject = Nothing
                                 Dragging = Drag.None
+                                DragMouseShift = New Point(0, 0)
                             End If
 
                         Else
