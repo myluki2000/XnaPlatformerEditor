@@ -9,5 +9,6 @@ Public Class UIPanel
 
     Sub New(_rect As Microsoft.Xna.Framework.Rectangle)
         rect = _rect
+        Visible = True
     End Sub
 End Class
