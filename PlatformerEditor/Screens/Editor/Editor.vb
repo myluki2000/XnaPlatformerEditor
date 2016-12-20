@@ -287,20 +287,21 @@ Namespace Screens
 
             Private Sub btnSave_Click() Handles btnSave.Clicked
                 LevelFileHandler.SaveLevel(PlacedObjects)
-                MsgBox("Save complete")
             End Sub
 
             Private Sub btnLoad_Click() Handles btnLoad.Clicked
-                PlacedObjects.Clear()
+                Dim loadingLevel As List(Of WorldObject)
 
-                PlacedObjects = LevelFileHandler.LoadLevel
+                loadingLevel = LevelFileHandler.LoadLevel
+                If loadingLevel IsNot Nothing Then
+                    PlacedObjects.Clear()
+                    PlacedObjects = loadingLevel
 
-                For Each _obj In PlacedObjects
-                    _obj.Texture = WorldObjects.Find(Function(x) x.Name = _obj.Name).Texture
-                    _obj.TexturePath = WorldObjects.Find(Function(x) x.Name = _obj.Name).TexturePath
-                Next
-
-                MsgBox("Load complete")
+                    For Each _obj In PlacedObjects
+                        _obj.Texture = WorldObjects.Find(Function(x) x.Name = _obj.Name).Texture
+                        _obj.TexturePath = WorldObjects.Find(Function(x) x.Name = _obj.Name).TexturePath
+                    Next
+                End If
             End Sub
         End Class
     End Namespace
