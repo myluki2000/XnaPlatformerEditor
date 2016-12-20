@@ -16,8 +16,12 @@ Namespace Screens
             Dim WithEvents btnClose As New Button With {.text = "X", .rect = New Rectangle(Main.graphics.PreferredBackBufferWidth - 40, 10, 30, 30)}
             Dim WithEvents btnCursor As New Button With {.ToggleButton = True, .Checked = True, .rect = New Rectangle(10, 10, 30, 30), .text = "", .BackgroundTexture = GlobalContent.Load(Of Texture2D)("Cursor")}
             Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(250, 10, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("Delete"), .text = ""}
+            Dim WithEvents btnSave As New Button With {.rect = New Rectangle(290, 10, 90, 30), .text = "Save Level"}
+            Dim WithEvents btnLoad As New Button With {.rect = New Rectangle(390, 10, 90, 30), .text = "Load Level"}
+
             Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 180, 10, 130, 30), "Z-Index:")
             Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
+
 
             Dim UIElements As New List(Of UIElement)
 
@@ -67,6 +71,8 @@ Namespace Screens
                 UIElements.Add(btnClose)
                 UIElements.Add(btnCursor)
                 UIElements.Add(btnDelete)
+                UIElements.Add(btnSave)
+                UIElements.Add(btnLoad)
             End Sub
 
             Dim lastKeyboardState As KeyboardState
@@ -112,7 +118,6 @@ Namespace Screens
                     UIele.Draw(theSpriteBatch)
                 Next
 
-                Diagnostics.Debug.WriteLine(Dragging)
                 If Mouse.GetState.LeftButton = ButtonState.Pressed Then
 
                     If SelectedObject IsNot Nothing AndAlso Misc.PointInRect(Mouse.GetState.Position, SelectedObject.getScreenRect) AndAlso
@@ -278,6 +283,24 @@ Namespace Screens
 
             Private Sub btnClose_Click() Handles btnClose.Clicked
                 ScreenHandler.SelectedScreen = New Screens.MainMenu.MainMenu
+            End Sub
+
+            Private Sub btnSave_Click() Handles btnSave.Clicked
+                LevelFileHandler.SaveLevel(PlacedObjects)
+                MsgBox("Save complete")
+            End Sub
+
+            Private Sub btnLoad_Click() Handles btnLoad.Clicked
+                PlacedObjects.Clear()
+
+                PlacedObjects = LevelFileHandler.LoadLevel
+
+                For Each _obj In PlacedObjects
+                    _obj.Texture = WorldObjects.Find(Function(x) x.Name = _obj.Name).Texture
+                    _obj.TexturePath = WorldObjects.Find(Function(x) x.Name = _obj.Name).TexturePath
+                Next
+
+                MsgBox("Load complete")
             End Sub
         End Class
     End Namespace

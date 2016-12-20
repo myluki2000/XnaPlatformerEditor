@@ -57,14 +57,15 @@
     <Compile Include="Controls\NumericUpDown.vb" />
     <Compile Include="Controls\UIPanel.vb" />
     <Compile Include="Controls\UIElement.vb" />
+    <Compile Include="Level\LevelFileHandler.vb" />
     <Compile Include="Main.vb" />
     <Compile Include="Misc\GlobalVariables.vb" />
     <Compile Include="Misc\Misc.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
     <Compile Include="Screens\Editor\Editor.vb" />
-    <Compile Include="Screens\Editor\Sprite.vb" />
-    <Compile Include="Screens\Editor\WorldObject.vb" />
+    <Compile Include="Level\Sprite.vb" />
+    <Compile Include="Level\WorldObject.vb" />
     <Compile Include="Screens\Screen.vb" />
     <Compile Include="Screens\MainMenu\MainMenu.vb" />
     <Compile Include="Screens\ScreenHandler.vb" />
