@@ -36,6 +36,7 @@ Namespace Screens
                 worldObject
                 corner
                 None
+                placing
             End Enum
 
             Sub New()
@@ -218,51 +219,67 @@ Namespace Screens
 
             Private Sub ObjectDrag()
                 If Mouse.GetState.LeftButton = ButtonState.Pressed Then
+                    If SelectedObject IsNot Nothing Then
 
-                    If SelectedObject IsNot Nothing AndAlso Misc.PointInRect(Mouse.GetState.Position, SelectedObject.getScreenRect) AndAlso
+                        If Misc.PointInRect(Mouse.GetState.Position, SelectedObject.getScreenRect) AndAlso
                         Misc.PointInRect(Mouse.GetState.Position, New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6)) = False Then
-                        If MouseLastState.LeftButton = ButtonState.Released Then
-                            ' Drag Start
+                            If MouseLastState.LeftButton = ButtonState.Released Then
+                                ' Drag Start
 
-                            DragMouseShift = Mouse.GetState.Position - SelectedObject.rect.Location * New Point(30, 30)
-                        End If
+                                DragMouseShift = Mouse.GetState.Position - SelectedObject.rect.Location * New Point(30, 30)
+                            End If
 
-                        If Dragging = Drag.None Then
-                            Dragging = Drag.worldObject
+                            If Dragging = Drag.None Then
+                                Dragging = Drag.worldObject
+                            End If
                         End If
-                    End If
-                    If SelectedObject IsNot Nothing AndAlso Misc.PointInRect(Mouse.GetState.Position, New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6)) _
+                        If SelectedObject IsNot Nothing AndAlso Misc.PointInRect(Mouse.GetState.Position, New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6)) _
                         AndAlso Dragging = Drag.None Then
-                        Dragging = Drag.corner
+                            Dragging = Drag.corner
+                        End If
+
+
+                        Dim index As Integer = PlacedObjects.IndexOf(SelectedObject)
+                        If index > -1 Then
+                            Select Case Dragging
+                                Case Drag.worldObject
+                                    PlacedObjects(index).rect.X = CInt(Math.Floor((Mouse.GetState.Position.X - DragMouseShift.X) / 30))
+                                    PlacedObjects(index).rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - DragMouseShift.Y) / 30))
+                                    SelectedObject = PlacedObjects(index)
+
+                                Case Drag.corner
+                                    Dim distFromStart As Integer
+                                    Dim scale As Integer
+                                    If Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X < Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y Then
+                                        distFromStart = Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X
+                                        scale = CInt(distFromStart / PlacedObjects(index).Texture.Width)
+                                    Else
+                                        distFromStart = Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y
+                                        scale = CInt(distFromStart / PlacedObjects(index).Texture.Height)
+                                    End If
+                                    If scale < 1 Then
+                                        scale = 1
+                                    End If
+                                    PlacedObjects(index).Scale = scale
+                            End Select
+                        End If
+                    Else
+                        ' No selected object
+                        Dragging = Drag.placing
+
+                        If IsNothing(PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X) / 30)),
+                                                                                      CInt(Math.Floor((Mouse.GetState.Position.Y) / 30))))) Then
+                            ' If block at mouse pos is nothing (there is no block)
+                            PlaceSelectedBlock()
+                        Else
+                            If IsNothing(PlacedObjects.Find(Function(x) x.Name IsNot SelectedPlaceObject)) Then
+                                PlaceSelectedBlock()
+                            End If
+                        End If
                     End If
                 End If
 
-                Dim index As Integer = PlacedObjects.IndexOf(SelectedObject)
-                If SelectedObject IsNot Nothing AndAlso index > -1 Then
-                    Select Case Dragging
-                        Case Drag.worldObject
-                            PlacedObjects(index).rect.X = CInt(Math.Floor((Mouse.GetState.Position.X - DragMouseShift.X) / 30))
-                            PlacedObjects(index).rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - DragMouseShift.Y) / 30))
-                            SelectedObject = PlacedObjects(index)
-
-                        Case Drag.corner
-                            Dim distFromStart As Integer
-                            Dim scale As Integer
-                            If Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X < Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y Then
-                                distFromStart = Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X
-                                scale = CInt(distFromStart / PlacedObjects(index).Texture.Width)
-                            Else
-                                distFromStart = Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y
-                                scale = CInt(distFromStart / PlacedObjects(index).Texture.Height)
-                            End If
-                            If scale < 1 Then
-                                scale = 1
-                            End If
-                            PlacedObjects(index).Scale = scale
-                    End Select
-                End If
-
-                If Mouse.GetState.LeftButton = ButtonState.Released AndAlso Mouse.GetState.Position.X > -1 AndAlso Mouse.GetState.Position.Y > -1 AndAlso MouseLastState.LeftButton = ButtonState.Pressed Then
+                    If Mouse.GetState.LeftButton = ButtonState.Released AndAlso Mouse.GetState.Position.X > -1 AndAlso Mouse.GetState.Position.Y > -1 AndAlso MouseLastState.LeftButton = ButtonState.Pressed Then
                     Dim inUIEle As Boolean = False
                     For Each ele In UIElements
                         If Misc.PointInRect(Mouse.GetState.Position, ele.rect) AndAlso ele.Visible Then
@@ -271,46 +288,59 @@ Namespace Screens
                     Next
 
                     If inUIEle = False Then
-                        If SelectedPlaceObject Is Nothing Then
-                            ' If Cursor selected
+                            If SelectedPlaceObject Is Nothing Then
+                                ' If Cursor selected
 
-                            Dim BlockFound As Boolean = False
-                            For i As Integer = PlacedObjects.Count - 1 To 0 Step -1
-                                Dim _wObj As WorldObject = PlacedObjects(i)
-                                If Misc.PointInRect(Mouse.GetState.Position, _wObj.getScreenRect) Then
-                                    SelectedObject = _wObj
-                                    SelectedObjectChanged()
-                                    BlockFound = True
-                                    Exit For
+                                Dim BlockFound As Boolean = False
+                                For i As Integer = PlacedObjects.Count - 1 To 0 Step -1
+                                    Dim _wObj As WorldObject = PlacedObjects(i)
+                                    If Misc.PointInRect(Mouse.GetState.Position, _wObj.getScreenRect) Then
+                                        SelectedObject = _wObj
+                                        SelectedObjectChanged()
+                                        BlockFound = True
+                                        Exit For
+                                    End If
+                                Next
+
+                                If BlockFound = False Then
+                                    SelectedObject = Nothing
+                                    Dragging = Drag.None
+                                    DragMouseShift = New Point(0, 0)
                                 End If
-                            Next
-
-                            If BlockFound = False Then
-                                SelectedObject = Nothing
-                                Dragging = Drag.None
-                                DragMouseShift = New Point(0, 0)
                             End If
-
-                        Else
-                            ' If Block selected
-                            Dim PlacingObject As New WorldObject
-                            For Each _wObj In WorldObjects
-                                If _wObj.Name = SelectedPlaceObject Then
-                                    PlacingObject.Name = _wObj.Name
-                                    PlacingObject.Texture = _wObj.Texture
-                                    PlacingObject.rect.X = CInt(Math.Floor(Mouse.GetState.Position.X / 30))
-                                    PlacingObject.rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
-                                    PlacingObject.rect.Width = PlacingObject.Texture.Width
-                                    PlacingObject.rect.Height = PlacingObject.Texture.Height
-                                    PlacingObject.zIndex = NUDzindex.Value
-                                    PlacedObjects.Add(PlacingObject)
-                                    PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
-                                    Exit For
-                                End If
-                            Next
                         End If
-                    End If
 
+                    End If
+            End Sub
+
+
+            Private Sub PlaceSelectedBlock()
+                Dim inUIEle As Boolean = False
+                For Each ele In UIElements
+                    If Misc.PointInRect(Mouse.GetState.Position, ele.rect) AndAlso ele.Visible Then
+                        inUIEle = True
+                    End If
+                Next
+
+
+
+                If SelectedPlaceObject IsNot Nothing AndAlso inUIEle = False Then
+                    ' If Block selected
+                    Dim PlacingObject As New WorldObject
+                    For Each _wObj In WorldObjects
+                        If _wObj.Name = SelectedPlaceObject Then
+                            PlacingObject.Name = _wObj.Name
+                            PlacingObject.Texture = _wObj.Texture
+                            PlacingObject.rect.X = CInt(Math.Floor(Mouse.GetState.Position.X / 30))
+                            PlacingObject.rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
+                            PlacingObject.rect.Width = PlacingObject.Texture.Width
+                            PlacingObject.rect.Height = PlacingObject.Texture.Height
+                            PlacingObject.zIndex = NUDzindex.Value
+                            PlacedObjects.Add(PlacingObject)
+                            PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
+                            Exit For
+                        End If
+                    Next
                 End If
             End Sub
         End Class
