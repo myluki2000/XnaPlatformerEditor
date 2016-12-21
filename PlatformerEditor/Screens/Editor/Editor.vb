@@ -93,13 +93,17 @@ Namespace Screens
             End Function
 
             Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
-                theSpriteBatch.Begin()
 
+
+                ' No Drag if mouse not pressed
                 If Mouse.GetState.LeftButton = ButtonState.Released Then
                     Dragging = Drag.None
                 End If
 
 
+                theSpriteBatch.Begin()
+
+                ' Draw level objects
                 For Each _wObj In PlacedObjects
                     _wObj.Draw(theSpriteBatch)
 
@@ -107,6 +111,7 @@ Namespace Screens
                     ' Misc.DrawOutline(theSpriteBatch, _wObj.getScreenRect, Color.Red, 5)
                 Next
 
+                ' Draw outline around selected object + corner
                 Dim selectedObjIndex As Integer = PlacedObjects.IndexOf(SelectedObject)
                 If selectedObjIndex > -1 Then
                     Dim rect As Rectangle = PlacedObjects(selectedObjIndex).getScreenRect()
@@ -114,10 +119,104 @@ Namespace Screens
                     Misc.DrawRectangle(theSpriteBatch, New Rectangle(rect.Right - 6, rect.Bottom - 6, 6, 6), Color.Blue)
                 End If
 
+                ' Draw UI
                 For Each UIele In UIElements
                     UIele.Draw(theSpriteBatch)
                 Next
+                ' Debug Feature: Draw Mouse Pos
+                theSpriteBatch.DrawString(FontKoot, Mouse.GetState.Position.ToString, Vector2.Zero, Color.Black)
+                theSpriteBatch.End()
 
+                ObjectDrag()
+            End Sub
+
+            Private Sub SelectedObjectChanged()
+                If SelectedObject IsNot Nothing Then
+                    NUDzindex.Value = SelectedObject.zIndex
+                End If
+            End Sub
+
+            Private Sub btnListObjectsButton_Clicked(sender As Object)
+                Dim SenderBtn = DirectCast(sender, Button)
+
+                SelectedObject = Nothing
+
+                For Each _btn In btnListObjects.btnList
+                    If _btn IsNot SenderBtn Then
+                        _btn.Checked = False
+                    End If
+                Next
+
+                For Each _btn In btnListObjects.btnList
+                    If _btn.Checked Then
+                        SelectedPlaceObject = _btn.Name
+                    End If
+                Next
+
+                btnCursor.Checked = False
+            End Sub
+
+            Private Sub btnObjects_Click() Handles btnObjects.Clicked
+                If btnObjects.Checked Then
+                    btnListObjects.Visible = True
+                Else
+                    btnListObjects.Visible = False
+                End If
+            End Sub
+
+            Private Sub btnCursor_Click() Handles btnCursor.Clicked
+                SelectedPlaceObject = Nothing
+
+                btnObjects.Checked = False
+                btnListObjects.Visible = False
+
+                For Each _btn In btnListObjects.btnList
+                    _btn.Checked = False
+                Next
+            End Sub
+
+            Private Sub btnDelete_Click() Handles btnDelete.Clicked
+                DeleteSelectedObject()
+            End Sub
+
+            Private Sub DeleteSelectedObject()
+                If SelectedObject IsNot Nothing Then
+                    PlacedObjects.Remove(SelectedObject)
+                End If
+            End Sub
+
+            Private Sub NUDzIndex_ValueChanged() Handles NUDzindex.ValueChanged
+                If SelectedObject IsNot Nothing Then
+                    PlacedObjects(PlacedObjects.IndexOf(SelectedObject)).zIndex = NUDzindex.Value
+                    SelectedObject.zIndex = NUDzindex.Value
+                    PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
+                End If
+            End Sub
+
+            Private Sub btnClose_Click() Handles btnClose.Clicked
+                ScreenHandler.SelectedScreen = New Screens.MainMenu.MainMenu
+            End Sub
+
+            Private Sub btnSave_Click() Handles btnSave.Clicked
+                LevelFileHandler.SaveLevel(PlacedObjects)
+            End Sub
+
+            Private Sub btnLoad_Click() Handles btnLoad.Clicked
+                Dim loadingLevel As List(Of WorldObject)
+
+                loadingLevel = LevelFileHandler.LoadLevel
+                If loadingLevel IsNot Nothing Then
+                    PlacedObjects.Clear()
+                    PlacedObjects = loadingLevel
+
+                    For Each _obj In PlacedObjects
+                        _obj.Texture = WorldObjects.Find(Function(x) x.Name = _obj.Name).Texture
+                        _obj.TexturePath = WorldObjects.Find(Function(x) x.Name = _obj.Name).TexturePath
+                    Next
+                End If
+            End Sub
+
+            Private Sub ObjectDrag()
                 If Mouse.GetState.LeftButton = ButtonState.Pressed Then
 
                     If SelectedObject IsNot Nothing AndAlso Misc.PointInRect(Mouse.GetState.Position, SelectedObject.getScreenRect) AndAlso
@@ -212,95 +311,6 @@ Namespace Screens
                         End If
                     End If
 
-                End If
-
-                theSpriteBatch.DrawString(FontKoot, Mouse.GetState.Position.ToString, Vector2.Zero, Color.Black)
-                theSpriteBatch.End()
-            End Sub
-
-            Private Sub SelectedObjectChanged()
-                If SelectedObject IsNot Nothing Then
-                    NUDzindex.Value = SelectedObject.zIndex
-                End If
-            End Sub
-
-            Private Sub btnListObjectsButton_Clicked(sender As Object)
-                Dim SenderBtn = DirectCast(sender, Button)
-
-                SelectedObject = Nothing
-
-                For Each _btn In btnListObjects.btnList
-                    If _btn IsNot SenderBtn Then
-                        _btn.Checked = False
-                    End If
-                Next
-
-                For Each _btn In btnListObjects.btnList
-                    If _btn.Checked Then
-                        SelectedPlaceObject = _btn.Name
-                    End If
-                Next
-
-                btnCursor.Checked = False
-            End Sub
-
-            Private Sub btnObjects_Click() Handles btnObjects.Clicked
-                If btnObjects.Checked Then
-                    btnListObjects.Visible = True
-                Else
-                    btnListObjects.Visible = False
-                End If
-            End Sub
-
-            Private Sub btnCursor_Click() Handles btnCursor.Clicked
-                SelectedPlaceObject = Nothing
-
-                btnObjects.Checked = False
-                btnListObjects.Visible = False
-
-                For Each _btn In btnListObjects.btnList
-                    _btn.Checked = False
-                Next
-            End Sub
-
-            Private Sub btnDelete_Click() Handles btnDelete.Clicked
-                DeleteSelectedObject()
-            End Sub
-
-            Private Sub DeleteSelectedObject()
-                If SelectedObject IsNot Nothing Then
-                    PlacedObjects.Remove(SelectedObject)
-                End If
-            End Sub
-
-            Private Sub NUDzIndex_ValueChanged() Handles NUDzindex.ValueChanged
-                If SelectedObject IsNot Nothing Then
-                    PlacedObjects(PlacedObjects.IndexOf(SelectedObject)).zIndex = NUDzindex.Value
-                    SelectedObject.zIndex = NUDzindex.Value
-                    PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
-                End If
-            End Sub
-
-            Private Sub btnClose_Click() Handles btnClose.Clicked
-                ScreenHandler.SelectedScreen = New Screens.MainMenu.MainMenu
-            End Sub
-
-            Private Sub btnSave_Click() Handles btnSave.Clicked
-                LevelFileHandler.SaveLevel(PlacedObjects)
-            End Sub
-
-            Private Sub btnLoad_Click() Handles btnLoad.Clicked
-                Dim loadingLevel As List(Of WorldObject)
-
-                loadingLevel = LevelFileHandler.LoadLevel
-                If loadingLevel IsNot Nothing Then
-                    PlacedObjects.Clear()
-                    PlacedObjects = loadingLevel
-
-                    For Each _obj In PlacedObjects
-                        _obj.Texture = WorldObjects.Find(Function(x) x.Name = _obj.Name).Texture
-                        _obj.TexturePath = WorldObjects.Find(Function(x) x.Name = _obj.Name).TexturePath
-                    Next
                 End If
             End Sub
         End Class
