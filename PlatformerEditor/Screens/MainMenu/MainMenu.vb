@@ -5,7 +5,7 @@ Namespace Screens
     Namespace MainMenu
         Public Class MainMenu
             Inherits Screen
-            Dim WithEvents btnNew As New Button With {.text = "New Level", .rect = New Rectangle(100, 100, 100, 50)}
+            Dim WithEvents btnNew As New Button With {.text = "Open Editor", .rect = New Rectangle(100, 100, 100, 50)}
 
             Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
                 theSpriteBatch.Begin()
