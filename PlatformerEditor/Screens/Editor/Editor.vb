@@ -273,10 +273,12 @@ Namespace Screens
 
                         If IsNothing(PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X) / 30)),
                                                                                       CInt(Math.Floor((Mouse.GetState.Position.Y) / 30))))) Then
+
                             ' If block at mouse pos is nothing (there is no block)
                             PlaceSelectedBlock()
                         Else
-                            If IsNothing(PlacedObjects.Find(Function(x) x.Name IsNot SelectedPlaceObject)) Then
+                            If PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X) / 30)),
+                                                                                      CInt(Math.Floor((Mouse.GetState.Position.Y) / 30)))).Name IsNot SelectedPlaceObject Then
                                 PlaceSelectedBlock()
                             End If
                         End If
@@ -319,6 +321,8 @@ Namespace Screens
 
 
             Private Sub PlaceSelectedBlock()
+
+
                 Dim inUIEle As Boolean = False
                 For Each ele In UIElements
                     If Misc.PointInRect(Mouse.GetState.Position, ele.rect) AndAlso ele.Visible Then
