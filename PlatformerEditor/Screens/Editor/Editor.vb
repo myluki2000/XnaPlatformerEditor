@@ -40,16 +40,20 @@ Namespace Screens
             End Enum
 
             Sub New()
-                ' Save WorldObjects to XML
-                'Dim xele As New XElement("WorldObjects",
+                ''Save WorldObjects to XML
+                'WorldObjects.Add(New WorldObject("Brick", "Textures/Brick"))
+                'WorldObjects.Add(New WorldObject("Grass", "Textures/Grass"))
+
+                'Dim xele2 As New XElement("WorldObjects",
                 '                                    From obj In WorldObjects
                 '                                    Select New XElement("Object", New XAttribute("Name", obj.Name),
                 '                                        New XElement("TexturePath", obj.TexturePath)))
-                '            xele.Save("E:\tes.xml")
+                'xele2.Save("tes.xml")
 
 
-                ' Load WorldObjects from XML
-                Dim xele As XElement = XElement.Load("E:\tes.xml")
+
+                'Load WorldObjects from XML
+                Dim xele As XElement = XElement.Load("tes.xml")
                 For Each _wObj In xele.Elements
                     WorldObjects.Add(New WorldObject(_wObj.Attribute("Name").Value, _wObj.Element("TexturePath").Value))
                 Next
@@ -57,7 +61,7 @@ Namespace Screens
 
                 For Each _wObj In WorldObjects
                     _wObj.getTexture()
-                    btnListObjects.btnList.Add(New Button With {.ToggleButton = True, .BackgroundTexture = _wObj.Texture, .Name = _wObj.Name})
+                    btnListObjects.btnList.Add(New Button With {.ToggleButton = True, .BackgroundTexture = _wObj.Texture, .Name = _wObj.Name, .text = ""})
                 Next
 
                 For Each _btn In btnListObjects.btnList
