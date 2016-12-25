@@ -28,6 +28,7 @@ Namespace Screens
             Dim UIElements As New List(Of UIElement)
 
             Dim WorldObjects As New List(Of WorldObject)
+            Dim TechnicalObjcts As New List(Of TechnicalObject)
             Dim PlacedObjects As New List(Of WorldObject)
             Dim SelectedPlaceObject As String
             Dim SelectedObject As WorldObject

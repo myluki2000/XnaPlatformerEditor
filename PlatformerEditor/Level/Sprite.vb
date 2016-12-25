@@ -18,7 +18,7 @@ Public Class Sprite
 
     End Sub
 
-    Public Sub Draw(theSpriteBatch As SpriteBatch)
+    Public Overridable Sub Draw(theSpriteBatch As SpriteBatch)
         theSpriteBatch.Draw(Texture, New Rectangle(CInt(rect.X * 30), CInt(rect.Y * 30), CInt(rect.Width * Scale), CInt(rect.Height * Scale)), Color.White)
     End Sub
 
