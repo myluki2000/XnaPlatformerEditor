@@ -12,7 +12,7 @@ Namespace Screens
 
             Dim WithEvents btnObjects As New Button With {.text = "Objects", .rect = New Rectangle(50, 10, 65, 30), .ToggleButton = True}
             Dim WithEvents btnTechnical As New Button With {.text = "Technical", .rect = New Rectangle(125, 10, 80, 30), .ToggleButton = True}
-            Dim WithEvents btnListObjects As New ButtonList With {.rect = New Rectangle(50, 50, 300, 200), .btnWidth = 40, .btnHeight = 40}
+            Dim WithEvents btnListObjects As New ButtonList With {.rect = New Rectangle(50, 50, 50, 200), .btnWidth = 40, .btnHeight = 40}
             Dim WithEvents btnListTechnical As New ButtonList With {.rect = New Rectangle(100, 50, 300, 200), .btnWidth = 40, .btnHeight = 40}
             Dim WithEvents btnSnapToGrid As New Button With {.rect = New Rectangle(215, 10, 105, 30), .text = "Snap To Grid", .ToggleButton = True}
             Dim WithEvents btnClose As New Button With {.text = "X", .rect = New Rectangle(Main.graphics.PreferredBackBufferWidth - 40, 10, 30, 30)}

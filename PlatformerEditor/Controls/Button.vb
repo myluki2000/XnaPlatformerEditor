@@ -50,15 +50,22 @@ Public Class Button
             If ToggleButton = True AndAlso Checked = True Then
                 Misc.DrawRectangle(theSpriteBatch, New Rectangle(rect.X - 2, rect.Y - 2, rect.Width + 4, rect.Height + 4), Color.Blue)
             End If
+            If rect.Contains(Mouse.GetState.Position) Then
+                Misc.DrawRectangle(theSpriteBatch, rect, SubtractColors(BackgroundColor, New Color(30, 30, 30)))
 
-            Misc.DrawRectangle(theSpriteBatch, rect, BackgroundColor)
+                If Mouse.GetState.LeftButton = ButtonState.Pressed Then
+                    Misc.DrawRectangle(theSpriteBatch, rect, SubtractColors(BackgroundColor, New Color(90, 90, 90)))
+                End If
+            Else
+                Misc.DrawRectangle(theSpriteBatch, rect, BackgroundColor)
+            End If
             ' Draw Background
             If BackgroundTexture IsNot Nothing Then
-                theSpriteBatch.Draw(BackgroundTexture, rect, Color.White)
+                    theSpriteBatch.Draw(BackgroundTexture, rect, Color.White)
+                End If
+                ' Draw Button label
+                theSpriteBatch.DrawString(FontKoot, text, New Vector2(CSng(rect.X + rect.Width / 2 - FontKoot.MeasureString(text).X / 2), CSng(rect.Y + rect.Height / 2 - FontKoot.MeasureString(text).Y / 2)), Color.Black)
             End If
-            ' Draw Button label
-            theSpriteBatch.DrawString(FontKoot, text, New Vector2(CSng(rect.X + rect.Width / 2 - FontKoot.MeasureString(text).X / 2), CSng(rect.Y + rect.Height / 2 - FontKoot.MeasureString(text).Y / 2)), Color.Black)
-        End If
-        lastMouseLBState = Mouse.GetState.LeftButton
+            lastMouseLBState = Mouse.GetState.LeftButton
     End Sub
 End Class
