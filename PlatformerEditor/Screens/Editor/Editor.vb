@@ -24,7 +24,6 @@ Namespace Screens
             Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 180, 10, 130, 30), "Z-Index:")
             Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
 
-
             Dim UIElements As New List(Of UIElement)
 
             Dim WorldObjects As New List(Of WorldObject)
