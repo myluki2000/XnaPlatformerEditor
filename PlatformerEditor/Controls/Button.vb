@@ -61,11 +61,15 @@ Public Class Button
             End If
             ' Draw Background
             If BackgroundTexture IsNot Nothing Then
+                If srcRect = Nothing Then
                     theSpriteBatch.Draw(BackgroundTexture, rect, Color.White)
+                Else
+                    theSpriteBatch.Draw(BackgroundTexture, rect, srcRect, Color.White)
                 End If
-                ' Draw Button label
-                theSpriteBatch.DrawString(FontKoot, text, New Vector2(CSng(rect.X + rect.Width / 2 - FontKoot.MeasureString(text).X / 2), CSng(rect.Y + rect.Height / 2 - FontKoot.MeasureString(text).Y / 2)), Color.Black)
             End If
-            lastMouseLBState = Mouse.GetState.LeftButton
+            ' Draw Button label
+            theSpriteBatch.DrawString(FontKoot, text, New Vector2(CSng(rect.X + rect.Width / 2 - FontKoot.MeasureString(text).X / 2), CSng(rect.Y + rect.Height / 2 - FontKoot.MeasureString(text).Y / 2)), Color.Black)
+        End If
+        lastMouseLBState = Mouse.GetState.LeftButton
     End Sub
 End Class

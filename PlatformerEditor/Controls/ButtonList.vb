@@ -25,6 +25,11 @@ Public Class ButtonList
                 _btnPos.X = rect.X
                 _btnPos.Y += btnHeight + 5
             End If
+
+            If btn.rect.Bottom > rect.Bottom Then
+                btn.srcRect = New Rectangle(0, 0, btn.BackgroundTexture.Width, btn.BackgroundTexture.Height - (btn.rect.Bottom - rect.Bottom))
+                btn.rect.Height = btn.rect.Height - (btn.rect.Bottom - rect.Bottom)
+            End If
         Next
 
         For Each btn In btnList
