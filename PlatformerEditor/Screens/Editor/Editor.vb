@@ -10,14 +10,16 @@ Namespace Screens
         Public Class Editor
             Inherits Screen
 
-            Dim WithEvents btnObjects As New Button With {.text = "Objects", .rect = New Rectangle(50, 10, 70, 30), .ToggleButton = True}
+            Dim WithEvents btnObjects As New Button With {.text = "Objects", .rect = New Rectangle(50, 10, 65, 30), .ToggleButton = True}
+            Dim WithEvents btnTechnical As New Button With {.text = "Technical", .rect = New Rectangle(125, 10, 80, 30), .ToggleButton = True}
             Dim WithEvents btnListObjects As New ButtonList With {.rect = New Rectangle(50, 50, 300, 200), .btnWidth = 40, .btnHeight = 40}
-            Dim WithEvents btnSnapToGrid As New Button With {.rect = New Rectangle(130, 10, 110, 30), .text = "Snap To Grid", .ToggleButton = True}
+            Dim WithEvents btnListTechnical As New ButtonList With {.rect = New Rectangle(100, 50, 300, 200), .btnWidth = 40, .btnHeight = 40}
+            Dim WithEvents btnSnapToGrid As New Button With {.rect = New Rectangle(215, 10, 105, 30), .text = "Snap To Grid", .ToggleButton = True}
             Dim WithEvents btnClose As New Button With {.text = "X", .rect = New Rectangle(Main.graphics.PreferredBackBufferWidth - 40, 10, 30, 30)}
             Dim WithEvents btnCursor As New Button With {.ToggleButton = True, .Checked = True, .rect = New Rectangle(10, 10, 30, 30), .text = "", .BackgroundTexture = GlobalContent.Load(Of Texture2D)("Cursor")}
-            Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(250, 10, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("Delete"), .text = ""}
-            Dim WithEvents btnSave As New Button With {.rect = New Rectangle(290, 10, 90, 30), .text = "Save Level"}
-            Dim WithEvents btnLoad As New Button With {.rect = New Rectangle(390, 10, 90, 30), .text = "Load Level"}
+            Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(330, 10, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("Delete"), .text = ""}
+            Dim WithEvents btnSave As New Button With {.rect = New Rectangle(370, 10, 90, 30), .text = "Save Level"}
+            Dim WithEvents btnLoad As New Button With {.rect = New Rectangle(470, 10, 90, 30), .text = "Load Level"}
 
             Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 180, 10, 130, 30), "Z-Index:")
             Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
@@ -78,6 +80,8 @@ Namespace Screens
                 UIElements.Add(btnDelete)
                 UIElements.Add(btnSave)
                 UIElements.Add(btnLoad)
+                UIElements.Add(btnTechnical)
+                UIElements.Add(btnListTechnical)
             End Sub
 
             Dim lastKeyboardState As KeyboardState
@@ -163,9 +167,21 @@ Namespace Screens
 
             Private Sub btnObjects_Click() Handles btnObjects.Clicked
                 If btnObjects.Checked Then
+                    btnListTechnical.Visible = False
+                    btnTechnical.Checked = False
                     btnListObjects.Visible = True
                 Else
                     btnListObjects.Visible = False
+                End If
+            End Sub
+
+            Private Sub btnTechnical_Click() Handles btnTechnical.Clicked
+                If btnTechnical.Checked Then
+                    btnListObjects.Visible = False
+                    btnObjects.Checked = False
+                    btnListTechnical.Visible = True
+                Else
+                    btnListTechnical.Visible = False
                 End If
             End Sub
 
@@ -351,6 +367,7 @@ Namespace Screens
                     Next
                 End If
             End Sub
+
         End Class
     End Namespace
 End Namespace
