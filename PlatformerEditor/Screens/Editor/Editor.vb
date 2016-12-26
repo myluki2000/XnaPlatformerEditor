@@ -74,14 +74,18 @@ Namespace Screens
                 TechnicalObjects.Add(New PlayerTrigger)
 
                 For Each _tObj As TechnicalObject In TechnicalObjects
-                    btnListTechnical.btnList.Add(New Button With {.text = _tObj.Name})
+                    btnListTechnical.btnList.Add(New Button With {.text = _tObj.Name, .ToggleButton = True})
                 Next
 #End Region
 
 
 #Region "UI Init"
                 For Each _btn In btnListObjects.btnList
-                    AddHandler _btn.Clicked, AddressOf btnListObjectsButton_Clicked
+                    AddHandler _btn.Clicked, AddressOf btnListObjectsButton_Click
+                Next
+
+                For Each _btn In btnListTechnical.btnList
+                    AddHandler _btn.Clicked, AddressOf btnListTechnicalButton_Click
                 Next
 
                 UIElements.Add(UIPanel)
@@ -151,7 +155,7 @@ Namespace Screens
                 End If
             End Sub
 
-            Private Sub btnListObjectsButton_Clicked(sender As Object)
+            Private Sub btnListObjectsButton_Click(sender As Object)
                 Dim SenderBtn = DirectCast(sender, Button)
 
                 SelectedObject = Nothing
@@ -169,6 +173,24 @@ Namespace Screens
                 Next
 
                 btnCursor.Checked = False
+            End Sub
+
+            Private Sub btnListTechnicalButton_Click(sender As Object)
+                Dim SenderBtn = DirectCast(sender, Button)
+
+                SelectedObject = Nothing
+
+                For Each _btn In btnListTechnical.btnList
+                    If _btn IsNot SenderBtn Then
+                        _btn.Checked = False
+                    End If
+                Next
+
+                For Each _btn In btnListTechnical.btnList
+                    If _btn.Checked Then
+                        SelectedPlaceObject = _btn.Name
+                    End If
+                Next
             End Sub
 
             Private Sub btnObjects_Click() Handles btnObjects.Clicked

@@ -52,7 +52,7 @@ Public Class ButtonList
 
         If firstDraw Then
             Try
-                buttonShift = (_btnPos.Y + btnHeight) - rect.Bottom
+                buttonShift = CInt(_btnPos.Y + btnHeight) - rect.Bottom
                 firstDraw = False
             Catch
             End Try

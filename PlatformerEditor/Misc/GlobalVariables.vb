@@ -1,11 +1,11 @@
 ﻿Imports Microsoft.Xna.Framework
 
 Module GlobalVariables
-    Public MouseLastState As Microsoft.Xna.Framework.Input.MouseState
-    Public FontKoot As Microsoft.Xna.Framework.Graphics.SpriteFont
-    Public GlobalContent As Microsoft.Xna.Framework.Content.ContentManager
+    Public MouseLastState As Input.MouseState
+    Public FontKoot As Graphics.SpriteFont
+    Public GlobalContent As Content.ContentManager
 
-    Public lastKeyboardState As KeyboardState
+    Public lastKeyboardState As Input.KeyboardState
 
     Public Function SubtractColors(color1 As Color, color2 As Color) As Color
         Dim returnColor As New Color
@@ -16,8 +16,8 @@ Module GlobalVariables
         Return returnColor
     End Function
 
-    Public Function KeyPress(k As Keys) As Boolean
-        If Keyboard.GetState.IsKeyUp(k) AndAlso lastKeyboardState.IsKeyDown(k) Then
+    Public Function KeyPress(k As Input.Keys) As Boolean
+        If Input.Keyboard.GetState.IsKeyUp(k) AndAlso lastKeyboardState.IsKeyDown(k) Then
             Return True
         Else
             Return False
