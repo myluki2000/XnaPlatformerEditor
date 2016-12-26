@@ -10,6 +10,7 @@ Namespace Screens
         Public Class Editor
             Inherits Screen
 
+#Region "UI Declarations"
             Dim WithEvents btnObjects As New Button With {.text = "Objects", .rect = New Rectangle(50, 10, 65, 30), .ToggleButton = True}
             Dim WithEvents btnTechnical As New Button With {.text = "Technical", .rect = New Rectangle(125, 10, 80, 30), .ToggleButton = True}
             Dim WithEvents btnListObjects As New ButtonList With {.rect = New Rectangle(50, 50, 120, 150), .btnWidth = 40, .btnHeight = 40}
@@ -25,6 +26,7 @@ Namespace Screens
             Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
 
             Dim UIElements As New List(Of UIElement)
+#End Region
 
             Dim WorldObjects As New List(Of WorldObject)
             Dim TechnicalObjects As New List(Of TechnicalObject)
@@ -42,6 +44,7 @@ Namespace Screens
             End Enum
 
             Sub New()
+#Region "World Objects Init"
                 ''Save WorldObjects to XML
                 'WorldObjects.Add(New WorldObject("Brick", "Textures/Brick"))
                 'WorldObjects.Add(New WorldObject("Grass", "Textures/Grass"))
@@ -51,8 +54,6 @@ Namespace Screens
                 '                                    Select New XElement("Object", New XAttribute("Name", obj.Name),
                 '                                        New XElement("TexturePath", obj.TexturePath)))
                 'xele2.Save("tes.xml")
-
-
 
                 'Load WorldObjects from XML
                 Dim xele As XElement = XElement.Load("tes.xml")
@@ -65,13 +66,10 @@ Namespace Screens
                     _wObj.getTexture()
                     btnListObjects.btnList.Add(New Button With {.ToggleButton = True, .BackgroundTexture = _wObj.Texture, .Name = _wObj.Name, .text = ""})
                 Next
-
-                For Each _btn In btnListObjects.btnList
-                    AddHandler _btn.Clicked, AddressOf btnListObjectsButton_Clicked
-                Next
+#End Region
 
 
-#Region "Technical Objects init"
+#Region "Technical Objects Init"
                 TechnicalObjects.Add(New Spawner)
                 TechnicalObjects.Add(New PlayerTrigger)
 
@@ -82,6 +80,10 @@ Namespace Screens
 
 
 #Region "UI Init"
+                For Each _btn In btnListObjects.btnList
+                    AddHandler _btn.Clicked, AddressOf btnListObjectsButton_Clicked
+                Next
+
                 UIElements.Add(UIPanel)
                 UIElements.Add(btnListObjects)
                 UIElements.Add(btnObjects)
@@ -97,7 +99,6 @@ Namespace Screens
 #End Region
             End Sub
 
-            Dim lastKeyboardState As KeyboardState
             Public Overrides Sub Update(gameTime As GameTime)
                 If KeyPress(Keys.Delete) Then
                     DeleteSelectedObject()
@@ -105,14 +106,6 @@ Namespace Screens
 
                 lastKeyboardState = Keyboard.GetState
             End Sub
-
-            Private Function KeyPress(k As Keys) As Boolean
-                If Keyboard.GetState.IsKeyUp(k) AndAlso lastKeyboardState.IsKeyDown(k) Then
-                    Return True
-                Else
-                    Return False
-                End If
-            End Function
 
             Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
 
@@ -350,8 +343,6 @@ Namespace Screens
 
 
             Private Sub PlaceSelectedBlock()
-
-
                 Dim inUIEle As Boolean = False
                 For Each ele In UIElements
                     If Misc.PointInRect(Mouse.GetState.Position, ele.rect) AndAlso ele.Visible Then
@@ -380,7 +371,6 @@ Namespace Screens
                     Next
                 End If
             End Sub
-
         End Class
     End Namespace
 End Namespace
