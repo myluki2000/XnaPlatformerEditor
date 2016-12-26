@@ -64,6 +64,7 @@
     <Compile Include="Controls\VerticalScroll.vb" />
     <Compile Include="Level\LevelFileHandler.vb" />
     <Compile Include="Level\TechnicalObjects\PlayerTrigger.vb" />
+    <Compile Include="Level\TechnicalObjects\Spawner.vb" />
     <Compile Include="Level\TechnicalObjects\TechnicalObject.vb" />
     <Compile Include="Main.vb" />
     <Compile Include="Misc\GlobalVariables.vb" />

@@ -5,6 +5,11 @@ Public Class PlayerTrigger
     Inherits TechnicalObject
 
     Public ActivationType As ActivationTypes
+    Public ActivationDelay As Integer = 0
+
+    Sub New()
+        Name = "Player" & vbNewLine & "Trigger"
+    End Sub
 
     Public Enum ActivationTypes
         Once

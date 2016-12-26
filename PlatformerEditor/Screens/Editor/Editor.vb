@@ -13,7 +13,7 @@ Namespace Screens
             Dim WithEvents btnObjects As New Button With {.text = "Objects", .rect = New Rectangle(50, 10, 65, 30), .ToggleButton = True}
             Dim WithEvents btnTechnical As New Button With {.text = "Technical", .rect = New Rectangle(125, 10, 80, 30), .ToggleButton = True}
             Dim WithEvents btnListObjects As New ButtonList With {.rect = New Rectangle(50, 50, 120, 150), .btnWidth = 40, .btnHeight = 40}
-            Dim WithEvents btnListTechnical As New ButtonList With {.rect = New Rectangle(100, 50, 300, 200), .btnWidth = 40, .btnHeight = 40}
+            Dim WithEvents btnListTechnical As New ButtonList With {.rect = New Rectangle(100, 50, 300, 200), .btnWidth = 80, .btnHeight = 40}
             Dim WithEvents btnSnapToGrid As New Button With {.rect = New Rectangle(215, 10, 105, 30), .text = "Snap To Grid", .ToggleButton = True}
             Dim WithEvents btnClose As New Button With {.text = "X", .rect = New Rectangle(Main.graphics.PreferredBackBufferWidth - 40, 10, 30, 30)}
             Dim WithEvents btnCursor As New Button With {.ToggleButton = True, .Checked = True, .rect = New Rectangle(10, 10, 30, 30), .text = "", .BackgroundTexture = GlobalContent.Load(Of Texture2D)("Cursor")}
@@ -27,7 +27,7 @@ Namespace Screens
             Dim UIElements As New List(Of UIElement)
 
             Dim WorldObjects As New List(Of WorldObject)
-            Dim TechnicalObjcts As New List(Of TechnicalObject)
+            Dim TechnicalObjects As New List(Of TechnicalObject)
             Dim PlacedObjects As New List(Of WorldObject)
             Dim SelectedPlaceObject As String
             Dim SelectedObject As WorldObject
@@ -70,6 +70,18 @@ Namespace Screens
                     AddHandler _btn.Clicked, AddressOf btnListObjectsButton_Clicked
                 Next
 
+
+#Region "Technical Objects init"
+                TechnicalObjects.Add(New Spawner)
+                TechnicalObjects.Add(New PlayerTrigger)
+
+                For Each _tObj As TechnicalObject In TechnicalObjects
+                    btnListTechnical.btnList.Add(New Button With {.text = _tObj.Name})
+                Next
+#End Region
+
+
+#Region "UI Init"
                 UIElements.Add(UIPanel)
                 UIElements.Add(btnListObjects)
                 UIElements.Add(btnObjects)
@@ -82,6 +94,7 @@ Namespace Screens
                 UIElements.Add(btnLoad)
                 UIElements.Add(btnTechnical)
                 UIElements.Add(btnListTechnical)
+#End Region
             End Sub
 
             Dim lastKeyboardState As KeyboardState
