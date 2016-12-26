@@ -7,18 +7,30 @@ Public Class ButtonList
     Public WithEvents btnList As New List(Of Button)
     Public btnWidth As Integer = 60
     Public btnHeight As Integer = 20
+    Dim WithEvents VerticalScroll As New VerticalScroll With {.Visible = True}
+    Dim buttonShift As Integer = 0
+    Dim firstDraw As Boolean = True
 
     Public Sub New()
-        rect = New Rectangle(0, 0, 100, 50)
         Visible = False
+
     End Sub
 
     Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
-
-
+        VerticalScroll.rect = New Rectangle(rect.Right - 20, rect.Y, 20, rect.Height)
+        Diagnostics.Debug.WriteLine(buttonShift)
         Dim _btnPos As New Vector2(rect.X, rect.Y + 10)
         For Each btn In btnList
-            btn.rect = New Rectangle(CInt(_btnPos.X), CInt(_btnPos.Y), btnWidth, btnHeight)
+            If buttonShift = 0 Then
+                VerticalScroll.Visible = False
+            Else
+                VerticalScroll.Visible = True
+            End If
+
+            btn.rect = New Rectangle(CInt(_btnPos.X), CInt(_btnPos.Y - VerticalScroll.Value * buttonShift), btnWidth, btnHeight)
+
+
+
             If _btnPos.X + (btnWidth * 2 + 20) - rect.X < rect.Width Then
                 _btnPos.X += btnWidth + 10
             Else
@@ -30,7 +42,21 @@ Public Class ButtonList
                 btn.srcRect = New Rectangle(0, 0, btn.BackgroundTexture.Width, btn.BackgroundTexture.Height - (btn.rect.Bottom - rect.Bottom))
                 btn.rect.Height = btn.rect.Height - (btn.rect.Bottom - rect.Bottom)
             End If
+
+            If btn.rect.Y < rect.Y Then
+                btn.srcRect = New Rectangle(0, rect.Y - btn.rect.Y, btn.BackgroundTexture.Width, btn.BackgroundTexture.Height - (rect.Y - btn.rect.Y))
+                btn.rect.Height = btn.rect.Height + (btn.rect.Y - rect.Y)
+                btn.rect.Y = btn.rect.Y - (btn.rect.Y - rect.Y)
+            End If
         Next
+
+        If firstDraw Then
+            Try
+                buttonShift = (_btnPos.Y + btnHeight) - rect.Bottom
+                firstDraw = False
+            Catch
+            End Try
+        End If
 
         For Each btn In btnList
             btn.rect.X += CInt(((rect.Width Mod (btnWidth + 10)) + 10) / 2)
@@ -43,7 +69,7 @@ Public Class ButtonList
                 btn.Draw(theSpriteBatch)
             Next
 
-
+            VerticalScroll.Draw(theSpriteBatch)
         End If
     End Sub
 End Class

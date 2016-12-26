@@ -51,4 +51,12 @@ Public Class Misc
         Blue = CInt("&H" & Mid(HexColor, 5, 2))
         Return New Color(Red, Green, Blue, 255)
     End Function
+
+    Public Shared Function ToPositiveOnly(n As Integer) As Integer
+        If n > 0 Then
+            Return n
+        Else
+            Return 0
+        End If
+    End Function
 End Class
