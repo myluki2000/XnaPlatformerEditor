@@ -32,15 +32,6 @@ Public Class Misc
         DrawRectangle(theSpriteBatch, New Rectangle(destRect.X + destRect.Width - thicknessOutline, destRect.Y, thicknessOutline, destRect.Height), colorOutline) ' Outline Right
     End Sub
 
-    Public Shared Function PointInRect(_point As Point, _rect As Rectangle) As Boolean
-        If _rect.Left < _point.X AndAlso _point.X < _rect.Right AndAlso
-            _rect.Top < _point.Y AndAlso _point.Y < _rect.Bottom Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
     Public Shared Function ConvertToRbg(ByVal HexColor As String) As Color
         Dim Red As Integer
         Dim Green As Integer

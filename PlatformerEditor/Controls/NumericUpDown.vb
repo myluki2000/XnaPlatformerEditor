@@ -25,10 +25,10 @@ Public Class NumericUpDown
             theSpriteBatch.Draw(NUDArrows, New Rectangle(rect.Right - 15, rect.Top, 15, 30), Color.White)
 
             If Mouse.GetState.LeftButton = ButtonState.Released AndAlso MouseLastState.LeftButton = ButtonState.Pressed Then
-                If Misc.PointInRect(Mouse.GetState.Position, New Rectangle(rect.Right - 15, rect.Top, 15, 15)) Then
+                If New Rectangle(rect.Right - 15, rect.Top, 15, 15).Contains(Mouse.GetState.Position) Then
                     Value += 1
                     RaiseEvent ValueChanged()
-                ElseIf Misc.PointInRect(Mouse.GetState.Position, New Rectangle(rect.Right - 15, rect.Top + 15, 15, 15)) Then
+                ElseIf New Rectangle(rect.Right - 15, rect.Top + 15, 15, 15).Contains(Mouse.GetState.Position) Then
                     Value -= 1
                     RaiseEvent ValueChanged()
                 End If

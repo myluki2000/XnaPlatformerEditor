@@ -269,8 +269,8 @@ Namespace Screens
                 If Mouse.GetState.LeftButton = ButtonState.Pressed Then
                     If SelectedObject IsNot Nothing Then
 
-                        If Misc.PointInRect(Mouse.GetState.Position, SelectedObject.getScreenRect) AndAlso
-                        Misc.PointInRect(Mouse.GetState.Position, New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6)) = False Then
+                        If SelectedObject.getScreenRect.Contains(Mouse.GetState.Position) AndAlso
+                        New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6).Contains(Mouse.GetState.Position) = False Then
                             If MouseLastState.LeftButton = ButtonState.Released Then
                                 ' Drag Start
 
@@ -281,7 +281,7 @@ Namespace Screens
                                 Dragging = Drag.worldObject
                             End If
                         End If
-                        If SelectedObject IsNot Nothing AndAlso Misc.PointInRect(Mouse.GetState.Position, New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6)) _
+                        If SelectedObject IsNot Nothing AndAlso New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6).Contains(Mouse.GetState.Position) _
                         AndAlso Dragging = Drag.None Then
                             Dragging = Drag.corner
                         End If
@@ -332,7 +332,7 @@ Namespace Screens
                     If Mouse.GetState.LeftButton = ButtonState.Released AndAlso Mouse.GetState.Position.X > -1 AndAlso Mouse.GetState.Position.Y > -1 AndAlso MouseLastState.LeftButton = ButtonState.Pressed Then
                     Dim inUIEle As Boolean = False
                     For Each ele In UIElements
-                        If Misc.PointInRect(Mouse.GetState.Position, ele.rect) AndAlso ele.Visible Then
+                        If ele.rect.Contains(Mouse.GetState.Position) AndAlso ele.Visible Then
                             inUIEle = True
                         End If
                     Next
@@ -344,13 +344,13 @@ Namespace Screens
                                 Dim BlockFound As Boolean = False
                                 For i As Integer = PlacedObjects.Count - 1 To 0 Step -1
                                     Dim _wObj As WorldObject = PlacedObjects(i)
-                                    If Misc.PointInRect(Mouse.GetState.Position, _wObj.getScreenRect) Then
-                                        SelectedObject = _wObj
-                                        SelectedObjectChanged()
-                                        BlockFound = True
-                                        Exit For
-                                    End If
-                                Next
+                                If _wObj.getScreenRect.Contains(Mouse.GetState.Position) Then
+                                    SelectedObject = _wObj
+                                    SelectedObjectChanged()
+                                    BlockFound = True
+                                    Exit For
+                                End If
+                            Next
 
                                 If BlockFound = False Then
                                     SelectedObject = Nothing
@@ -367,7 +367,7 @@ Namespace Screens
             Private Sub PlaceSelectedBlock()
                 Dim inUIEle As Boolean = False
                 For Each ele In UIElements
-                    If Misc.PointInRect(Mouse.GetState.Position, ele.rect) AndAlso ele.Visible Then
+                    If ele.rect.Contains(Mouse.GetState.Position) AndAlso ele.Visible Then
                         inUIEle = True
                     End If
                 Next

@@ -17,7 +17,7 @@ Public Class VerticalScroll
             SliderRect = New Rectangle(rect.X, CInt(rect.Y + Value * (rect.Height - 30)), rect.Width, 30) ' 30 = Slider height
 
             If Mouse.GetState.LeftButton = ButtonState.Pressed Then
-                If Misc.PointInRect(Mouse.GetState.Position, SliderRect) Then
+                If SliderRect.Contains(Mouse.GetState.Position) Then
                     ' If Mouse pressed (dragging)
 
                     If MouseLastState.LeftButton = ButtonState.Released Then

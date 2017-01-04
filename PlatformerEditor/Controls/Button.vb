@@ -19,8 +19,6 @@ Public Class Button
         BlueBorder
     End Enum
 
-    Dim lastMouseLBState As Microsoft.Xna.Framework.Input.ButtonState
-
     Sub New()
         Visible = True
     End Sub
@@ -28,18 +26,16 @@ Public Class Button
     Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
         If Visible Then
             ' Click detection
-            If rect.Contains(Mouse.GetState.Position) AndAlso Mouse.GetState.LeftButton = ButtonState.Released AndAlso lastMouseLBState = ButtonState.Pressed Then
-                If ToggleButton = False Then
-                    Select Case ClickEffect
-                        Case ClickEffects.BlueBorder
-                            Misc.DrawRectangle(theSpriteBatch, New Rectangle(rect.X - 2, rect.Y - 2, rect.Width + 4, rect.Height + 4), Color.Blue)
-                    End Select
-                Else
-                    If Checked Then
+            If rect.Contains(Mouse.GetState.Position) AndAlso Mouse.GetState.LeftButton = ButtonState.Released AndAlso MouseLastState.LeftButton = ButtonState.Pressed Then
+                Select Case ClickEffect
+                    Case ClickEffects.BlueBorder
+                        Misc.DrawRectangle(theSpriteBatch, New Rectangle(rect.X - 2, rect.Y - 2, rect.Width + 4, rect.Height + 4), Color.Blue)
+                End Select
+
+                If Checked Then
                         Checked = False
                     Else
-                        Checked = True
-                    End If
+                    Checked = True
                 End If
 
                 If Enabled Then
@@ -70,6 +66,5 @@ Public Class Button
             ' Draw Button label
             theSpriteBatch.DrawString(FontKoot, text, New Vector2(CSng(rect.X + rect.Width / 2 - FontKoot.MeasureString(text).X / 2), CSng(rect.Y + rect.Height / 2 - FontKoot.MeasureString(text).Y / 2)), Color.Black)
         End If
-        lastMouseLBState = Mouse.GetState.LeftButton
     End Sub
 End Class
