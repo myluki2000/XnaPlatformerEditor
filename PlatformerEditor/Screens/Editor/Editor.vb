@@ -36,6 +36,8 @@ Namespace Screens
 
             Dim Dragging As Drag
             Dim DragMouseShift As Point
+
+            Dim gameTime As GameTime
             Private Enum Drag
                 worldObject
                 corner
@@ -74,7 +76,7 @@ Namespace Screens
                 TechnicalObjects.Add(New PlayerTrigger)
 
                 For Each _tObj As TechnicalObject In TechnicalObjects
-                    btnListTechnical.btnList.Add(New Button With {.text = _tObj.Name, .ToggleButton = True})
+                    btnListTechnical.btnList.Add(New Button With {.Name = _tObj.Name, .text = _tObj.Name, .ToggleButton = True})
                 Next
 #End Region
 
@@ -103,17 +105,16 @@ Namespace Screens
 #End Region
             End Sub
 
-            Public Overrides Sub Update(gameTime As GameTime)
+            Public Overrides Sub Update(_gameTime As GameTime)
                 If KeyPress(Keys.Delete) Then
                     DeleteSelectedObject()
                 End If
 
                 lastKeyboardState = Keyboard.GetState
+                gameTime = _gameTime
             End Sub
 
             Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
-
-
                 ' No Drag if mouse not pressed
                 If Mouse.GetState.LeftButton = ButtonState.Released Then
                     Dragging = Drag.None
@@ -147,6 +148,13 @@ Namespace Screens
                 theSpriteBatch.End()
 
                 ObjectDrag()
+
+                If ClickHandler.CheckForDoubleClick(gameTime) Then
+                    If SelectedObject IsNot Nothing Then
+                        Dim propWindow As New PropertiesWindow
+                        propWindow.ShowProperties(SelectedObject)
+                    End If
+                End If
             End Sub
 
             Private Sub SelectedObjectChanged()
@@ -296,19 +304,21 @@ Namespace Screens
                                     SelectedObject = PlacedObjects(index)
 
                                 Case Drag.corner
-                                    Dim distFromStart As Integer
-                                    Dim scale As Integer
-                                    If Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X < Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y Then
-                                        distFromStart = Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X
-                                        scale = CInt(distFromStart / PlacedObjects(index).Texture.Width)
-                                    Else
-                                        distFromStart = Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y
-                                        scale = CInt(distFromStart / PlacedObjects(index).Texture.Height)
+                                    If SelectedObject.Texture IsNot Nothing Then ' If SelectedObject has a texture (is scalable)
+                                        Dim distFromStart As Integer
+                                        Dim scale As Integer
+                                        If Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X < Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y Then
+                                            distFromStart = Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X
+                                            scale = CInt(distFromStart / PlacedObjects(index).Texture.Width)
+                                        Else
+                                            distFromStart = Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y
+                                            scale = CInt(distFromStart / PlacedObjects(index).Texture.Height)
+                                        End If
+                                        If scale < 1 Then
+                                            scale = 1
+                                        End If
+                                        PlacedObjects(index).Scale = scale
                                     End If
-                                    If scale < 1 Then
-                                        scale = 1
-                                    End If
-                                    PlacedObjects(index).Scale = scale
                             End Select
                         End If
                     Else
@@ -385,6 +395,21 @@ Namespace Screens
                             PlacingObject.rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
                             PlacingObject.rect.Width = PlacingObject.Texture.Width
                             PlacingObject.rect.Height = PlacingObject.Texture.Height
+                            PlacingObject.zIndex = NUDzindex.Value
+                            PlacedObjects.Add(PlacingObject)
+                            PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
+                            Exit For
+                        End If
+                    Next
+
+                    For Each _wObj In TechnicalObjects
+                        If _wObj.Name = SelectedPlaceObject Then
+                            PlacingObject.Name = _wObj.Name
+                            PlacingObject.Texture = _wObj.Texture
+                            PlacingObject.rect.X = CInt(Math.Floor(Mouse.GetState.Position.X / 30))
+                            PlacingObject.rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
+                            PlacingObject.rect.Width = 30
+                            PlacingObject.rect.Height = 30
                             PlacingObject.zIndex = NUDzindex.Value
                             PlacedObjects.Add(PlacingObject)
                             PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList

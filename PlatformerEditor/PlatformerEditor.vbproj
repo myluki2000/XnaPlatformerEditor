@@ -56,18 +56,19 @@
     <Import Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\Button.vb" />
-    <Compile Include="UI\ButtonList.vb" />
-    <Compile Include="UI\NumericUpDown.vb" />
+    <Compile Include="Screens\Editor\ClickHandler.vb" />
+    <Compile Include="UI\XnaControls\Button.vb" />
+    <Compile Include="UI\XnaControls\ButtonList.vb" />
+    <Compile Include="UI\XnaControls\NumericUpDown.vb" />
     <Compile Include="UI\PropertiesWindow.Designer.vb">
       <DependentUpon>PropertiesWindow.vb</DependentUpon>
     </Compile>
     <Compile Include="UI\PropertiesWindow.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\UIPanel.vb" />
-    <Compile Include="UI\UIElement.vb" />
-    <Compile Include="UI\VerticalScroll.vb" />
+    <Compile Include="UI\XnaControls\UIPanel.vb" />
+    <Compile Include="UI\XnaControls\UIElement.vb" />
+    <Compile Include="UI\XnaControls\VerticalScroll.vb" />
     <Compile Include="Level\LevelFileHandler.vb" />
     <Compile Include="Level\TechnicalObjects\PlayerTrigger.vb" />
     <Compile Include="Level\TechnicalObjects\Spawner.vb" />

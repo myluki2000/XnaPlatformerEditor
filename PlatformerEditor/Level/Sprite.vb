@@ -19,7 +19,11 @@ Public Class Sprite
     End Sub
 
     Public Overridable Sub Draw(theSpriteBatch As SpriteBatch)
-        theSpriteBatch.Draw(Texture, New Rectangle(CInt(rect.X * 30), CInt(rect.Y * 30), CInt(rect.Width * Scale), CInt(rect.Height * Scale)), Color.White)
+        If Texture IsNot Nothing Then
+            theSpriteBatch.Draw(Texture, New Rectangle(CInt(rect.X * 30), CInt(rect.Y * 30), CInt(rect.Width * Scale), CInt(rect.Height * Scale)), Color.White)
+        Else
+            theSpriteBatch.DrawString(FontKoot, Name, rect.Location.ToVector2 * New Vector2(30, 30), Color.Red)
+        End If
     End Sub
 
     Public Sub getTexture()
