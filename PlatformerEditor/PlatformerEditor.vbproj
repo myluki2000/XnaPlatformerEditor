@@ -56,12 +56,18 @@
     <Import Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Button.vb" />
-    <Compile Include="Controls\ButtonList.vb" />
-    <Compile Include="Controls\NumericUpDown.vb" />
-    <Compile Include="Controls\UIPanel.vb" />
-    <Compile Include="Controls\UIElement.vb" />
-    <Compile Include="Controls\VerticalScroll.vb" />
+    <Compile Include="UI\Button.vb" />
+    <Compile Include="UI\ButtonList.vb" />
+    <Compile Include="UI\NumericUpDown.vb" />
+    <Compile Include="UI\PropertiesWindow.Designer.vb">
+      <DependentUpon>PropertiesWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PropertiesWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\UIPanel.vb" />
+    <Compile Include="UI\UIElement.vb" />
+    <Compile Include="UI\VerticalScroll.vb" />
     <Compile Include="Level\LevelFileHandler.vb" />
     <Compile Include="Level\TechnicalObjects\PlayerTrigger.vb" />
     <Compile Include="Level\TechnicalObjects\Spawner.vb" />
@@ -85,6 +91,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -122,7 +129,11 @@
     </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="UI\PropertiesWindow.resx">
+      <DependentUpon>PropertiesWindow.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Content\Fonts\Koot.xnb">
