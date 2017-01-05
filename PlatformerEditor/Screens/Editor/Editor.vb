@@ -199,6 +199,8 @@ Namespace Screens
                         SelectedPlaceObject = _btn.Name
                     End If
                 Next
+
+                btnCursor.Checked = False
             End Sub
 
             Private Sub btnObjects_Click() Handles btnObjects.Clicked
@@ -227,7 +229,14 @@ Namespace Screens
                 btnObjects.Checked = False
                 btnListObjects.Visible = False
 
+                btnTechnical.Checked = False
+                btnListTechnical.Visible = False
+
                 For Each _btn In btnListObjects.btnList
+                    _btn.Checked = False
+                Next
+
+                For Each _btn In btnListTechnical.btnList
                     _btn.Checked = False
                 Next
             End Sub
