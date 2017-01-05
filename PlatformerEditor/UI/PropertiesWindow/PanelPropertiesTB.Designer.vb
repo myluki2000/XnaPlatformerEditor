@@ -29,11 +29,10 @@ Partial Class PanelPropertiesTB
         'TBValue
         '
         Me.TBValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TBValue.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TBValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TBValue.Location = New System.Drawing.Point(60, 0)
+        Me.TBValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TBValue.Location = New System.Drawing.Point(60, 3)
         Me.TBValue.Name = "TBValue"
-        Me.TBValue.Size = New System.Drawing.Size(408, 26)
+        Me.TBValue.Size = New System.Drawing.Size(408, 21)
         Me.TBValue.TabIndex = 3
         '
         'LabelDescription

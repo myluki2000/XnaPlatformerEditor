@@ -5,6 +5,7 @@
         InitializeComponent()
 
         CBProperty.Text = label
+        Checked = initalCheckedState
         CBProperty.Checked = initalCheckedState
     End Sub
 
