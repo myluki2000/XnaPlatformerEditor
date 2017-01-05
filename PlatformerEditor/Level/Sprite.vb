@@ -22,7 +22,8 @@ Public Class Sprite
         If Texture IsNot Nothing Then
             theSpriteBatch.Draw(Texture, New Rectangle(CInt(rect.X * 30), CInt(rect.Y * 30), CInt(rect.Width * Scale), CInt(rect.Height * Scale)), Color.White)
         Else
-            theSpriteBatch.DrawString(FontKoot, Name, rect.Location.ToVector2 * New Vector2(30, 30), Color.Red)
+            theSpriteBatch.DrawString(FontKoot, Name, getScreenRect.Location.ToVector2, Color.Red)
+            Misc.DrawOutline(theSpriteBatch, getScreenRect, Color.Gold, 2)
         End If
     End Sub
 
