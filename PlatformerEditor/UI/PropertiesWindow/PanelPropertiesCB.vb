@@ -1,8 +1,10 @@
 ﻿Public Class PanelPropertiesCB
     Public Checked As Boolean
 
-    Sub New(initalCheckedState As Boolean, label As String)
+    Sub New(ControlName As String, initalCheckedState As Boolean, label As String)
         InitializeComponent()
+
+        Name = ControlName
 
         CBProperty.Text = label
         Checked = initalCheckedState

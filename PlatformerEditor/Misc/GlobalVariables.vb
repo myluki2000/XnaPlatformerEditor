@@ -5,6 +5,13 @@ Module GlobalVariables
     Public FontKoot As Graphics.SpriteFont
     Public GlobalContent As Content.ContentManager
 
+#Region "Declare lists to hold world objects"
+    Public WorldObjects As New Collections.Generic.List(Of WorldObject)
+    Public TechnicalObjects As New Collections.Generic.List(Of TechnicalObject)
+    Public PlacedObjects As New Collections.Generic.List(Of WorldObject)
+    Public EnemyTypes As New Collections.Generic.List(Of Enemy)
+#End Region
+
     Public lastKeyboardState As Input.KeyboardState
 
     Public Function SubtractColors(color1 As Color, color2 As Color) As Color

@@ -28,12 +28,6 @@ Namespace Screens
             Dim UIElements As New List(Of UIElement)
 #End Region
 
-#Region "Declare lists to hold world objects"
-            Dim WorldObjects As New List(Of WorldObject)
-            Dim TechnicalObjects As New List(Of TechnicalObject)
-            Dim PlacedObjects As New List(Of WorldObject)
-#End Region
-
             Dim SelectedPlaceObject As String
             Dim SelectedObject As WorldObject
 
@@ -83,6 +77,10 @@ Namespace Screens
                 Next
 #End Region
 
+
+#Region "Enemy Init"
+                EnemyTypes.Add(New DebugEnemy)
+#End Region
 
 #Region "UI Init"
                 For Each _btn In btnListObjects.btnList

@@ -2,6 +2,8 @@
 
 Public Class PropertiesWindow
 
+    Dim wObj As WorldObject
+
     Dim ObjectType As ObjectTypes
     Private Enum ObjectTypes
         Spawner
@@ -10,6 +12,8 @@ Public Class PropertiesWindow
 
     Public Sub ShowProperties(_wObj As WorldObject)
         Dim DoDisplay As Boolean = True
+        wObj = _wObj
+
 
         Select Case _wObj.Name
             Case "Spawner"
@@ -22,19 +26,45 @@ Public Class PropertiesWindow
                 DoDisplay = False
         End Select
 
-        PopulateWindow(_wObj)
+        PopulateWindow()
 
         If DoDisplay Then
             ShowDialog()
         End If
     End Sub
 
-    Private Sub PopulateWindow(_wObj As WorldObject)
+    Private Sub PopulateWindow()
         Select Case ObjectType
             Case ObjectTypes.Spawner
-                Dim _spawnerObj = CType(_wObj, Spawner)
-                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("ID", _spawnerObj.ID))
-                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("Enemy Type", _spawnerObj.EnemyTypeToSpawn.Name))
+                Dim _spawnerObj = CType(wObj, Spawner)
+                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBID", "ID", _spawnerObj.ID))
+                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBEnemyType", "Enemy Type", _spawnerObj.EnemyTypeToSpawn.Name))
         End Select
+    End Sub
+
+    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+        Select Case ObjectType
+            Case ObjectTypes.Spawner
+                Dim oldObjIndex = PlacedObjects.IndexOf(wObj)
+                Dim newObj As Spawner = DirectCast(wObj, Spawner)
+
+                newObj.ID = FlowLayoutProperties.Controls.Find("TBID", False)(0).Text
+
+                Dim newEnemyToSpawn As Enemy = EnemyTypes.Find(Function(x) x.Name = FlowLayoutProperties.Controls.Find("TBEnemyType", False)(0).Text)
+                If newEnemyToSpawn IsNot Nothing Then ' If user input enemy doesn't exist this will be Nothing
+                    newObj.EnemyTypeToSpawn = newEnemyToSpawn
+
+                    PlacedObjects(oldObjIndex) = newObj
+                Else
+                    MsgBox("This enemy type does not exist!")
+                    Return
+                End If
+        End Select
+
+        Close()
+    End Sub
+
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+        Close()
     End Sub
 End Class

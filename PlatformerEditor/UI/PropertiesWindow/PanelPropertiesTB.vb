@@ -1,15 +1,16 @@
 ﻿Public Class PanelPropertiesTB
-    Public textbox As String
 
-    Sub New(labelText As String, initialText As String)
+    Sub New(ControlName As String, labelText As String, initialText As String)
         InitializeComponent()
 
+        Name = ControlName
+
         LabelDescription.Text = labelText
-        textbox = initialText
+        Text = initialText
         TBValue.Text = initialText
     End Sub
 
     Private Sub TBValue_TextChanged(sender As Object, e As EventArgs) Handles TBValue.TextChanged
-        textbox = TBValue.Text
+        Text = TBValue.Text
     End Sub
 End Class

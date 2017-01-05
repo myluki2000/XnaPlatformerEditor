@@ -62,6 +62,7 @@ Partial Class PropertiesWindow
         '
         'btnCancel
         '
+        Me.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnCancel.Location = New System.Drawing.Point(200, 5)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(128, 23)
@@ -71,6 +72,7 @@ Partial Class PropertiesWindow
         '
         'btnOK
         '
+        Me.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnOK.Location = New System.Drawing.Point(334, 5)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(128, 23)
