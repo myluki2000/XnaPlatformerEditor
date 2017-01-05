@@ -57,13 +57,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Screens\Editor\ClickHandler.vb" />
+    <Compile Include="UI\PropertiesWindow\PanelPropertiesCB.Designer.vb">
+      <DependentUpon>PanelPropertiesCB.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PropertiesWindow\PanelPropertiesCB.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\PropertiesWindow\PanelPropertiesTB.Designer.vb">
+      <DependentUpon>PanelPropertiesTB.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PropertiesWindow\PanelPropertiesTB.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UI\XnaControls\Button.vb" />
     <Compile Include="UI\XnaControls\ButtonList.vb" />
     <Compile Include="UI\XnaControls\NumericUpDown.vb" />
-    <Compile Include="UI\PropertiesWindow.Designer.vb">
+    <Compile Include="UI\PropertiesWindow\PropertiesWindow.Designer.vb">
       <DependentUpon>PropertiesWindow.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\PropertiesWindow.vb">
+    <Compile Include="UI\PropertiesWindow\PropertiesWindow.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\XnaControls\UIPanel.vb" />
@@ -131,7 +143,13 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\PropertiesWindow.resx">
+    <EmbeddedResource Include="UI\PropertiesWindow\PanelPropertiesCB.resx">
+      <DependentUpon>PanelPropertiesCB.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PropertiesWindow\PanelPropertiesTB.resx">
+      <DependentUpon>PanelPropertiesTB.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PropertiesWindow\PropertiesWindow.resx">
       <DependentUpon>PropertiesWindow.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
