@@ -13,4 +13,8 @@ Public Class WorldObject
     Sub New()
 
     End Sub
+
+    Public Function ShallowCopy() As WorldObject
+        Return DirectCast(Me.MemberwiseClone, WorldObject)
+    End Function
 End Class

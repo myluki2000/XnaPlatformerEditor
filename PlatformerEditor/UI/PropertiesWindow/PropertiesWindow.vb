@@ -22,18 +22,19 @@ Public Class PropertiesWindow
                 DoDisplay = False
         End Select
 
-        PopulateWindow()
+        PopulateWindow(_wObj)
 
         If DoDisplay Then
             ShowDialog()
         End If
     End Sub
 
-    Private Sub PopulateWindow()
+    Private Sub PopulateWindow(_wObj As WorldObject)
         Select Case ObjectType
             Case ObjectTypes.Spawner
-                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("ID"))
-                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("Enemy Type"))
+                Dim _spawnerObj = CType(_wObj, Spawner)
+                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("ID", _spawnerObj.ID))
+                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("Enemy Type", _spawnerObj.EnemyTypeToSpawn.Name))
         End Select
     End Sub
 End Class

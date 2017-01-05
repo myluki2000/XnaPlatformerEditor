@@ -18,7 +18,6 @@ Public Class ButtonList
 
     Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
         VerticalScroll.rect = New Rectangle(rect.Right - 20, rect.Y, 20, rect.Height)
-        Diagnostics.Debug.WriteLine(buttonShift)
         Dim _btnPos As New Vector2(rect.X, rect.Y + 10)
         For Each btn In btnList
             If buttonShift = 0 Then

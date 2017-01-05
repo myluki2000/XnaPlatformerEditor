@@ -28,16 +28,19 @@ Namespace Screens
             Dim UIElements As New List(Of UIElement)
 #End Region
 
+#Region "Declare lists to hold world objects"
             Dim WorldObjects As New List(Of WorldObject)
             Dim TechnicalObjects As New List(Of TechnicalObject)
             Dim PlacedObjects As New List(Of WorldObject)
+#End Region
+
             Dim SelectedPlaceObject As String
             Dim SelectedObject As WorldObject
 
+            Dim gameTime As GameTime
+
             Dim Dragging As Drag
             Dim DragMouseShift As Point
-
-            Dim gameTime As GameTime
             Private Enum Drag
                 worldObject
                 corner
@@ -264,22 +267,24 @@ Namespace Screens
             End Sub
 
             Private Sub btnSave_Click() Handles btnSave.Clicked
-                LevelFileHandler.SaveLevel(PlacedObjects)
+                'LevelFileHandler.SaveLevel(PlacedObjects)
+                Throw New NotImplementedException
             End Sub
 
             Private Sub btnLoad_Click() Handles btnLoad.Clicked
-                Dim loadingLevel As List(Of WorldObject)
+                'Dim loadingLevel As List(Of WorldObject)
 
-                loadingLevel = LevelFileHandler.LoadLevel
-                If loadingLevel IsNot Nothing Then
-                    PlacedObjects.Clear()
-                    PlacedObjects = loadingLevel
+                'loadingLevel = LevelFileHandler.LoadLevel
+                'If loadingLevel IsNot Nothing Then
+                '    PlacedObjects.Clear()
+                '    PlacedObjects = loadingLevel
 
-                    For Each _obj In PlacedObjects
-                        _obj.Texture = WorldObjects.Find(Function(x) x.Name = _obj.Name).Texture
-                        _obj.TexturePath = WorldObjects.Find(Function(x) x.Name = _obj.Name).TexturePath
-                    Next
-                End If
+                '    For Each _obj In PlacedObjects
+                '        _obj.Texture = WorldObjects.Find(Function(x) x.Name = _obj.Name).Texture
+                '        _obj.TexturePath = WorldObjects.Find(Function(x) x.Name = _obj.Name).TexturePath
+                '    Next
+                'End If
+                Throw New NotImplementedException
             End Sub
 
             Private Sub ObjectDrag()
@@ -392,19 +397,16 @@ Namespace Screens
                 Next
 
 
-
                 If SelectedPlaceObject IsNot Nothing AndAlso inUIEle = False Then
                     ' If Block selected
-                    Dim PlacingObject As New WorldObject
+
                     For Each _wObj In WorldObjects
                         If _wObj.Name = SelectedPlaceObject Then
-                            PlacingObject.Name = _wObj.Name
-                            PlacingObject.Texture = _wObj.Texture
+                            Dim PlacingObject As WorldObject = _wObj.ShallowCopy()
                             PlacingObject.rect.X = CInt(Math.Floor(Mouse.GetState.Position.X / 30))
                             PlacingObject.rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
                             PlacingObject.rect.Width = PlacingObject.Texture.Width
                             PlacingObject.rect.Height = PlacingObject.Texture.Height
-                            PlacingObject.zIndex = NUDzindex.Value
                             PlacedObjects.Add(PlacingObject)
                             PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
                             Exit For
@@ -413,13 +415,11 @@ Namespace Screens
 
                     For Each _wObj In TechnicalObjects
                         If _wObj.Name = SelectedPlaceObject Then
-                            PlacingObject.Name = _wObj.Name
-                            PlacingObject.Texture = _wObj.Texture
+                            Dim PlacingObject As WorldObject = _wObj.ShallowCopy()
                             PlacingObject.rect.X = CInt(Math.Floor(Mouse.GetState.Position.X / 30))
                             PlacingObject.rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
                             PlacingObject.rect.Width = 30
                             PlacingObject.rect.Height = 30
-                            PlacingObject.zIndex = NUDzindex.Value
                             PlacedObjects.Add(PlacingObject)
                             PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
                             Exit For
