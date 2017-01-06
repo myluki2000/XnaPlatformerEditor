@@ -39,6 +39,10 @@ Public Class PropertiesWindow
                 Dim _spawnerObj = CType(wObj, Spawner)
                 FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBID", "ID", _spawnerObj.ID))
                 FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBEnemyType", "Enemy Type", _spawnerObj.EnemyTypeToSpawn.Name))
+
+            Case ObjectTypes.PlayerTrigger
+                Dim _triggerObj = CType(wObj, PlayerTrigger)
+                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBTargetID", "Target ID", _triggerObj.TargetID))
         End Select
     End Sub
 
@@ -59,6 +63,9 @@ Public Class PropertiesWindow
                     MsgBox("This enemy type does not exist!")
                     Return
                 End If
+
+            Case ObjectTypes.PlayerTrigger
+
         End Select
 
         Close()
