@@ -38,18 +38,17 @@ Public Class PropertiesWindow
             Case ObjectTypes.Spawner
                 Dim _spawnerObj = CType(wObj, Spawner)
                 FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBID", "ID", _spawnerObj.ID))
-                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBEnemyType", "Enemy Type", _spawnerObj.EnemyTypeToSpawn.Name))
-
-            Case ObjectTypes.PlayerTrigger
-                Dim _triggerObj = CType(wObj, PlayerTrigger)
-                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBTargetID", "Target ID", _triggerObj.TargetID))
 
                 Dim enemyTypeNames(EnemyTypes.Count - 1) As String
                 For i As Integer = 0 To EnemyTypes.Count - 1
                     enemyTypeNames(i) = EnemyTypes(i).Name
                 Next
-
                 FlowLayoutProperties.Controls.Add(New PanelPropertiesCombo("ComboEnemyType", "Enemy Type", enemyTypeNames))
+                CType(FlowLayoutProperties.Controls.Find("ComboEnemyType", False)(0), PanelPropertiesCombo).SetSelectedItem(_spawnerObj.EnemyTypeToSpawn.Name)
+
+            Case ObjectTypes.PlayerTrigger
+                Dim _triggerObj = CType(wObj, PlayerTrigger)
+                FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBTargetID", "Target ID", _triggerObj.TargetID))
         End Select
     End Sub
 
@@ -61,20 +60,21 @@ Public Class PropertiesWindow
 
                 newObj.ID = FlowLayoutProperties.Controls.Find("TBID", False)(0).Text
 
-                Dim newEnemyToSpawn As Enemy = EnemyTypes.Find(Function(x) x.Name = FlowLayoutProperties.Controls.Find("TBEnemyType", False)(0).Text)
+                Dim ComboEnemyType As PanelPropertiesCombo = CType(FlowLayoutProperties.Controls.Find("ComboEnemyType", False)(0), PanelPropertiesCombo)
+                Dim newEnemyToSpawn As Enemy = EnemyTypes.Find(Function(x) x.Name = ComboEnemyType.SelectedItem)
                 If newEnemyToSpawn IsNot Nothing Then ' If user input enemy doesn't exist this will be Nothing
                     newObj.EnemyTypeToSpawn = newEnemyToSpawn
 
                     PlacedObjects(oldObjIndex) = newObj
                 Else
-                    MsgBox("This enemy type does not exist!")
+                    MsgBox("Please select an enemy")
                     Return
                 End If
 
             Case ObjectTypes.PlayerTrigger
                 Dim newObj As PlayerTrigger = DirectCast(wObj, PlayerTrigger)
 
-                Throw New NotImplementedException
+                newObj.TargetID = FlowLayoutProperties.Controls.Find("TBTargetID", False)(0).Text
         End Select
 
         Close()

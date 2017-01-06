@@ -15,4 +15,8 @@
     Private Sub ComboValue_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboValue.SelectedIndexChanged
         SelectedItem = ComboValue.SelectedItem.ToString
     End Sub
+
+    Public Sub SetSelectedItem(selectedItemText As String)
+        ComboValue.SelectedItem = selectedItemText
+    End Sub
 End Class
