@@ -65,6 +65,12 @@
     <Compile Include="UI\PropertiesWindow\PanelPropertiesCB.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\PropertiesWindow\PanelPropertiesCombo.Designer.vb">
+      <DependentUpon>PanelPropertiesCombo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PropertiesWindow\PanelPropertiesCombo.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UI\PropertiesWindow\PanelPropertiesTB.Designer.vb">
       <DependentUpon>PanelPropertiesTB.vb</DependentUpon>
     </Compile>
@@ -147,6 +153,9 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\PropertiesWindow\PanelPropertiesCB.resx">
       <DependentUpon>PanelPropertiesCB.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PropertiesWindow\PanelPropertiesCombo.resx">
+      <DependentUpon>PanelPropertiesCombo.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PropertiesWindow\PanelPropertiesTB.resx">
       <DependentUpon>PanelPropertiesTB.vb</DependentUpon>

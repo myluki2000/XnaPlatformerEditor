@@ -47,9 +47,9 @@ Public Class PropertiesWindow
     End Sub
 
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+        Dim oldObjIndex = PlacedObjects.IndexOf(wObj)
         Select Case ObjectType
             Case ObjectTypes.Spawner
-                Dim oldObjIndex = PlacedObjects.IndexOf(wObj)
                 Dim newObj As Spawner = DirectCast(wObj, Spawner)
 
                 newObj.ID = FlowLayoutProperties.Controls.Find("TBID", False)(0).Text
@@ -65,7 +65,9 @@ Public Class PropertiesWindow
                 End If
 
             Case ObjectTypes.PlayerTrigger
+                Dim newObj As PlayerTrigger = DirectCast(wObj, PlayerTrigger)
 
+                Throw New NotImplementedException
         End Select
 
         Close()
