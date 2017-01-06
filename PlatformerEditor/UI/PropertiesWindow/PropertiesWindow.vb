@@ -43,6 +43,13 @@ Public Class PropertiesWindow
             Case ObjectTypes.PlayerTrigger
                 Dim _triggerObj = CType(wObj, PlayerTrigger)
                 FlowLayoutProperties.Controls.Add(New PanelPropertiesTB("TBTargetID", "Target ID", _triggerObj.TargetID))
+
+                Dim enemyTypeNames(EnemyTypes.Count - 1) As String
+                For i As Integer = 0 To EnemyTypes.Count - 1
+                    enemyTypeNames(i) = EnemyTypes(i).Name
+                Next
+
+                FlowLayoutProperties.Controls.Add(New PanelPropertiesCombo("ComboEnemyType", "Enemy Type", enemyTypeNames))
         End Select
     End Sub
 
