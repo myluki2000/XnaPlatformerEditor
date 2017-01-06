@@ -17,8 +17,4 @@ Public Class PlayerTrigger
     Sub New()
         Name = "Player" & vbNewLine & "Trigger"
     End Sub
-
-    Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
-        Misc.DrawOutline(theSpriteBatch, rect, Color.Pink, 1)
-    End Sub
 End Class
