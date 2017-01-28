@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="UI\XnaControls\Button.vb" />
     <Compile Include="UI\XnaControls\ButtonList.vb" />
+    <Compile Include="UI\XnaControls\ContextMenu.vb" />
     <Compile Include="UI\XnaControls\NumericUpDown.vb" />
     <Compile Include="UI\PropertiesWindow\PropertiesWindow.Designer.vb">
       <DependentUpon>PropertiesWindow.vb</DependentUpon>
@@ -120,10 +121,16 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Cursor.png">
+    <Content Include="Content\UI\AddCorner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Delete.png">
+    <Content Include="Content\UI\Checkmark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Cursor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Delete.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Block.png">
@@ -138,7 +145,7 @@
     <Content Include="Content\Textures\Grass.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\NUDArrows.png">
+    <Content Include="Content\UI\NUDArrows.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Lamp.png">
@@ -148,6 +155,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Warning.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Reset.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />

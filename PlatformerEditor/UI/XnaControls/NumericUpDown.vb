@@ -12,7 +12,7 @@ Public Class NumericUpDown
     Sub New(_destRect As Rectangle, _label As String)
         Label = _label
         rect = _destRect
-        NUDArrows = GlobalContent.Load(Of Texture2D)("NUDArrows")
+        NUDArrows = GlobalContent.Load(Of Texture2D)("UI/NUDArrows")
 
         Visible = True
     End Sub

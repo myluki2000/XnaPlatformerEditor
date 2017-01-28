@@ -17,15 +17,27 @@ Namespace Screens
             Dim WithEvents btnListTechnical As New ButtonList With {.rect = New Rectangle(100, 50, 300, 200), .btnWidth = 80, .btnHeight = 40}
             Dim WithEvents btnSnapToGrid As New Button With {.rect = New Rectangle(215, 10, 105, 30), .text = "Snap To Grid", .ToggleButton = True}
             Dim WithEvents btnClose As New Button With {.text = "X", .rect = New Rectangle(Main.graphics.PreferredBackBufferWidth - 40, 10, 30, 30)}
-            Dim WithEvents btnCursor As New Button With {.ToggleButton = True, .Checked = True, .rect = New Rectangle(10, 10, 30, 30), .text = "", .BackgroundTexture = GlobalContent.Load(Of Texture2D)("Cursor")}
-            Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(330, 10, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("Delete"), .text = ""}
+            Dim WithEvents btnCursor As New Button With {.ToggleButton = True, .Checked = True, .rect = New Rectangle(10, 10, 30, 30), .text = "", .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Cursor")}
+            Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(330, 10, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Delete"), .text = ""}
             Dim WithEvents btnSave As New Button With {.rect = New Rectangle(370, 10, 90, 30), .text = "Save Level"}
             Dim WithEvents btnLoad As New Button With {.rect = New Rectangle(470, 10, 90, 30), .text = "Load Level"}
 
             Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 180, 10, 130, 30), "Z-Index:")
             Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
 
+            Dim WithEvents wObjContext As New ContextMenu(New List(Of String) From {"Edit Hitbox"})
+
+
+            ' Hitbox Edit Mode
+            Dim WithEvents btnHBAcceptEdit As New Button With {.rect = New Rectangle(10, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Checkmark"), .text = "", .Visible = False}
+            Dim WithEvents btnHBReset As New Button With {.rect = New Rectangle(50, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Reset"), .text = "", .Visible = False}
+            Dim WithEvents btnHBAddCorner As New Button With {.rect = New Rectangle(90, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/AddCorner"), .text = "", .Visible = False}
+
+            ' List for all UI elements
             Dim UIElements As New List(Of UIElement)
+
+            ' List for Hitbox Editor UI elements
+            Dim HBEditorElements As New List(Of UIElement)
 #End Region
 
             Dim SelectedPlaceObject As String
@@ -35,11 +47,13 @@ Namespace Screens
 
             Dim Dragging As Drag
             Dim DragMouseShift As Point
+
             Private Enum Drag
                 worldObject
                 corner
                 None
                 placing
+                EditingHitbox
             End Enum
 
             Sub New()
@@ -103,6 +117,11 @@ Namespace Screens
                 UIElements.Add(btnLoad)
                 UIElements.Add(btnTechnical)
                 UIElements.Add(btnListTechnical)
+                UIElements.Add(wObjContext)
+
+                HBEditorElements.Add(btnHBAcceptEdit)
+                HBEditorElements.Add(btnHBReset)
+                HBEditorElements.Add(btnHBAddCorner)
 #End Region
             End Sub
 
@@ -117,7 +136,7 @@ Namespace Screens
 
             Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
                 ' No Drag if mouse not pressed
-                If Mouse.GetState.LeftButton = ButtonState.Released Then
+                If Mouse.GetState.LeftButton = ButtonState.Released AndAlso Dragging <> Drag.EditingHitbox Then
                     Dragging = Drag.None
                 End If
 
@@ -147,6 +166,11 @@ Namespace Screens
 
                 ' Debug Feature: Draw Mouse Pos
                 theSpriteBatch.DrawString(FontKoot, Mouse.GetState.Position.ToString, Vector2.Zero, Color.Black)
+
+                If Dragging = Drag.EditingHitbox Then
+                    HitboxEditMode(theSpriteBatch)
+                End If
+
                 theSpriteBatch.End()
 
                 ObjectDrag()
@@ -156,6 +180,12 @@ Namespace Screens
                         Dim propWindow As New PropertiesWindow
                         propWindow.ShowProperties(SelectedObject)
                     End If
+                End If
+
+                If Mouse.GetState.RightButton = ButtonState.Released AndAlso MouseLastState.RightButton = ButtonState.Pressed AndAlso SelectedObject IsNot Nothing Then
+                    ' If mouse right clicked and placed obj selected
+                    wObjContext.SetPosition(Mouse.GetState.Position.ToVector2 + New Vector2(10, 0))
+                    wObjContext.Visible = True
                 End If
             End Sub
 
@@ -336,21 +366,23 @@ Namespace Screens
                         End If
                     Else
                         ' No selected object
-                        Dragging = Drag.placing
+                        If Dragging <> Drag.EditingHitbox Then
+                            Dragging = Drag.placing
+                        End If
 
                         If IsNothing(PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X) / 30)),
                                                                                       CInt(Math.Floor((Mouse.GetState.Position.Y) / 30))))) Then
 
-                            ' If block at mouse pos is nothing (there is no block)
-                            PlaceSelectedBlock()
-                        Else
-                            If PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X) / 30)),
-                                                                                      CInt(Math.Floor((Mouse.GetState.Position.Y) / 30)))).Name IsNot SelectedPlaceObject Then
+                                ' If block at mouse pos is nothing (there is no block)
                                 PlaceSelectedBlock()
+                            Else
+                                If PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X) / 30)),
+                                                                                      CInt(Math.Floor((Mouse.GetState.Position.Y) / 30)))).Name IsNot SelectedPlaceObject Then
+                                    PlaceSelectedBlock()
+                                End If
                             End If
                         End If
                     End If
-                End If
 
                     If Mouse.GetState.LeftButton = ButtonState.Released AndAlso Mouse.GetState.Position.X > -1 AndAlso Mouse.GetState.Position.Y > -1 AndAlso MouseLastState.LeftButton = ButtonState.Pressed Then
                     Dim inUIEle As Boolean = False
@@ -361,12 +393,12 @@ Namespace Screens
                     Next
 
                     If inUIEle = False Then
-                            If SelectedPlaceObject Is Nothing Then
-                                ' If Cursor selected
+                        If SelectedPlaceObject Is Nothing AndAlso Dragging <> Drag.EditingHitbox Then
+                            ' If Cursor selected
 
-                                Dim BlockFound As Boolean = False
-                                For i As Integer = PlacedObjects.Count - 1 To 0 Step -1
-                                    Dim _wObj As WorldObject = PlacedObjects(i)
+                            Dim BlockFound As Boolean = False
+                            For i As Integer = PlacedObjects.Count - 1 To 0 Step -1
+                                Dim _wObj As WorldObject = PlacedObjects(i)
                                 If _wObj.getScreenRect.Contains(Mouse.GetState.Position) Then
                                     SelectedObject = _wObj
                                     SelectedObjectChanged()
@@ -375,13 +407,15 @@ Namespace Screens
                                 End If
                             Next
 
-                                If BlockFound = False Then
-                                    SelectedObject = Nothing
+                            If BlockFound = False Then
+                                SelectedObject = Nothing
+                                If Dragging <> Drag.EditingHitbox Then
                                     Dragging = Drag.None
-                                    DragMouseShift = New Point(0, 0)
                                 End If
+                                DragMouseShift = New Point(0, 0)
                             End If
                         End If
+                    End If
 
                     End If
             End Sub
@@ -429,6 +463,47 @@ Namespace Screens
                         _wObj.InitHitbox()
                     Next
                 End If
+            End Sub
+
+            Private Sub wObjContext_ItemClicked(senderText As String) Handles wObjContext.ItemClicked
+                Select Case senderText
+                    Case "Edit Hitbox"
+                        Dragging = Drag.EditingHitbox
+
+                        For Each _uiEle In HBEditorElements
+                            _uiEle.Visible = True
+                        Next
+                End Select
+            End Sub
+
+            Private Sub HitboxEditMode(theSpriteBatch As SpriteBatch)
+                SelectedObject.DrawHitbox(theSpriteBatch)
+                SelectedObject.EditHitbox()
+
+                For Each _uiEle In HBEditorElements
+                    _uiEle.Draw(theSpriteBatch)
+                Next
+                theSpriteBatch.DrawString(FontKoot, "Hitbox Editor Mode", New Vector2(10, Main.graphics.PreferredBackBufferHeight - 60), Color.Black)
+
+            End Sub
+
+            Private Sub btnHBAcceptEdit_Click() Handles btnHBAcceptEdit.Clicked
+                For Each _uiEle In HBEditorElements
+                    _uiEle.Visible = False
+                    Dragging = Drag.None
+                Next
+            End Sub
+
+            Private Sub btnHBReset_Click() Handles btnHBReset.Clicked
+                SelectedObject.InitHitbox()
+            End Sub
+
+            Private Sub btnHBAddCorner_Click() Handles btnHBAddCorner.Clicked
+                Dim corners = SelectedObject.Hitbox.corners
+                Dim cornerPos As New Vector2
+                cornerPos.X = (corners(0).X - corners.Last.X) / 2 + corners.Last.X
+                cornerPos.Y = (corners(0).Y - corners.Last.Y) / 2 + corners.Last.Y
+                SelectedObject.Hitbox.corners.Add(cornerPos)
             End Sub
         End Class
     End Namespace
