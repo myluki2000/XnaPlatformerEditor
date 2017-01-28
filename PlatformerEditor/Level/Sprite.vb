@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.Xna.Framework
 Imports Microsoft.Xna.Framework.Graphics
+Imports Microsoft.Xna.Framework.Input
 
 Public Class Sprite
     Public Name As String
@@ -23,8 +24,23 @@ Public Class Sprite
         Hitbox = New Polygon(getScreenRect)
     End Sub
 
+    Dim DraggingCorner As Integer = -1
     Public Sub EditHitbox()
+        For Each _corner In Hitbox.corners
+            If New Rectangle(_corner.ToPoint - New Point(3, 3), New Point(6, 6)).Contains(Mouse.GetState.Position) AndAlso Mouse.GetState.LeftButton = ButtonState.Pressed AndAlso
+                    MouseLastState.LeftButton = ButtonState.Released Then
+                ' If mouse cursor is in the displayed corner rectangle and the left button is now pressed
+                DraggingCorner = Hitbox.corners.IndexOf(_corner)
+            ElseIf Mouse.GetState.LeftButton = ButtonState.Released Then
+                DraggingCorner = -1
+            End If
 
+            If DraggingCorner <> -1 Then
+                Hitbox.corners(DraggingCorner) = Mouse.GetState.Position.ToVector2
+                Diagnostics.Debug.WriteLine(Hitbox.corners(DraggingCorner).ToString)
+                Exit For
+            End If
+        Next
     End Sub
 
     Public Sub DrawHitbox(theSpriteBatch As SpriteBatch)

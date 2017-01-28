@@ -144,6 +144,7 @@ Namespace Screens
                 For Each UIele In UIElements
                     UIele.Draw(theSpriteBatch)
                 Next
+
                 ' Debug Feature: Draw Mouse Pos
                 theSpriteBatch.DrawString(FontKoot, Mouse.GetState.Position.ToString, Vector2.Zero, Color.Black)
                 theSpriteBatch.End()
@@ -422,11 +423,12 @@ Namespace Screens
                             Exit For
                         End If
                     Next
-                End If
 
-                For Each _wObj In PlacedObjects
-                    _wObj.InitHitbox()
-                Next
+                    ' Initialize all hitboxes if new block is placed
+                    For Each _wObj In PlacedObjects
+                        _wObj.InitHitbox()
+                    Next
+                End If
             End Sub
         End Class
     End Namespace
