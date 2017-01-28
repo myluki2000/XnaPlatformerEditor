@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Level\Enemies\DebugEnemy.vb" />
     <Compile Include="Level\Enemies\Enemy.vb" />
+    <Compile Include="Misc\RectangleF.vb" />
     <Compile Include="Screens\Editor\ClickHandler.vb" />
     <Compile Include="UI\PropertiesWindow\PanelPropertiesCB.Designer.vb">
       <DependentUpon>PanelPropertiesCB.vb</DependentUpon>
