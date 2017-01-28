@@ -32,6 +32,23 @@ Public Class Misc
         DrawRectangle(theSpriteBatch, New Rectangle(destRect.X + destRect.Width - thicknessOutline, destRect.Y, thicknessOutline, destRect.Height), colorOutline) ' Outline Right
     End Sub
 
+    Public Shared Sub DrawLine(theSpriteBatch As SpriteBatch, _start As Vector2, _end As Vector2)
+        Dim edge As Vector2 = _end - _start
+        ' calculate angle to rotate line
+        Dim angle As Single = CSng(Math.Atan2(edge.Y, edge.X))
+
+
+        ' rectangle defines shape of line and position of start of line
+        'sb will strech the texture to fill this rectangle
+        'width of line, change this to make thicker line
+        'colour of line
+        'angle of line (calulated above)
+        ' point in line about which to rotate
+        theSpriteBatch.Draw(dummyTexture, New Rectangle(CInt(_start.X), CInt(_start.Y), CInt(edge.Length()), 1), Nothing, Color.Red, angle, New Vector2(0, 0),
+        SpriteEffects.None, 0)
+
+    End Sub
+
     Public Shared Function ConvertToRbg(ByVal HexColor As String) As Color
         Dim Red As Integer
         Dim Green As Integer

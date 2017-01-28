@@ -385,7 +385,6 @@ Namespace Screens
                     End If
             End Sub
 
-
             Private Sub PlaceSelectedBlock()
                 Dim inUIEle As Boolean = False
                 For Each ele In UIElements
@@ -424,6 +423,10 @@ Namespace Screens
                         End If
                     Next
                 End If
+
+                For Each _wObj In PlacedObjects
+                    _wObj.InitHitbox()
+                Next
             End Sub
         End Class
     End Namespace

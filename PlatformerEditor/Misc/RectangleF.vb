@@ -1,4 +1,6 @@
-﻿Class RectangleF
+﻿Imports Microsoft.Xna.Framework
+
+Class RectangleF
     Public X As Single
     Public Y As Single
     Public Width As Single

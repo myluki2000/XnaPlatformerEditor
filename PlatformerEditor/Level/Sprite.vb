@@ -7,6 +7,7 @@ Public Class Sprite
     Public TexturePath As String
     Public rect As Rectangle
     Public Scale As Integer = 1
+    Public Hitbox As Polygon
 
     Sub New(_name As String, _texturePath As String)
         Texture = GlobalContent.Load(Of Texture2D)(_texturePath)
@@ -16,6 +17,18 @@ Public Class Sprite
 
     Sub New()
 
+    End Sub
+
+    Public Sub InitHitbox()
+        Hitbox = New Polygon(getScreenRect)
+    End Sub
+
+    Public Sub EditHitbox()
+
+    End Sub
+
+    Public Sub DrawHitbox(theSpriteBatch As SpriteBatch)
+        Hitbox.DrawOutline(theSpriteBatch, True)
     End Sub
 
     Public Overridable Sub Draw(theSpriteBatch As SpriteBatch)
