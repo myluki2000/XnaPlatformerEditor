@@ -48,6 +48,8 @@ Namespace Screens
             Dim Dragging As Drag
             Dim DragMouseShift As Point
 
+            Dim CollisionMapRT As New RenderTarget2D(Main.graphics.GraphicsDevice, 1000, 600)
+
             Private Enum Drag
                 worldObject
                 corner
@@ -164,6 +166,9 @@ Namespace Screens
                     UIele.Draw(theSpriteBatch)
                 Next
 
+
+
+
                 ' Debug Feature: Draw Mouse Pos
                 theSpriteBatch.DrawString(FontKoot, Mouse.GetState.Position.ToString, Vector2.Zero, Color.Black)
 
@@ -171,7 +176,14 @@ Namespace Screens
                     HitboxEditMode(theSpriteBatch)
                 End If
 
+
+                ' DEBUG FEATURE - Draw render target used for collision map when "K" is pressed
+                If Keyboard.GetState.IsKeyDown(Keys.K) Then
+                    theSpriteBatch.Draw(CollisionMapRT, New Vector2(0, 0), Color.White)
+                End If
+
                 theSpriteBatch.End()
+
 
                 ObjectDrag()
 
@@ -296,8 +308,10 @@ Namespace Screens
             End Sub
 
             Private Sub btnSave_Click() Handles btnSave.Clicked
-                'LevelFileHandler.SaveLevel(PlacedObjects)
-                Throw New NotImplementedException
+                ' Compute CollisionMap
+                InitCollisionMap()
+
+                LevelFileHandler.SaveLevel(PlacedObjects)
             End Sub
 
             Private Sub btnLoad_Click() Handles btnLoad.Clicked
@@ -342,9 +356,12 @@ Namespace Screens
                         If index > -1 Then
                             Select Case Dragging
                                 Case Drag.worldObject
+                                    Dim oldPos As Point = PlacedObjects(index).rect.Location
                                     PlacedObjects(index).rect.X = CInt(Math.Floor((Mouse.GetState.Position.X - DragMouseShift.X) / 30))
                                     PlacedObjects(index).rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - DragMouseShift.Y) / 30))
                                     SelectedObject = PlacedObjects(index)
+                                    ' Move the hitbox by the shift of the old block pos and new block pos * 30 (because the grid rect)
+                                    PlacedObjects(index).Hitbox.MovePolygon(((PlacedObjects(index).rect.Location - oldPos) * New Point(30, 30)).ToVector2)
 
                                 Case Drag.corner
                                     If SelectedObject.Texture IsNot Nothing Then ' If SelectedObject has a texture (is scalable)
@@ -440,7 +457,6 @@ Namespace Screens
                             PlacingObject.rect.Width = PlacingObject.Texture.Width
                             PlacingObject.rect.Height = PlacingObject.Texture.Height
                             PlacedObjects.Add(PlacingObject)
-                            PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
                             Exit For
                         End If
                     Next
@@ -453,15 +469,16 @@ Namespace Screens
                             PlacingObject.rect.Width = 30
                             PlacingObject.rect.Height = 30
                             PlacedObjects.Add(PlacingObject)
-                            PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
                             Exit For
                         End If
                     Next
 
-                    ' Initialize all hitboxes if new block is placed
-                    For Each _wObj In PlacedObjects
-                        _wObj.InitHitbox()
-                    Next
+                    ' Initialize hitbox of new block
+                    PlacedObjects.Last.InitHitbox()
+
+                    ' Sort placed objects by z-index for correct drawing
+                    PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
+
                 End If
             End Sub
 
@@ -476,8 +493,33 @@ Namespace Screens
                 End Select
             End Sub
 
+            Private Sub InitCollisionMap()
+                ' Draw the collision map onto a render target for later conversion
+                Dim tempSpriteBatch As New SpriteBatch(Main.graphics.GraphicsDevice)
+                Main.graphics.GraphicsDevice.SetRenderTarget(CollisionMapRT)
+                Main.graphics.GraphicsDevice.Clear(Color.White)
+
+                tempSpriteBatch.Begin()
+                For Each _wObj In PlacedObjects
+                    _wObj.DrawHitbox(tempSpriteBatch, False)
+                Next
+                tempSpriteBatch.End()
+                Main.graphics.GraphicsDevice.SetRenderTarget(Nothing)
+
+                ' Loop over the render target's pixels, if they aren't white they are a hitbox -> set Boolean at pos to true
+                CollisionMap = New Boolean(1000, 600) {}
+                Dim tempColorArray(,) As Color = Misc.TextureTo2DArray(CollisionMapRT)
+                For x As Integer = 0 To tempColorArray.GetUpperBound(0)
+                    For y As Integer = 0 To tempColorArray.GetUpperBound(1)
+                        If tempColorArray(x, y) <> Color.White Then
+                            CollisionMap(x, y) = True
+                        End If
+                    Next
+                Next
+            End Sub
+
             Private Sub HitboxEditMode(theSpriteBatch As SpriteBatch)
-                SelectedObject.DrawHitbox(theSpriteBatch)
+                SelectedObject.DrawHitbox(theSpriteBatch, True)
                 SelectedObject.EditHitbox()
 
                 For Each _uiEle In HBEditorElements

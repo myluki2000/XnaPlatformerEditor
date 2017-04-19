@@ -10,6 +10,7 @@ Module GlobalVariables
     Public TechnicalObjects As New Collections.Generic.List(Of TechnicalObject)
     Public PlacedObjects As New Collections.Generic.List(Of WorldObject)
     Public EnemyTypes As New Collections.Generic.List(Of Enemy)
+    Public CollisionMap(,) As Boolean
 #End Region
 
     Public lastKeyboardState As Input.KeyboardState

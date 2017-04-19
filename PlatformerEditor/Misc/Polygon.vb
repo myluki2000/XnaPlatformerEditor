@@ -31,4 +31,10 @@ Public Class Polygon
             Next
         End If
     End Sub
+
+    Public Sub MovePolygon(_shift As Vector2)
+        For i As Integer = 0 To corners.Count - 1
+            corners(i) += _shift
+        Next
+    End Sub
 End Class

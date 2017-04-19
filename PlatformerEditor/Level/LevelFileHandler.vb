@@ -32,15 +32,50 @@ Public Class LevelFileHandler
     End Function
 
     Public Shared Sub SaveLevel(_placedObjects As List(Of WorldObject))
+        Dim spriteObjs As New List(Of WorldObject)
+        Dim spawnerObjs As New List(Of Spawner)
+        Dim triggerObjs As New List(Of PlayerTrigger)
+
+        For Each _wObj In _placedObjects
+            Select Case _wObj.GetType
+                Case GetType(WorldObject)
+                    spriteObjs.Add(_wObj)
+
+                Case GetType(Spawner)
+                    spawnerObjs.Add(CType(_wObj, Spawner))
+
+                Case GetType(PlayerTrigger)
+                    triggerObjs.Add(CType(_wObj, PlayerTrigger))
+            End Select
+        Next
+
+
         Dim xele As New XElement("Level", New XElement("WorldObjects",
-                    From obj In _placedObjects
-                    Select New XElement("Object", New XAttribute("Name", obj.Name),
-                            New XElement("X", obj.rect.X),
-                            New XElement("Y", obj.rect.Y),
-                            New XElement("Width", obj.rect.Width),
-                            New XElement("Height", obj.rect.Height),
-                            New XElement("Scale", obj.Scale),
-                            New XElement("Z-Index", obj.zIndex))))
+                                From obj In spriteObjs
+                                Select New XElement("Object", New XAttribute("Name", obj.Name),
+                                    New XElement("X", obj.rect.X),
+                                    New XElement("Y", obj.rect.Y),
+                                    New XElement("Width", obj.rect.Width),
+                                    New XElement("Height", obj.rect.Height),
+                                    New XElement("Scale", obj.Scale),
+                                    New XElement("Z-Index", obj.zIndex))),
+                    New XElement("Spawners",
+                                 From obj In spawnerObjs
+                                 Select New XElement("Spawner",
+                                            New XElement("X", obj.rect.X),
+                                            New XElement("Y", obj.rect.Y),
+                                            New XElement("ID", obj.ID),
+                                            New XElement("EnemyTypeToSpawn", obj.EnemyTypeToSpawn.ToString))),
+                    New XElement("PlayerTriggers",
+                                 From obj In triggerObjs
+                                 Select New XElement("PlayerTrigger",
+                                            New XElement("X", obj.rect.X),
+                                            New XElement("Y", obj.rect.Y),
+                                            New XElement("ActivationType", obj.ActivationType.ToString),
+                                            New XElement("ActivationDelay", obj.ActivationDelay),
+                                            New XElement("TargetID", obj.TargetID))))
+
+
 
         Dim dlgSave As New Windows.Forms.SaveFileDialog
         dlgSave.Filter = "Platformer level | *.plvl"
