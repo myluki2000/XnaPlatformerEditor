@@ -67,19 +67,4 @@ Public Class Misc
             Return 0
         End If
     End Function
-
-    Public Shared Function TextureTo2DArray(texture As Texture2D) As Color(,)
-        Dim colors1D As Color() = New Color(texture.Width * texture.Height - 1) {}
-        texture.GetData(colors1D)
-
-
-        Dim colors2D As Color(,) = New Color(texture.Width - 1, texture.Height - 1) {}
-        For x As Integer = 0 To texture.Width - 1
-            For y As Integer = 0 To texture.Height - 1
-                colors2D(x, y) = colors1D(x + y * texture.Width)
-            Next
-        Next
-
-        Return colors2D
-    End Function
 End Class

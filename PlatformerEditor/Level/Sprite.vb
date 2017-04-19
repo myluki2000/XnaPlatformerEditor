@@ -43,8 +43,8 @@ Public Class Sprite
         Next
     End Sub
 
-    Public Sub DrawHitbox(theSpriteBatch As SpriteBatch, drawCorners As Boolean)
-        Hitbox.DrawOutline(theSpriteBatch, drawCorners)
+    Public Sub DrawHitbox(theSpriteBatch As SpriteBatch)
+        Hitbox.DrawOutline(theSpriteBatch, True)
     End Sub
 
     Public Overridable Sub Draw(theSpriteBatch As SpriteBatch)

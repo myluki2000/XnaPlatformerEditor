@@ -8,7 +8,6 @@ Public Class PropertiesWindow
     Private Enum ObjectTypes
         Spawner
         PlayerTrigger
-        Sprite
     End Enum
 
     Public Sub ShowProperties(_wObj As WorldObject)
@@ -24,7 +23,6 @@ Public Class PropertiesWindow
                 ObjectType = ObjectTypes.PlayerTrigger
 
             Case Else
-                ObjectType = ObjectTypes.Sprite
                 DoDisplay = False
         End Select
 
