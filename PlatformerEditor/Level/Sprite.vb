@@ -26,6 +26,8 @@ Public Class Sprite
 
     Dim DraggingCorner As Integer = -1
     Public Sub EditHitbox()
+        Throw New NotImplementedException("Change to new martix corrected ScreenRect function")
+
         For Each _corner In Hitbox.corners
             If New Rectangle(_corner.ToPoint - New Point(3, 3), New Point(6, 6)).Contains(Mouse.GetState.Position) AndAlso Mouse.GetState.LeftButton = ButtonState.Pressed AndAlso
                     MouseLastState.LeftButton = ButtonState.Released Then
@@ -60,8 +62,13 @@ Public Class Sprite
         Texture = GlobalContent.Load(Of Texture2D)(TexturePath)
     End Sub
 
-    Public Function getScreenRect() As Rectangle
+    Public Function getScreenRect() As Rectangle ' Old Screen rect function (to be renamed to getTrueRect)
         Return New Rectangle(rect.X * 30, rect.Y * 30, CInt(rect.Width * Scale), CInt(rect.Height * Scale))
+
+    End Function
+
+    Public Function getScreen1Rect() As Rectangle ' Matrix corrected screen rect function
+        Return New Rectangle(CInt(rect.X * 30 + WorldMatrix.Translation.X), CInt(rect.Y * 30 + WorldMatrix.Translation.Y), CInt(rect.Width * Scale), CInt(rect.Height * Scale))
 
     End Function
 End Class

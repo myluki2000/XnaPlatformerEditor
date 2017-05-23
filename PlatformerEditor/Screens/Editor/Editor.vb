@@ -40,6 +40,8 @@ Namespace Screens
             Dim HBEditorElements As New List(Of UIElement)
 #End Region
 
+
+
             Dim SelectedPlaceObject As String
             Dim SelectedObject As WorldObject
 
@@ -123,6 +125,8 @@ Namespace Screens
                 HBEditorElements.Add(btnHBReset)
                 HBEditorElements.Add(btnHBAddCorner)
 #End Region
+
+                Matrix.CreateTranslation(0, 0, 0, WorldMatrix)
             End Sub
 
             Public Overrides Sub Update(_gameTime As GameTime)
@@ -140,8 +144,7 @@ Namespace Screens
                     Dragging = Drag.None
                 End If
 
-
-                theSpriteBatch.Begin()
+                theSpriteBatch.Begin(, , , , , , WorldMatrix)
 
                 ' Draw level objects
                 For Each _wObj In PlacedObjects
@@ -159,21 +162,32 @@ Namespace Screens
                     Misc.DrawRectangle(theSpriteBatch, New Rectangle(rect.Right - 6, rect.Bottom - 6, 6, 6), Color.Blue)
                 End If
 
-                ' Draw UI
-                For Each UIele In UIElements
-                    UIele.Draw(theSpriteBatch)
-                Next
-
-                ' Debug Feature: Draw Mouse Pos
-                theSpriteBatch.DrawString(FontKoot, Mouse.GetState.Position.ToString, Vector2.Zero, Color.Black)
-
                 If Dragging = Drag.EditingHitbox Then
                     HitboxEditMode(theSpriteBatch)
                 End If
 
                 theSpriteBatch.End()
 
+
+                theSpriteBatch.Begin()
+                ' Draw UI
+                For Each UIele In UIElements
+                    UIele.Draw(theSpriteBatch)
+                Next
+
+                If Dragging = Drag.EditingHitbox Then
+                    For Each _uiEle In HBEditorElements
+                        _uiEle.Draw(theSpriteBatch)
+                    Next
+                    theSpriteBatch.DrawString(FontKoot, "Hitbox Editor Mode", New Vector2(10, Main.graphics.PreferredBackBufferHeight - 60), Color.Black)
+                End If
+                theSpriteBatch.End()
+
+
+
+
                 ObjectDrag()
+                TransformMatrixDrag()
 
                 If ClickHandler.CheckForDoubleClick(gameTime) Then
                     If SelectedObject IsNot Nothing Then
@@ -186,6 +200,18 @@ Namespace Screens
                     ' If mouse right clicked and placed obj selected
                     wObjContext.SetPosition(Mouse.GetState.Position.ToVector2 + New Vector2(10, 0))
                     wObjContext.Visible = True
+                End If
+            End Sub
+
+            Dim StartPoint As Point
+            Dim MatrixStart As Vector3
+            Private Sub TransformMatrixDrag()
+                If Mouse.GetState.MiddleButton = ButtonState.Pressed AndAlso MouseLastState.MiddleButton = ButtonState.Released Then
+                    StartPoint = Mouse.GetState.Position
+                    MatrixStart = WorldMatrix.Translation
+                ElseIf Mouse.GetState.MiddleButton = ButtonState.Pressed Then
+                    Dim diff As Vector2 = (Mouse.GetState.Position - StartPoint).ToVector2
+                    WorldMatrix.Translation = MatrixStart + New Vector3(diff.X, diff.Y, 0)
                 End If
             End Sub
 
@@ -399,7 +425,7 @@ Namespace Screens
                             Dim BlockFound As Boolean = False
                             For i As Integer = PlacedObjects.Count - 1 To 0 Step -1
                                 Dim _wObj As WorldObject = PlacedObjects(i)
-                                If _wObj.getScreenRect.Contains(Mouse.GetState.Position) Then
+                                If _wObj.getScreen1Rect.Contains(Mouse.GetState.Position) Then
                                     SelectedObject = _wObj
                                     SelectedObjectChanged()
                                     BlockFound = True
@@ -435,8 +461,8 @@ Namespace Screens
                     For Each _wObj In WorldObjects
                         If _wObj.Name = SelectedPlaceObject Then
                             Dim PlacingObject As WorldObject = _wObj.ShallowCopy()
-                            PlacingObject.rect.X = CInt(Math.Floor(Mouse.GetState.Position.X / 30))
-                            PlacingObject.rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
+                            PlacingObject.rect.X = CInt(Math.Floor((Mouse.GetState.Position.X - WorldMatrix.Translation.X) / 30))
+                            PlacingObject.rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - WorldMatrix.Translation.Y) / 30))
                             PlacingObject.rect.Width = PlacingObject.Texture.Width
                             PlacingObject.rect.Height = PlacingObject.Texture.Height
                             PlacedObjects.Add(PlacingObject)
@@ -479,12 +505,6 @@ Namespace Screens
             Private Sub HitboxEditMode(theSpriteBatch As SpriteBatch)
                 SelectedObject.DrawHitbox(theSpriteBatch)
                 SelectedObject.EditHitbox()
-
-                For Each _uiEle In HBEditorElements
-                    _uiEle.Draw(theSpriteBatch)
-                Next
-                theSpriteBatch.DrawString(FontKoot, "Hitbox Editor Mode", New Vector2(10, Main.graphics.PreferredBackBufferHeight - 60), Color.Black)
-
             End Sub
 
             Private Sub btnHBAcceptEdit_Click() Handles btnHBAcceptEdit.Clicked

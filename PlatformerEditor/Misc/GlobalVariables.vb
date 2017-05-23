@@ -5,6 +5,8 @@ Module GlobalVariables
     Public FontKoot As Graphics.SpriteFont
     Public GlobalContent As Content.ContentManager
 
+    Public WorldMatrix As New Matrix()
+
 #Region "Declare lists to hold world objects"
     Public WorldObjects As New Collections.Generic.List(Of WorldObject)
     Public TechnicalObjects As New Collections.Generic.List(Of TechnicalObject)
