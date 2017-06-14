@@ -32,15 +32,33 @@ Public Class LevelFileHandler
     End Function
 
     Public Shared Sub SaveLevel(_placedObjects As List(Of WorldObject))
+        ' Saves all technical objects to a xele
+        Dim xeleTechObjs As New XElement("TechnicalObjects")
+        For Each _wObj In PlacedObjects
+            Select Case _wObj.GetType
+                Case GetType(Spawner)
+                    Dim obj As Spawner = CType(_wObj, Spawner)
+                    xeleTechObjs.Add(New XElement("Object", New XAttribute("Name", "Spawner"),
+                                                New XElement("X", obj.rect.X),
+                                                New XElement("Y", obj.rect.Y),
+                                                New XElement("ID", obj.ID)))
+
+                Case GetType(PlayerTrigger)
+
+            End Select
+        Next
+
+        ' Saves the normal world objects to a xele and paste the technical objects xele
         Dim xele As New XElement("Level", New XElement("WorldObjects",
-                    From obj In _placedObjects
+                    From obj In _placedObjects.FindAll(Function(x) x.GetType = GetType(WorldObject))
                     Select New XElement("Object", New XAttribute("Name", obj.Name),
                             New XElement("X", obj.rect.X),
                             New XElement("Y", obj.rect.Y),
                             New XElement("Width", obj.rect.Width),
                             New XElement("Height", obj.rect.Height),
                             New XElement("Scale", obj.Scale),
-                            New XElement("Z-Index", obj.zIndex))))
+                            New XElement("Z-Index", obj.zIndex))), xeleTechObjs)
+
 
         Dim dlgSave As New Windows.Forms.SaveFileDialog
         dlgSave.Filter = "Platformer level | *.plvl"
@@ -49,5 +67,6 @@ Public Class LevelFileHandler
             xele.Save(dlgSave.FileName)
             MsgBox("Save complete")
         End If
+    End Sub
     End Sub
 End Class
