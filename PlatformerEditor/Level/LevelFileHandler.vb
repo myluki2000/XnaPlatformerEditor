@@ -68,5 +68,5 @@ Public Class LevelFileHandler
             MsgBox("Save complete")
         End If
     End Sub
-    End Sub
+
 End Class

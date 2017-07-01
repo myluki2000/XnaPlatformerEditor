@@ -41,7 +41,7 @@ Public Class Main
     End Sub
 
     Protected Overrides Sub Update(gameTime As GameTime)
-        If GamePad.GetState(PlayerIndex.One).Buttons.Back = ButtonState.Pressed OrElse Keyboard.GetState().IsKeyDown(Keys.Escape) Then
+        If Keyboard.GetState().IsKeyDown(Keys.Escape) Then
             [Exit]()
         End If
 

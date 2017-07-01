@@ -7,6 +7,8 @@ Public Class NumericUpDown
     Public Value As Integer = 0
     Public NUDArrows As Texture2D
     Public Label As String = ""
+    Public MinValue As Integer = -50
+    Public MaxValue As Integer = 50
     Event ValueChanged()
 
     Sub New(_destRect As Rectangle, _label As String)
@@ -26,13 +28,17 @@ Public Class NumericUpDown
 
             If Mouse.GetState.LeftButton = ButtonState.Released AndAlso MouseLastState.LeftButton = ButtonState.Pressed Then
                 If New Rectangle(rect.Right - 15, rect.Top, 15, 15).Contains(Mouse.GetState.Position) Then
-                    Value += 1
-                    RaiseEvent ValueChanged()
+                    If Value < MaxValue Then
+                        Value += 1
+                        RaiseEvent ValueChanged()
+                    End If
                 ElseIf New Rectangle(rect.Right - 15, rect.Top + 15, 15, 15).Contains(Mouse.GetState.Position) Then
-                    Value -= 1
-                    RaiseEvent ValueChanged()
+                    If Value > MinValue Then
+                        Value -= 1
+                        RaiseEvent ValueChanged()
+                    End If
                 End If
-            End If
+                End If
         End If
     End Sub
 End Class

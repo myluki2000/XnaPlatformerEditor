@@ -59,7 +59,7 @@ Namespace Screens
             End Enum
 
             Sub New()
-#Region "World Objects Init"
+
                 ''Save WorldObjects to XML
                 'WorldObjects.Add(New WorldObject("Brick", "Textures/Brick"))
                 'WorldObjects.Add(New WorldObject("Grass", "Textures/Grass"))
@@ -81,24 +81,24 @@ Namespace Screens
                     _wObj.getTexture()
                     btnListObjects.btnList.Add(New Button With {.ToggleButton = True, .BackgroundTexture = _wObj.Texture, .Name = _wObj.Name, .text = ""})
                 Next
-#End Region
 
 
-#Region "Technical Objects Init"
+
+
                 TechnicalObjects.Add(New Spawner)
                 TechnicalObjects.Add(New PlayerTrigger)
 
                 For Each _tObj As TechnicalObject In TechnicalObjects
                     btnListTechnical.btnList.Add(New Button With {.Name = _tObj.Name, .text = _tObj.Name, .ToggleButton = True})
                 Next
-#End Region
 
 
-#Region "Enemy Init"
+
+
                 EnemyTypes.Add(New DebugEnemy)
-#End Region
 
-#Region "UI Init"
+
+
                 For Each _btn In btnListObjects.btnList
                     AddHandler _btn.Clicked, AddressOf btnListObjectsButton_Click
                 Next
@@ -124,7 +124,6 @@ Namespace Screens
                 HBEditorElements.Add(btnHBAcceptEdit)
                 HBEditorElements.Add(btnHBReset)
                 HBEditorElements.Add(btnHBAddCorner)
-#End Region
 
                 Matrix.CreateTranslation(0, 0, 0, WorldMatrix)
             End Sub
@@ -322,8 +321,8 @@ Namespace Screens
             End Sub
 
             Private Sub btnSave_Click() Handles btnSave.Clicked
-                'LevelFileHandler.SaveLevel(PlacedObjects)
-                Throw New NotImplementedException
+                LevelFileHandler.SaveLevel(PlacedObjects)
+                'Throw New NotImplementedException
             End Sub
 
             Private Sub btnLoad_Click() Handles btnLoad.Clicked
@@ -465,6 +464,7 @@ Namespace Screens
                             PlacingObject.rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - WorldMatrix.Translation.Y) / 30))
                             PlacingObject.rect.Width = PlacingObject.Texture.Width
                             PlacingObject.rect.Height = PlacingObject.Texture.Height
+                            PlacingObject.zIndex = NUDzindex.Value
                             PlacedObjects.Add(PlacingObject)
                             PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
                             Exit For
