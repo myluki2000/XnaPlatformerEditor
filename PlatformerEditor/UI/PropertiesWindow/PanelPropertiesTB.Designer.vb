@@ -30,9 +30,9 @@ Partial Class PanelPropertiesTB
         '
         Me.TBValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TBValue.Location = New System.Drawing.Point(60, 3)
+        Me.TBValue.Location = New System.Drawing.Point(108, 3)
         Me.TBValue.Name = "TBValue"
-        Me.TBValue.Size = New System.Drawing.Size(408, 21)
+        Me.TBValue.Size = New System.Drawing.Size(360, 21)
         Me.TBValue.TabIndex = 3
         '
         'LabelDescription
@@ -40,7 +40,7 @@ Partial Class PanelPropertiesTB
         Me.LabelDescription.Dock = System.Windows.Forms.DockStyle.Left
         Me.LabelDescription.Location = New System.Drawing.Point(0, 0)
         Me.LabelDescription.Name = "LabelDescription"
-        Me.LabelDescription.Size = New System.Drawing.Size(60, 27)
+        Me.LabelDescription.Size = New System.Drawing.Size(102, 27)
         Me.LabelDescription.TabIndex = 2
         Me.LabelDescription.Text = "Label1"
         Me.LabelDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter

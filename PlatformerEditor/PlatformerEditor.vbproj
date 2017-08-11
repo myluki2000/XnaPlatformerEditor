@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -12,7 +12,7 @@
     <AssemblyName>PlatformerEditor</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <StartupObject>PlatformerEditor.Program</StartupObject>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -58,8 +58,11 @@
   <ItemGroup>
     <Compile Include="Level\Enemies\DebugEnemy.vb" />
     <Compile Include="Level\Enemies\Enemy.vb" />
+    <Compile Include="Level\TechnicalObjects\ParticleSpawner.vb" />
     <Compile Include="Misc\Polygon.vb" />
     <Compile Include="Misc\RectangleF.vb" />
+    <Compile Include="ParticleSystem\Particle.vb" />
+    <Compile Include="ParticleSystem\ParticleSystem.vb" />
     <Compile Include="Screens\Editor\ClickHandler.vb" />
     <Compile Include="UI\PropertiesWindow\PanelPropertiesCB.Designer.vb">
       <DependentUpon>PanelPropertiesCB.vb</DependentUpon>
@@ -109,9 +112,9 @@
     <Compile Include="Screens\ScreenHandler.vb" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+      <HintPath>..\..\XnaPlatformerEngine\XnaPlatformerEngine\bin\Windows\Debug\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data.Linq" />
@@ -121,6 +124,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Textures\ParticleCrosshair.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\UI\AddCorner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

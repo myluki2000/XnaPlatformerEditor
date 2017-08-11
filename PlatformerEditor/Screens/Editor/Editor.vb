@@ -87,6 +87,7 @@ Namespace Screens
 
                 TechnicalObjects.Add(New Spawner)
                 TechnicalObjects.Add(New PlayerTrigger)
+                TechnicalObjects.Add(New ParticleSpawner)
 
                 For Each _tObj As TechnicalObject In TechnicalObjects
                     btnListTechnical.btnList.Add(New Button With {.Name = _tObj.Name, .text = _tObj.Name, .ToggleButton = True})

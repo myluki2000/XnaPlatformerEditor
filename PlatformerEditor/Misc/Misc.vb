@@ -67,4 +67,9 @@ Public Class Misc
             Return 0
         End If
     End Function
+
+    Public Shared Function GetRandomArrayIndex(_arr() As Object) As Integer
+        Dim rand As New Random
+        Return rand.Next(0, _arr.GetLength(0))
+    End Function
 End Class
