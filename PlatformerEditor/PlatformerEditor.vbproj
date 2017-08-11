@@ -59,6 +59,7 @@
     <Compile Include="Level\Enemies\DebugEnemy.vb" />
     <Compile Include="Level\Enemies\Enemy.vb" />
     <Compile Include="Level\TechnicalObjects\ParticleSpawner.vb" />
+    <Compile Include="Level\TechnicalObjects\PlayerSpawn.vb" />
     <Compile Include="Misc\Polygon.vb" />
     <Compile Include="Misc\RectangleF.vb" />
     <Compile Include="ParticleSystem\Particle.vb" />

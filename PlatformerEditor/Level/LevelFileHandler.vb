@@ -45,6 +45,12 @@ Public Class LevelFileHandler
 
                 Case GetType(PlayerTrigger)
 
+                Case GetType(PlayerSpawn)
+                    Dim obj As PlayerSpawn = CType(_wObj, PlayerSpawn)
+                    xeleTechObjs.Add(New XElement("Object", New XAttribute("Name", "PlayerSpawn"),
+                                                  New XElement("X", obj.rect.X),
+                                                  New XElement("Y", obj.rect.Y)))
+
             End Select
         Next
 
