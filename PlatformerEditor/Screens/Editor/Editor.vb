@@ -480,6 +480,13 @@ Namespace Screens
                             PlacingObject.rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
                             PlacingObject.rect.Width = 30
                             PlacingObject.rect.Height = 30
+                            PlacingObject.zIndex = NUDzindex.Value
+
+                            If Not CType(PlacingObject, TechnicalObject).ValuesAreSafe() Then
+                                Return
+                            End If
+
+
                             PlacedObjects.Add(PlacingObject)
                             PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
                             Exit For
