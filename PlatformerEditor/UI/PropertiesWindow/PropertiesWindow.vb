@@ -9,6 +9,7 @@ Public Class PropertiesWindow
         Spawner
         PlayerTrigger
         ParticleSpawner
+        InfoBoxDisplay
     End Enum
 
     Public Sub ShowProperties(_wObj As WorldObject)
@@ -25,6 +26,9 @@ Public Class PropertiesWindow
 
             Case "Particle" & vbNewLine & "Spawner"
                 ObjectType = ObjectTypes.ParticleSpawner
+
+            Case "InfoBoxDisplay"
+                ObjectType = ObjectTypes.InfoBoxDisplay
 
             Case Else
                 DoDisplay = False
@@ -64,6 +68,10 @@ Public Class PropertiesWindow
                 AddControl(New PanelPropertiesTB("TBPVelHighestY", "Particle Velocity Highest Y", _spawnerObj.ps.ParticleVelocityHighest.Y.ToString))
                 AddControl(New PanelPropertiesTB("TBPLifetime", "Particle Life Time", _spawnerObj.ps.ParticleLifetime.ToString))
                 AddControl(New PanelPropertiesTB("TBPFadetime", "Particle Fade Time", _spawnerObj.ps.ParticleFadeTime.ToString))
+
+            Case ObjectTypes.InfoBoxDisplay
+                Dim _displayObj = CType(wObj, InfoBoxDisplay)
+                AddControl(New PanelPropertiesTB("TBText", "Info Box Text", _displayObj.Text))
         End Select
     End Sub
 
@@ -117,6 +125,10 @@ Public Class PropertiesWindow
                 If newObj.InnerPosition.Y > 30 Then
                     newObj.InnerPosition.Y = 30
                 End If
+
+            Case ObjectTypes.InfoBoxDisplay
+                Dim newObj As InfoBoxDisplay = DirectCast(wObj, InfoBoxDisplay)
+                newObj.Text = FindControl("TBText").Text
         End Select
 
         Close()

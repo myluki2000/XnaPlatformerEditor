@@ -51,6 +51,12 @@ Public Class LevelFileHandler
                                                   New XElement("X", obj.rect.X),
                                                   New XElement("Y", obj.rect.Y)))
 
+                Case GetType(InfoBoxDisplay)
+                    Dim obj As InfoBoxDisplay = CType(_wObj, InfoBoxDisplay)
+                    xeleTechObjs.Add(New XElement("Object", New XAttribute("Name", "InfoBoxDisplay"),
+                                                  New XElement("X", obj.rect.X),
+                                                  New XElement("Y", obj.rect.Y),
+                                                  New XElement("Text", obj.Text)))
             End Select
         Next
 
