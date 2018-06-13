@@ -11,7 +11,7 @@
     <RootNamespace>PlatformerEditor</RootNamespace>
     <AssemblyName>PlatformerEditor</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>PlatformerEditor.Program</StartupObject>
+    <StartupObject>PlatformerEditor.MainWindow</StartupObject>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -56,62 +56,112 @@
     <Import Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Level\Enemies\DebugEnemy.vb" />
-    <Compile Include="Level\Enemies\Enemy.vb" />
-    <Compile Include="Level\TechnicalObjects\InfoBoxDisplay.vb" />
-    <Compile Include="Level\TechnicalObjects\ParticleSpawner.vb" />
-    <Compile Include="Level\TechnicalObjects\PlayerSpawn.vb" />
-    <Compile Include="Misc\Polygon.vb" />
-    <Compile Include="Misc\RectangleF.vb" />
-    <Compile Include="ParticleSystem\Particle.vb" />
-    <Compile Include="ParticleSystem\ParticleSystem.vb" />
-    <Compile Include="Screens\Editor\ClickHandler.vb" />
-    <Compile Include="UI\PropertiesWindow\PanelPropertiesCB.Designer.vb">
-      <DependentUpon>PanelPropertiesCB.vb</DependentUpon>
+    <Compile Include="src\Animations\Animation.vb" />
+    <Compile Include="src\Level\Characters\Character.vb" />
+    <Compile Include="src\Level\Characters\Weapons\AR.vb" />
+    <Compile Include="src\Level\Characters\Weapons\GrenadeLauncher.vb" />
+    <Compile Include="src\Level\Characters\Weapons\Pistol.vb" />
+    <Compile Include="src\Level\Characters\Weapons\Projectiles\Projectile.vb" />
+    <Compile Include="src\Level\Characters\Weapons\Weapon.vb" />
+    <Compile Include="src\Dialogue\Dialogue.vb" />
+    <Compile Include="src\Dialogue\DialogueSegment.vb" />
+    <Compile Include="src\Level\Characters\Enemy.vb" />
+    <Compile Include="src\Level\Characters\Friendly.vb" />
+    <Compile Include="src\Level\Level.vb" />
+    <Compile Include="src\Level\TechnicalObjects\InfoBoxDisplay.vb" />
+    <Compile Include="src\Level\TechnicalObjects\LoadingZone.vb" />
+    <Compile Include="src\Level\TechnicalObjects\ParticleSpawner.vb" />
+    <Compile Include="src\Level\TechnicalObjects\PlayerSpawn.vb" />
+    <Compile Include="src\LevelEditor\Misc\Polygon.vb" />
+    <Compile Include="src\LevelEditor\Misc\RectangleF.vb" />
+    <Compile Include="src\LevelEditor\ParticleSystem\Particle.vb" />
+    <Compile Include="src\LevelEditor\ParticleSystem\ParticleSystem.vb" />
+    <Compile Include="src\LevelEditor\Screens\Editor\ClickHandler.vb" />
+    <Compile Include="src\UI\CharacterPresetWindow\AnimationWindow.Designer.vb">
+      <DependentUpon>AnimationWindow.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\PropertiesWindow\PanelPropertiesCB.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\PropertiesWindow\PanelPropertiesCombo.Designer.vb">
-      <DependentUpon>PanelPropertiesCombo.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UI\PropertiesWindow\PanelPropertiesCombo.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\PropertiesWindow\PanelPropertiesTB.Designer.vb">
-      <DependentUpon>PanelPropertiesTB.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UI\PropertiesWindow\PanelPropertiesTB.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\XnaControls\Button.vb" />
-    <Compile Include="UI\XnaControls\ButtonList.vb" />
-    <Compile Include="UI\XnaControls\ContextMenu.vb" />
-    <Compile Include="UI\XnaControls\NumericUpDown.vb" />
-    <Compile Include="UI\PropertiesWindow\PropertiesWindow.Designer.vb">
-      <DependentUpon>PropertiesWindow.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UI\PropertiesWindow\PropertiesWindow.vb">
+    <Compile Include="src\UI\CharacterPresetWindow\AnimationWindow.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\XnaControls\UIPanel.vb" />
-    <Compile Include="UI\XnaControls\UIElement.vb" />
-    <Compile Include="UI\XnaControls\VerticalScroll.vb" />
-    <Compile Include="Level\LevelFileHandler.vb" />
-    <Compile Include="Level\TechnicalObjects\PlayerTrigger.vb" />
-    <Compile Include="Level\TechnicalObjects\Spawner.vb" />
-    <Compile Include="Level\TechnicalObjects\TechnicalObject.vb" />
-    <Compile Include="Main.vb" />
-    <Compile Include="Misc\GlobalVariables.vb" />
-    <Compile Include="Misc\Misc.vb" />
-    <Compile Include="Program.vb" />
+    <Compile Include="src\UI\CharacterPresetWindow\CharacterPresetWindow.Designer.vb">
+      <DependentUpon>CharacterPresetWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\UI\CharacterPresetWindow\CharacterPresetWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\UI\DialoguePropertiesWindow\DialoguePropertiesForm.Designer.vb">
+      <DependentUpon>DialoguePropertiesForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\UI\DialoguePropertiesWindow\DialoguePropertiesForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\UI\DialoguePropertiesWindow\EditSegmentForm.Designer.vb">
+      <DependentUpon>EditSegmentForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\UI\DialoguePropertiesWindow\EditSegmentForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\UI\MainWindow\MainWindow.Designer.vb">
+      <DependentUpon>MainWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\UI\MainWindow\MainWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\PropertiesWindow\PanelPropertiesCB.Designer.vb">
+      <DependentUpon>PanelPropertiesCB.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\PropertiesWindow\PanelPropertiesCB.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\PropertiesWindow\PanelPropertiesCombo.Designer.vb">
+      <DependentUpon>PanelPropertiesCombo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\PropertiesWindow\PanelPropertiesCombo.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\PropertiesWindow\PanelPropertiesTB.Designer.vb">
+      <DependentUpon>PanelPropertiesTB.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\PropertiesWindow\PanelPropertiesTB.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="src\UI\StartWindow\StartWindow.Designer.vb">
+      <DependentUpon>StartWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\UI\StartWindow\StartWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\XnaControls\Button.vb" />
+    <Compile Include="src\LevelEditor\UI\XnaControls\ButtonList.vb" />
+    <Compile Include="src\LevelEditor\UI\XnaControls\ContextMenu.vb" />
+    <Compile Include="src\LevelEditor\UI\XnaControls\NumericUpDown.vb" />
+    <Compile Include="src\LevelEditor\UI\PropertiesWindow\PropertiesWindow.Designer.vb">
+      <DependentUpon>PropertiesWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\PropertiesWindow\PropertiesWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\XnaControls\UIPanel.vb" />
+    <Compile Include="src\LevelEditor\UI\XnaControls\UIElement.vb" />
+    <Compile Include="src\LevelEditor\UI\XnaControls\VerticalScroll.vb" />
+    <Compile Include="src\FileHandler.vb" />
+    <Compile Include="src\Level\TechnicalObjects\PlayerTrigger.vb" />
+    <Compile Include="src\Level\TechnicalObjects\Spawner.vb" />
+    <Compile Include="src\Level\TechnicalObjects\TechnicalObject.vb" />
+    <Compile Include="src\LevelEditor\Main.vb" />
+    <Compile Include="src\LevelEditor\Misc\GlobalVariables.vb" />
+    <Compile Include="src\LevelEditor\Misc\Misc.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
-    <Compile Include="Screens\Editor\Editor.vb" />
-    <Compile Include="Level\Sprite.vb" />
-    <Compile Include="Level\WorldObject.vb" />
-    <Compile Include="Screens\Screen.vb" />
-    <Compile Include="Screens\MainMenu\MainMenu.vb" />
-    <Compile Include="Screens\ScreenHandler.vb" />
+    <Compile Include="src\LevelEditor\Screens\Editor\Editor.vb" />
+    <Compile Include="src\Level\Sprite.vb" />
+    <Compile Include="src\Level\WorldObject.vb" />
+    <Compile Include="src\LevelEditor\Screens\Screen.vb" />
+    <Compile Include="src\LevelEditor\UI\TexturesWindow\TexturesWindow.Designer.vb">
+      <DependentUpon>TexturesWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\TexturesWindow\TexturesWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
@@ -171,17 +221,38 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\PropertiesWindow\PanelPropertiesCB.resx">
+    <EmbeddedResource Include="src\UI\CharacterPresetWindow\AnimationWindow.resx">
+      <DependentUpon>AnimationWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\UI\CharacterPresetWindow\CharacterPresetWindow.resx">
+      <DependentUpon>CharacterPresetWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\UI\DialoguePropertiesWindow\DialoguePropertiesForm.resx">
+      <DependentUpon>DialoguePropertiesForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\UI\DialoguePropertiesWindow\EditSegmentForm.resx">
+      <DependentUpon>EditSegmentForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\UI\MainWindow\MainWindow.resx">
+      <DependentUpon>MainWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\LevelEditor\UI\PropertiesWindow\PanelPropertiesCB.resx">
       <DependentUpon>PanelPropertiesCB.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\PropertiesWindow\PanelPropertiesCombo.resx">
+    <EmbeddedResource Include="src\LevelEditor\UI\PropertiesWindow\PanelPropertiesCombo.resx">
       <DependentUpon>PanelPropertiesCombo.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\PropertiesWindow\PanelPropertiesTB.resx">
+    <EmbeddedResource Include="src\LevelEditor\UI\PropertiesWindow\PanelPropertiesTB.resx">
       <DependentUpon>PanelPropertiesTB.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\PropertiesWindow\PropertiesWindow.resx">
+    <EmbeddedResource Include="src\LevelEditor\UI\PropertiesWindow\PropertiesWindow.resx">
       <DependentUpon>PropertiesWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\UI\StartWindow\StartWindow.resx">
+      <DependentUpon>StartWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\LevelEditor\UI\TexturesWindow\TexturesWindow.resx">
+      <DependentUpon>TexturesWindow.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -190,5 +261,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
