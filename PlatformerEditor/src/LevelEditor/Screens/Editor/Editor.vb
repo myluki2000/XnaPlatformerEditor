@@ -150,10 +150,19 @@ Namespace LevelEditor
 
 
                     theSpriteBatch.Begin()
-                    ' Draw UI
-                    For Each UIele In UIElements
-                        UIele.Draw(theSpriteBatch)
+                    Dim inUIEle As Boolean = False
+                    For Each ele In UIElements
+                        If ele.rect.Contains(Mouse.GetState.Position) AndAlso ele.Visible Then
+                            inUIEle = True
+                        End If
                     Next
+                    ' Draw preview of selected block at mouse cursor
+                    If SelectedPlaceObject IsNot Nothing AndAlso Not inUIEle Then
+                        Dim selectedObj As WorldObject = WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject)
+                        theSpriteBatch.Draw(selectedObj.Texture,
+                                            New Rectangle(CInt(Math.Floor(Mouse.GetState.X / 30) * 30), CInt(Math.Floor(Mouse.GetState.Y / 30) * 30), selectedObj.rect.Width, selectedObj.rect.Height),
+                                            Color.White * 0.5F)
+                    End If
 
                     If Dragging = Drag.EditingHitbox Then
                         For Each _uiEle In HBEditorElements
@@ -161,6 +170,12 @@ Namespace LevelEditor
                         Next
                         theSpriteBatch.DrawString(FontKoot, "Hitbox Editor Mode", New Vector2(10, Main.graphics.PreferredBackBufferHeight - 60), Color.Black)
                     End If
+
+
+                    For Each ele In UIElements
+                        ele.Draw(theSpriteBatch)
+                    Next
+
                     theSpriteBatch.End()
 
 
