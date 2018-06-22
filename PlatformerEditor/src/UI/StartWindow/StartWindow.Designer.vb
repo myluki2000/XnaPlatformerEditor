@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StartWindow
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,11 +20,12 @@ Partial Class StartWindow
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.btnNewWorld = New System.Windows.Forms.Button()
         Me.btnLoadWorld = New System.Windows.Forms.Button()
         Me.fbdWorldPath = New System.Windows.Forms.FolderBrowserDialog()
+        Me.Node1 = New PlatformerEditor.Node()
         Me.SuspendLayout()
         '
         'btnNewWorld
@@ -45,11 +46,20 @@ Partial Class StartWindow
         Me.btnLoadWorld.Text = "Load World"
         Me.btnLoadWorld.UseVisualStyleBackColor = True
         '
+        'Node1
+        '
+        Me.Node1.BackColor = System.Drawing.SystemColors.Control
+        Me.Node1.Location = New System.Drawing.Point(47, 136)
+        Me.Node1.Name = "Node1"
+        Me.Node1.Size = New System.Drawing.Size(120, 155)
+        Me.Node1.TabIndex = 2
+        '
         'StartWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(227, 86)
+        Me.ClientSize = New System.Drawing.Size(227, 347)
+        Me.Controls.Add(Me.Node1)
         Me.Controls.Add(Me.btnLoadWorld)
         Me.Controls.Add(Me.btnNewWorld)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -63,4 +73,5 @@ Partial Class StartWindow
     Friend WithEvents btnNewWorld As Windows.Forms.Button
     Friend WithEvents btnLoadWorld As Windows.Forms.Button
     Friend WithEvents fbdWorldPath As Windows.Forms.FolderBrowserDialog
+    Friend WithEvents Node1 As Node
 End Class
