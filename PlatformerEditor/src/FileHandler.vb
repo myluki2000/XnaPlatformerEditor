@@ -126,7 +126,8 @@ Public Class FileHandler
                                         New XElement("Height", obj.rect.Height),
                                         New XElement("Scale", obj.Scale),
                                         New XElement("Z-Index", obj.zIndex),
-                                        New XElement("ParallaxMultiplier", obj.ParallaxMultiplier.ToString))),
+                                        New XElement("ParallaxMultiplier", obj.ParallaxMultiplier.ToString),
+                                        New XElement("IsProp", obj.IsProp.ToString))),
                                  xeleTechObjs,
                                  xeleLightPolygons)
 

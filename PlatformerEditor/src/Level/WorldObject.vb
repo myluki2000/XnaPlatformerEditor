@@ -10,6 +10,7 @@ Public Class WorldObject
     Public IsFoliage As Boolean = False
 
     Public ParallaxMultiplier As Single = 1.0F
+    Public IsProp As Boolean = False
 
     Sub New(_name As String, _texturePath As String)
         MyBase.New(_name, _texturePath)

@@ -80,6 +80,7 @@ Public Class PropertiesWindow
             Case ObjectTypes.Generic
                 Dim _genericObj = wObj
                 AddControl(New PanelPropertiesTB("TBParallaxMultiplier", "Parallax Multiplier", _genericObj.ParallaxMultiplier.ToString))
+                AddControl(New PanelPropertiesCB("CBIsProp", _genericObj.IsProp, "Is Prop"))
         End Select
     End Sub
 
@@ -134,6 +135,7 @@ Public Class PropertiesWindow
             Case ObjectTypes.Generic
                 Dim newObj As WorldObject = wObj
                 newObj.ParallaxMultiplier = Single.Parse(FindControl("TBParallaxMultiplier").Text)
+                newObj.IsProp = CType(FindControl("CBIsProp"), PanelPropertiesCB).Checked
         End Select
 
         Close()
