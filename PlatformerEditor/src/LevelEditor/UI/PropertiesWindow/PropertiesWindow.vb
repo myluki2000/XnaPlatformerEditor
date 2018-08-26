@@ -11,10 +11,13 @@ Public Class PropertiesWindow
         ParticleSpawner
         InfoBoxDisplay
         LoadingZone
+        Generic
     End Enum
 
     Public Sub ShowProperties(_wObj As WorldObject)
         Dim DoDisplay As Boolean = True
+
+        wObj = _wObj
 
         Select Case _wObj.Name
             Case "Spawner"
@@ -33,7 +36,7 @@ Public Class PropertiesWindow
                 ObjectType = ObjectTypes.LoadingZone
 
             Case Else
-                DoDisplay = False
+                ObjectType = ObjectTypes.Generic
         End Select
 
         If DoDisplay Then
@@ -73,6 +76,10 @@ Public Class PropertiesWindow
             Case ObjectTypes.LoadingZone
                 Dim _loadingZoneObj = CType(wObj, LoadingZone)
                 AddControl(New PanelPropertiesTB("TBTargetLevel", "Target Level", _loadingZoneObj.TargetLevelName))
+
+            Case ObjectTypes.Generic
+                Dim _genericObj = wObj
+                AddControl(New PanelPropertiesTB("TBParallaxMultiplier", "Parallax Multiplier", _genericObj.ParallaxMultiplier.ToString))
         End Select
     End Sub
 
@@ -123,6 +130,10 @@ Public Class PropertiesWindow
             Case ObjectTypes.LoadingZone
                 Dim newObj As LoadingZone = DirectCast(wObj, LoadingZone)
                 newObj.TargetLevelName = FindControl("TBTargetLevel").Text
+
+            Case ObjectTypes.Generic
+                Dim newObj As WorldObject = wObj
+                newObj.ParallaxMultiplier = Single.Parse(FindControl("TBParallaxMultiplier").Text)
         End Select
 
         Close()

@@ -38,7 +38,11 @@ Partial Class MainWindow
         Me.chCharType = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.btnAddChar = New System.Windows.Forms.Button()
+        Me.tpDialogues = New System.Windows.Forms.TabPage()
         Me.btnSaveWorld = New System.Windows.Forms.Button()
+        Me.ListView1 = New System.Windows.Forms.ListView()
+        Me.Panel5 = New System.Windows.Forms.Panel()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.tpLevels.SuspendLayout()
         Me.Panel3.SuspendLayout()
@@ -46,12 +50,15 @@ Partial Class MainWindow
         Me.tpCharacters.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        Me.tpDialogues.SuspendLayout()
+        Me.Panel5.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.tpLevels)
         Me.TabControl1.Controls.Add(Me.tpCharacters)
+        Me.TabControl1.Controls.Add(Me.tpDialogues)
         Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TabControl1.Location = New System.Drawing.Point(0, 0)
         Me.TabControl1.Name = "TabControl1"
@@ -179,6 +186,18 @@ Partial Class MainWindow
         Me.btnAddChar.Text = "Add Character"
         Me.btnAddChar.UseVisualStyleBackColor = True
         '
+        'tpDialogues
+        '
+        Me.tpDialogues.Controls.Add(Me.ListView1)
+        Me.tpDialogues.Controls.Add(Me.Panel5)
+        Me.tpDialogues.Location = New System.Drawing.Point(4, 22)
+        Me.tpDialogues.Name = "tpDialogues"
+        Me.tpDialogues.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpDialogues.Size = New System.Drawing.Size(879, 388)
+        Me.tpDialogues.TabIndex = 2
+        Me.tpDialogues.Text = "Dialogues"
+        Me.tpDialogues.UseVisualStyleBackColor = True
+        '
         'btnSaveWorld
         '
         Me.btnSaveWorld.Location = New System.Drawing.Point(794, 0)
@@ -187,6 +206,33 @@ Partial Class MainWindow
         Me.btnSaveWorld.TabIndex = 1
         Me.btnSaveWorld.Text = "Save World"
         Me.btnSaveWorld.UseVisualStyleBackColor = True
+        '
+        'ListView1
+        '
+        Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView1.Location = New System.Drawing.Point(3, 3)
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(873, 343)
+        Me.ListView1.TabIndex = 0
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        '
+        'Panel5
+        '
+        Me.Panel5.Controls.Add(Me.Button1)
+        Me.Panel5.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Panel5.Location = New System.Drawing.Point(3, 346)
+        Me.Panel5.Name = "Panel5"
+        Me.Panel5.Size = New System.Drawing.Size(873, 39)
+        Me.Panel5.TabIndex = 1
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(775, 6)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(93, 28)
+        Me.Button1.TabIndex = 0
+        Me.Button1.Text = "Add Dialogue"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'MainWindow
         '
@@ -204,6 +250,8 @@ Partial Class MainWindow
         Me.tpCharacters.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
+        Me.tpDialogues.ResumeLayout(False)
+        Me.Panel5.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -225,4 +273,8 @@ Partial Class MainWindow
     Friend WithEvents chCharTexturePath As Windows.Forms.ColumnHeader
     Friend WithEvents chCharType As Windows.Forms.ColumnHeader
     Friend WithEvents btnSaveWorld As Windows.Forms.Button
+    Friend WithEvents tpDialogues As Windows.Forms.TabPage
+    Friend WithEvents ListView1 As Windows.Forms.ListView
+    Friend WithEvents Panel5 As Windows.Forms.Panel
+    Friend WithEvents Button1 As Windows.Forms.Button
 End Class

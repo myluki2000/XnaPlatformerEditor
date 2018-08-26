@@ -61,6 +61,7 @@ Public Class MainWindow
         game.Editor.RefreshBtnList()
 
         PlacedObjects = Levels.Find(Function(x) x.Name = lvLevels.SelectedItems(0).Text).PlacedObjects
+        LightPolygons = Levels.Find(Function(x) x.Name = lvLevels.SelectedItems(0).Text).LightPolygons
     End Sub
 
     Private Sub MainWindow_Shown(sender As Object, e As EventArgs) Handles Me.Shown

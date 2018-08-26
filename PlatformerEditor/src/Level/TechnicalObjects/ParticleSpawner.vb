@@ -12,6 +12,6 @@ Public Class ParticleSpawner
     End Sub
 
     Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
-        theSpriteBatch.Draw(Texture, New Rectangle(CInt(rect.X * 30 + InnerPosition.X - 5), CInt(rect.Y * 30 + InnerPosition.Y - 5), 10, 10), Color.White)
+        'theSpriteBatch.Draw(Texture, New Rectangle(CInt(rect.X * 30 + InnerPosition.X - 5), CInt(rect.Y * 30 + InnerPosition.Y - 5), 10, 10), Color.White)
     End Sub
 End Class

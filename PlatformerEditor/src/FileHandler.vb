@@ -2,7 +2,6 @@
 Imports System.IO
 Imports System.Linq
 Imports System.Xml.Linq
-Imports Microsoft.Xna.Framework.Graphics
 
 Public Class FileHandler
 
@@ -22,6 +21,8 @@ Public Class FileHandler
             _placedObj.rect.Height = CInt(xele.Element("Height").Value)
             _placedObj.Scale = CInt(xele.Element("Scale").Value)
             _placedObj.zIndex = CInt(xele.Element("Z-Index").Value)
+
+            Throw New NotImplementedException("Lots of properties missing here!")
 
             _placedObjects.Add(_placedObj)
         Next
@@ -88,7 +89,24 @@ Public Class FileHandler
 
 
 
-        ' Saves the normal world objects to a xele and paste the technical objects xele
+        ' Saves the light polygons
+        Dim xeleLightPolygons As New XElement("LightPolygons")
+        For Each p In LightPolygons
+
+            Dim xelePolygon As New XElement("Polygon")
+
+            For Each c In p.corners
+                xelePolygon.Add(New XElement("Corner",
+                                             New XElement("X", c.X),
+                                             New XElement("Y", c.Y)))
+            Next
+
+            xeleLightPolygons.Add(xelePolygon)
+        Next
+
+
+
+        ' Save textures and normal world objects to a xele and paste the technical objects xele
         Dim xele As New XElement("Level",
                                  New XElement("Textures",
                                     From wObj In _lvl.WorldObjects
@@ -107,8 +125,11 @@ Public Class FileHandler
                                         New XElement("Width", obj.rect.Width),
                                         New XElement("Height", obj.rect.Height),
                                         New XElement("Scale", obj.Scale),
-                                        New XElement("Z-Index", obj.zIndex))),
-                                 xeleTechObjs)
+                                        New XElement("Z-Index", obj.zIndex),
+                                        New XElement("ParallaxMultiplier", obj.ParallaxMultiplier.ToString))),
+                                 xeleTechObjs,
+                                 xeleLightPolygons)
+
 
 
         If _path = "" Then

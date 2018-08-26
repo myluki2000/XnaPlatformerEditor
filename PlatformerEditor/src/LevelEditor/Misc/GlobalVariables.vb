@@ -9,10 +9,11 @@ Module GlobalVariables
     Public WorldMatrix As New Matrix()
 
 #Region "Declare lists to hold world objects"
-    Public WorldObjects As New Collections.Generic.List(Of WorldObject)
-    Public TechnicalObjects As New Collections.Generic.List(Of TechnicalObject)
-    Public _PlacedObjects As New Collections.Generic.List(Of WorldObject)
-    Public EnemyTypes As New Collections.Generic.List(Of Enemy)
+    Public WorldObjects As New List(Of WorldObject)
+    Public TechnicalObjects As New List(Of TechnicalObject)
+    Public _PlacedObjects As New List(Of WorldObject)
+    Public LightPolygons As New List(Of LevelEditor.Polygon)
+    Public EnemyTypes As New List(Of Enemy)
 
     Public Property PlacedObjects As List(Of WorldObject)
         Get

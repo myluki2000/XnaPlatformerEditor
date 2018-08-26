@@ -9,6 +9,8 @@ Public Class WorldObject
     Public HasRandomTextureRotation As Boolean = False
     Public IsFoliage As Boolean = False
 
+    Public ParallaxMultiplier As Single = 1.0F
+
     Sub New(_name As String, _texturePath As String)
         MyBase.New(_name, _texturePath)
     End Sub

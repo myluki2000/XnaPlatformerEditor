@@ -9,7 +9,6 @@ Public MustInherit Class Sprite
     Public TexturePath As String
     Public rect As Rectangle
     Public Scale As Integer = 1
-    Public Hitbox As LevelEditor.Polygon
     Public ID As UInteger
 
     Sub New(_name As String, _texturePath As String)
@@ -27,35 +26,6 @@ Public MustInherit Class Sprite
     End Sub
 
     Public MustOverride Sub Update(gameTime As GameTime)
-
-    Public Sub InitHitbox()
-        Hitbox = New LevelEditor.Polygon(getScreenRect)
-    End Sub
-
-    Dim DraggingCorner As Integer = -1
-    Public Sub EditHitbox()
-        Throw New NotImplementedException("Change to new martix corrected ScreenRect function")
-
-        For Each _corner In Hitbox.corners
-            If New Rectangle(_corner.ToPoint - New Point(3, 3), New Point(6, 6)).Contains(Mouse.GetState.Position) AndAlso Mouse.GetState.LeftButton = ButtonState.Pressed AndAlso
-                    MouseLastState.LeftButton = ButtonState.Released Then
-                ' If mouse cursor is in the displayed corner rectangle and the left button is now pressed
-                DraggingCorner = Hitbox.corners.IndexOf(_corner)
-            ElseIf Mouse.GetState.LeftButton = ButtonState.Released Then
-                DraggingCorner = -1
-            End If
-
-            If DraggingCorner <> -1 Then
-                Hitbox.corners(DraggingCorner) = Mouse.GetState.Position.ToVector2
-                Diagnostics.Debug.WriteLine(Hitbox.corners(DraggingCorner).ToString)
-                Exit For
-            End If
-        Next
-    End Sub
-
-    Public Sub DrawHitbox(theSpriteBatch As SpriteBatch)
-        Hitbox.DrawOutline(theSpriteBatch, True)
-    End Sub
 
     Public Overridable Sub Draw(theSpriteBatch As SpriteBatch)
         If Texture IsNot Nothing Then

@@ -21,23 +21,25 @@ Namespace LevelEditor
                 Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(330, 10, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Delete"), .text = ""}
                 Dim WithEvents btnSave As New Button With {.rect = New Rectangle(370, 10, 90, 30), .text = "Save Level"}
                 Dim WithEvents btnTextures As New Button With {.rect = New Rectangle(470, 10, 90, 30), .text = "Textures"}
+                Dim WithEvents btnEditLight As New Button With {.rect = New Rectangle(570, 10, 100, 30), .text = "Edit Lighting", .ToggleButton = True}
 
-                Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 180, 10, 130, 30), "Z-Index:")
+                Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 140, 10, 130, 30), "Z-Index:")
                 Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
 
-                Dim WithEvents wObjContext As New ContextMenu(New List(Of String) From {"Edit Hitbox"})
 
+                ' Light Edit Mode
+                Dim WithEvents btnELAcceptEdit As New Button With {.rect = New Rectangle(10, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Checkmark"), .text = "", .Visible = False}
+                Dim WithEvents btnELReset As New Button With {.rect = New Rectangle(50, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Delete"), .text = "", .Visible = False}
+                Dim WithEvents btnELAddCorner As New Button With {.rect = New Rectangle(90, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/AddCorner"), .text = "", .Visible = False}
+                Dim WithEvents btnELNewPolygon As New Button With {.rect = New Rectangle(130, Main.graphics.PreferredBackBufferHeight - 40, 110, 30), .text = "New Polygon", .Visible = False}
 
-                ' Hitbox Edit Mode
-                Dim WithEvents btnHBAcceptEdit As New Button With {.rect = New Rectangle(10, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Checkmark"), .text = "", .Visible = False}
-                Dim WithEvents btnHBReset As New Button With {.rect = New Rectangle(50, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Reset"), .text = "", .Visible = False}
-                Dim WithEvents btnHBAddCorner As New Button With {.rect = New Rectangle(90, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/AddCorner"), .text = "", .Visible = False}
+                Dim ELSelectedPolygon As Polygon
 
                 ' List for all UI elements
                 Dim UIElements As New List(Of UIElement)
 
                 ' List for Hitbox Editor UI elements
-                Dim HBEditorElements As New List(Of UIElement)
+                Dim ELElements As New List(Of UIElement)
 #End Region
 
 
@@ -55,7 +57,7 @@ Namespace LevelEditor
                     corner
                     None
                     placing
-                    EditingHitbox
+                    EditingLighting
                 End Enum
 
                 Sub New()
@@ -98,12 +100,13 @@ Namespace LevelEditor
                     UIElements.Add(btnSave)
                     UIElements.Add(btnTechnical)
                     UIElements.Add(btnListTechnical)
-                    UIElements.Add(wObjContext)
                     UIElements.Add(btnTextures)
+                    UIElements.Add(btnEditLight)
 
-                    HBEditorElements.Add(btnHBAcceptEdit)
-                    HBEditorElements.Add(btnHBReset)
-                    HBEditorElements.Add(btnHBAddCorner)
+                    ELElements.Add(btnELAcceptEdit)
+                    ELElements.Add(btnELReset)
+                    ELElements.Add(btnELAddCorner)
+                    ELElements.Add(btnELNewPolygon)
 #End Region
 
                     Matrix.CreateTranslation(0, 0, 0, WorldMatrix)
@@ -118,9 +121,10 @@ Namespace LevelEditor
                     gameTime = _gameTime
                 End Sub
 
+                Dim DraggingCorner As Integer = -1
                 Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
                     ' No Drag if mouse not pressed
-                    If Mouse.GetState.LeftButton = ButtonState.Released AndAlso Dragging <> Drag.EditingHitbox Then
+                    If Mouse.GetState.LeftButton = ButtonState.Released AndAlso Dragging <> Drag.EditingLighting Then
                         Dragging = Drag.None
                     End If
 
@@ -142,8 +146,8 @@ Namespace LevelEditor
                         Misc.DrawRectangle(theSpriteBatch, New Rectangle(rect.Right - 6, rect.Bottom - 6, 6, 6), Color.Blue)
                     End If
 
-                    If Dragging = Drag.EditingHitbox Then
-                        HitboxEditMode(theSpriteBatch)
+                    If Dragging = Drag.EditingLighting Then
+                        LightEditMode(theSpriteBatch)
                     End If
 
                     theSpriteBatch.End()
@@ -157,18 +161,18 @@ Namespace LevelEditor
                         End If
                     Next
                     ' Draw preview of selected block at mouse cursor
-                    If SelectedPlaceObject IsNot Nothing AndAlso Not inUIEle Then
+                    If SelectedPlaceObject IsNot Nothing AndAlso Not inUIEle AndAlso WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject) IsNot Nothing Then
                         Dim selectedObj As WorldObject = WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject)
                         theSpriteBatch.Draw(selectedObj.Texture,
                                             New Rectangle(CInt(Math.Floor(Mouse.GetState.X / 30) * 30), CInt(Math.Floor(Mouse.GetState.Y / 30) * 30), selectedObj.rect.Width, selectedObj.rect.Height),
                                             Color.White * 0.5F)
                     End If
 
-                    If Dragging = Drag.EditingHitbox Then
-                        For Each _uiEle In HBEditorElements
+                    If Dragging = Drag.EditingLighting Then
+                        For Each _uiEle In ELElements
                             _uiEle.Draw(theSpriteBatch)
                         Next
-                        theSpriteBatch.DrawString(FontKoot, "Hitbox Editor Mode", New Vector2(10, Main.graphics.PreferredBackBufferHeight - 60), Color.Black)
+                        theSpriteBatch.DrawString(FontKoot, "Lighting Editor Mode", New Vector2(10, Main.graphics.PreferredBackBufferHeight - 60), Color.Black)
                     End If
 
 
@@ -180,6 +184,26 @@ Namespace LevelEditor
 
 
 
+#Region "Light Polygon Edit Draging"
+                    For Each p In LightPolygons
+                        For Each _corner In p.corners
+                            If New Rectangle(_corner.ToPoint - New Point(3, 3), New Point(6, 6)).Contains(Mouse.GetState.Position) AndAlso Mouse.GetState.LeftButton = ButtonState.Pressed AndAlso
+                                    MouseLastState.LeftButton = ButtonState.Released Then
+                                ' If mouse cursor is in the displayed corner rectangle and the left button is now pressed
+                                DraggingCorner = p.corners.IndexOf(_corner)
+                                ELSelectedPolygon = p
+                            ElseIf Mouse.GetState.LeftButton = ButtonState.Released Then
+                                DraggingCorner = -1
+                            End If
+
+                            If DraggingCorner > -1 AndAlso DraggingCorner < ELSelectedPolygon.corners.Count Then
+                                ELSelectedPolygon.corners(DraggingCorner) = Mouse.GetState.Position.ToVector2
+                                Exit For
+                            End If
+                        Next
+                    Next
+#End Region
+
 
                     ObjectDrag()
                     TransformMatrixDrag()
@@ -189,12 +213,6 @@ Namespace LevelEditor
                             Dim propWindow As New PropertiesWindow
                             propWindow.ShowProperties(SelectedObject)
                         End If
-                    End If
-
-                    If Mouse.GetState.RightButton = ButtonState.Released AndAlso MouseLastState.RightButton = ButtonState.Pressed AndAlso SelectedObject IsNot Nothing Then
-                        ' If mouse right clicked and placed obj selected
-                        wObjContext.SetPosition(Mouse.GetState.Position.ToVector2 + New Vector2(10, 0))
-                        wObjContext.Visible = True
                     End If
                 End Sub
 
@@ -315,12 +333,11 @@ Namespace LevelEditor
                 Private Sub btnSave_Click() Handles btnSave.Clicked
                     Dim Level As Level = MainWindow.Levels.Find(Function(x) x.Name = Main.LevelName)
 
-                    If Level Is Nothing Then
-                        Dim tempArr(WorldObjects.Count - 1) As WorldObject
-                        MainWindow.Levels.Add(New Level With {.Name = Main.LevelName, .PlacedObjects = PlacedObjects, .WorldObjects = New List(Of WorldObject)(WorldObjects)}) ' WorldObjects set to new list (shallow copy)
-                    Else
-                        Level.PlacedObjects = PlacedObjects
+                    If Level IsNot Nothing Then
+                        MainWindow.Levels.Remove(Level)
                     End If
+
+                    MainWindow.Levels.Add(New Level With {.Name = Main.LevelName, .PlacedObjects = PlacedObjects, .WorldObjects = New List(Of WorldObject)(WorldObjects), .LightPolygons = LightPolygons})
 
                     MainWindow.f.LevelsListChanged()
                 End Sub
@@ -375,7 +392,7 @@ Namespace LevelEditor
                             End If
                         Else
                             ' No selected object
-                            If Dragging <> Drag.EditingHitbox Then
+                            If Dragging <> Drag.EditingLighting Then
                                 Dragging = Drag.placing
                             End If
 
@@ -402,7 +419,7 @@ Namespace LevelEditor
                         Next
 
                         If inUIEle = False Then
-                            If SelectedPlaceObject Is Nothing AndAlso Dragging <> Drag.EditingHitbox Then
+                            If SelectedPlaceObject Is Nothing AndAlso Dragging <> Drag.EditingLighting Then
                                 ' If Cursor selected
 
                                 Dim BlockFound As Boolean = False
@@ -418,7 +435,7 @@ Namespace LevelEditor
 
                                 If BlockFound = False Then
                                     SelectedObject = Nothing
-                                    If Dragging <> Drag.EditingHitbox Then
+                                    If Dragging <> Drag.EditingLighting Then
                                         Dragging = Drag.None
                                     End If
                                     DragMouseShift = New Point(0, 0)
@@ -475,46 +492,47 @@ Namespace LevelEditor
                             End If
                         Next
 
-                        ' Initialize all hitboxes if new block is placed
-                        For Each _wObj In PlacedObjects
-                            _wObj.InitHitbox()
-                        Next
+                        '' Initialize all hitboxes if new block is placed
+                        'For Each _wObj In PlacedObjects
+                        '    _wObj.InitHitbox()
+                        'Next
                     End If
                 End Sub
 
-                Private Sub wObjContext_ItemClicked(senderText As String) Handles wObjContext.ItemClicked
-                    Select Case senderText
-                        Case "Edit Hitbox"
-                            Dragging = Drag.EditingHitbox
+                Private Sub LightEditMode(sb As SpriteBatch)
+                    For Each p In LightPolygons
+                        p.DrawOutline(sb, True)
 
-                            For Each _uiEle In HBEditorElements
-                                _uiEle.Visible = True
-                            Next
-                    End Select
-                End Sub
-
-                Private Sub HitboxEditMode(theSpriteBatch As SpriteBatch)
-                    SelectedObject.DrawHitbox(theSpriteBatch)
-                    SelectedObject.EditHitbox()
-                End Sub
-
-                Private Sub btnHBAcceptEdit_Click() Handles btnHBAcceptEdit.Clicked
-                    For Each _uiEle In HBEditorElements
-                        _uiEle.Visible = False
-                        Dragging = Drag.None
                     Next
                 End Sub
 
-                Private Sub btnHBReset_Click() Handles btnHBReset.Clicked
-                    SelectedObject.InitHitbox()
+                Private Sub btnELAcceptEdit_Click() Handles btnELAcceptEdit.Clicked
+                    For Each _uiEle In ELElements
+                        _uiEle.Visible = False
+                        Dragging = Drag.None
+                    Next
+
+                    btnEditLight.Checked = False
                 End Sub
 
-                Private Sub btnHBAddCorner_Click() Handles btnHBAddCorner.Clicked
-                    Dim corners = SelectedObject.Hitbox.corners
-                    Dim cornerPos As New Vector2
-                    cornerPos.X = (corners(0).X - corners.Last.X) / 2 + corners.Last.X
-                    cornerPos.Y = (corners(0).Y - corners.Last.Y) / 2 + corners.Last.Y
-                    SelectedObject.Hitbox.corners.Add(cornerPos)
+                Private Sub btnELReset_Click() Handles btnELReset.Clicked
+                    If ELSelectedPolygon IsNot Nothing Then
+                        LightPolygons.Remove(ELSelectedPolygon)
+                    End If
+                End Sub
+
+                Private Sub btnELAddCorner_Click() Handles btnELAddCorner.Clicked
+                    If ELSelectedPolygon IsNot Nothing Then
+                        Dim corners = ELSelectedPolygon.corners
+                        Dim cornerPos As New Vector2
+                        cornerPos.X = (corners(0).X - corners.Last.X) / 2 + corners.Last.X
+                        cornerPos.Y = (corners(0).Y - corners.Last.Y) / 2 + corners.Last.Y
+                        ELSelectedPolygon.corners.Add(cornerPos)
+                    End If
+                End Sub
+
+                Private Sub btnELNewPolygon_Click() Handles btnELNewPolygon.Clicked
+                    LightPolygons.Add(New Polygon(New Rectangle(100, 100, 50, 50)))
                 End Sub
 
                 Private Sub btnTextures_Click() Handles btnTextures.Clicked
@@ -534,6 +552,26 @@ Namespace LevelEditor
                     For Each _btn In btnListObjects.btnList
                         AddHandler _btn.Clicked, AddressOf btnListObjectsButton_Click
                     Next
+                End Sub
+
+                Private Sub btnEditLight_Clicked() Handles btnEditLight.Clicked
+                    If btnEditLight.Checked Then
+                        Dragging = Drag.EditingLighting
+
+                        For Each _uiEle In ELElements
+                            _uiEle.Visible = True
+                        Next
+                    Else
+                        Dragging = Drag.None
+
+                        For Each _uiEle In ELElements
+                            _uiEle.Visible = False
+                        Next
+                    End If
+
+
+
+
                 End Sub
             End Class
         End Namespace

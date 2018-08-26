@@ -28,6 +28,9 @@ Namespace LevelEditor
             IsMouseVisible = True
 
 
+            graphics.PreferredBackBufferWidth = 1280
+            graphics.PreferredBackBufferHeight = 720
+            graphics.ApplyChanges()
 
             MyBase.Initialize()
         End Sub
