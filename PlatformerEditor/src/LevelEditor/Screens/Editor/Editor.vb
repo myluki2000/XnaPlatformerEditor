@@ -1,6 +1,5 @@
 ﻿Imports System.Collections.Generic
 Imports System.Linq
-Imports System.Xml.Linq
 Imports Microsoft.Xna.Framework
 Imports Microsoft.Xna.Framework.Graphics
 Imports Microsoft.Xna.Framework.Input
@@ -12,16 +11,17 @@ Namespace LevelEditor
                 Inherits Screen
 
 #Region "UI Declarations"
-                Dim WithEvents btnObjects As New Button With {.text = "Objects", .rect = New Rectangle(50, 10, 65, 30), .ToggleButton = True}
-                Dim WithEvents btnTechnical As New Button With {.text = "Technical", .rect = New Rectangle(125, 10, 80, 30), .ToggleButton = True}
+                Dim WithEvents btnObjects As New Button With {.Text = "Objects", .rect = New Rectangle(50, 10, 65, 30), .ToggleButton = True}
+                Dim WithEvents btnTechnical As New Button With {.Text = "Technical", .rect = New Rectangle(125, 10, 80, 30), .ToggleButton = True}
                 Dim WithEvents btnListObjects As New ButtonList With {.rect = New Rectangle(50, 50, 120, 150), .btnWidth = 40, .btnHeight = 40}
                 Dim WithEvents btnListTechnical As New ButtonList With {.rect = New Rectangle(100, 50, 300, 200), .btnWidth = 200, .btnHeight = 40}
-                Dim WithEvents btnSnapToGrid As New Button With {.rect = New Rectangle(215, 10, 105, 30), .text = "Snap To Grid", .ToggleButton = True}
-                Dim WithEvents btnCursor As New Button With {.ToggleButton = True, .Checked = True, .rect = New Rectangle(10, 10, 30, 30), .text = "", .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Cursor")}
-                Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(330, 10, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Delete"), .text = ""}
-                Dim WithEvents btnSave As New Button With {.rect = New Rectangle(370, 10, 90, 30), .text = "Save Level"}
-                Dim WithEvents btnTextures As New Button With {.rect = New Rectangle(470, 10, 90, 30), .text = "Textures"}
-                Dim WithEvents btnEditLight As New Button With {.rect = New Rectangle(570, 10, 100, 30), .text = "Edit Lighting", .ToggleButton = True}
+                Dim WithEvents btnSnapToGrid As New Button With {.rect = New Rectangle(215, 10, 105, 30), .Text = "Snap To Grid", .ToggleButton = True}
+                Dim WithEvents btnCursor As New Button With {.ToggleButton = True, .Checked = True, .rect = New Rectangle(10, 10, 30, 30), .Text = "", .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Cursor")}
+                Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(330, 10, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Delete"), .Text = ""}
+                Dim WithEvents btnSave As New Button With {.rect = New Rectangle(370, 10, 90, 30), .Text = "Save Level"}
+                Dim WithEvents btnTextures As New Button With {.rect = New Rectangle(470, 10, 90, 30), .Text = "Textures"}
+                Dim WithEvents btnEditLight As New Button With {.rect = New Rectangle(570, 10, 100, 30), .Text = "Edit Lighting", .ToggleButton = True}
+                Dim WithEvents btnLevelProperties As New Button With {.rect = New Rectangle(680, 10, 100, 30), .Text = "Level Properties"}
 
                 Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 140, 10, 130, 30), "Z-Index:")
                 Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
@@ -234,6 +234,8 @@ Namespace LevelEditor
                     End If
                 End Sub
 
+#Region "Button Event Handlers"
+
                 Private Sub btnListObjectsButton_Click(sender As Object)
                     Dim SenderBtn = DirectCast(sender, Button)
 
@@ -316,6 +318,46 @@ Namespace LevelEditor
                     DeleteSelectedObject()
                 End Sub
 
+                Private Sub btnSave_Click() Handles btnSave.Clicked
+                    Dim Level As Level = MainWindow.Levels.Find(Function(x) x.Name = Main.LevelName)
+
+                    If Level IsNot Nothing Then
+                        MainWindow.Levels.Remove(Level)
+                    End If
+
+                    MainWindow.Levels.Add(New Level With {.Name = Main.LevelName, .PlacedObjects = PlacedObjects, .WorldObjects = New List(Of WorldObject)(WorldObjects), .LightPolygons = LightPolygons})
+
+                    MainWindow.f.LevelsListChanged()
+                End Sub
+
+                Private Sub btnTextures_Click() Handles btnTextures.Clicked
+                    Dim texWindow As New TexturesWindow
+
+                    texWindow.ShowDialog(Me)
+                End Sub
+
+                Private Sub btnEditLight_Clicked() Handles btnEditLight.Clicked
+                    If btnEditLight.Checked Then
+                        Dragging = Drag.EditingLighting
+
+                        For Each _uiEle In ELElements
+                            _uiEle.Visible = True
+                        Next
+                    Else
+                        Dragging = Drag.None
+
+                        For Each _uiEle In ELElements
+                            _uiEle.Visible = False
+                        Next
+                    End If
+                End Sub
+
+                Private Sub btnLevelProperties_Clicked() Handles btnLevelProperties.Clicked
+                    Dim f As New LevelPropertiesWindow
+                    f.ShowDialog()
+                End Sub
+#End Region
+
                 Private Sub DeleteSelectedObject()
                     If SelectedObject IsNot Nothing Then
                         PlacedObjects.Remove(SelectedObject)
@@ -330,17 +372,7 @@ Namespace LevelEditor
                     End If
                 End Sub
 
-                Private Sub btnSave_Click() Handles btnSave.Clicked
-                    Dim Level As Level = MainWindow.Levels.Find(Function(x) x.Name = Main.LevelName)
 
-                    If Level IsNot Nothing Then
-                        MainWindow.Levels.Remove(Level)
-                    End If
-
-                    MainWindow.Levels.Add(New Level With {.Name = Main.LevelName, .PlacedObjects = PlacedObjects, .WorldObjects = New List(Of WorldObject)(WorldObjects), .LightPolygons = LightPolygons})
-
-                    MainWindow.f.LevelsListChanged()
-                End Sub
 
                 Private Sub ObjectDrag()
                     If Mouse.GetState.LeftButton = ButtonState.Pressed Then
@@ -499,6 +531,7 @@ Namespace LevelEditor
                     End If
                 End Sub
 
+#Region "Light Edit Mode"
                 Private Sub LightEditMode(sb As SpriteBatch)
                     For Each p In LightPolygons
                         p.DrawOutline(sb, True)
@@ -534,12 +567,9 @@ Namespace LevelEditor
                 Private Sub btnELNewPolygon_Click() Handles btnELNewPolygon.Clicked
                     LightPolygons.Add(New Polygon(New Rectangle(100, 100, 50, 50)))
                 End Sub
+#End Region
 
-                Private Sub btnTextures_Click() Handles btnTextures.Clicked
-                    Dim texWindow As New TexturesWindow
 
-                    texWindow.ShowDialog(Me)
-                End Sub
 
                 Public Sub RefreshBtnList()
                     btnListObjects.btnList.Clear()
@@ -554,25 +584,7 @@ Namespace LevelEditor
                     Next
                 End Sub
 
-                Private Sub btnEditLight_Clicked() Handles btnEditLight.Clicked
-                    If btnEditLight.Checked Then
-                        Dragging = Drag.EditingLighting
 
-                        For Each _uiEle In ELElements
-                            _uiEle.Visible = True
-                        Next
-                    Else
-                        Dragging = Drag.None
-
-                        For Each _uiEle In ELElements
-                            _uiEle.Visible = False
-                        Next
-                    End If
-
-
-
-
-                End Sub
             End Class
         End Namespace
     End Namespace

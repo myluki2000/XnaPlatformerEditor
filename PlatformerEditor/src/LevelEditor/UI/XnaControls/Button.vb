@@ -7,7 +7,7 @@ Namespace LevelEditor
         Inherits UIElement
         Public Name As String
         Public Event Clicked(sender As Object)
-        Public text As String = "Button"
+        Public Text As String = "Button"
         Public BackgroundColor As Color = Color.Gray
         Public BackgroundTexture As Texture2D
         Public ClickEffect As ClickEffects = ClickEffects.None

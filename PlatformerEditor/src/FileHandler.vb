@@ -108,6 +108,8 @@ Public Class FileHandler
 
         ' Save textures and normal world objects to a xele and paste the technical objects xele
         Dim xele As New XElement("Level",
+                                 New XElement("Properties",
+                                              New XElement("BackgroundImagePath", _lvl.BackgroundImagePath)),
                                  New XElement("Textures",
                                     From wObj In _lvl.WorldObjects
                                     Select New XElement("Texture",
