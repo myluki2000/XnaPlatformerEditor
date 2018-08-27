@@ -52,15 +52,24 @@ Namespace LevelEditor
                 [Exit]()
             End If
 
-            Editor.Update(gameTime)
+            If LevelName <> "" Then
+                Editor.Update(gameTime)
+            End If
 
             MyBase.Update(gameTime)
         End Sub
 
         Protected Overrides Sub Draw(gameTime As GameTime)
-            GraphicsDevice.Clear(Color.CornflowerBlue)
 
-            Editor.Draw(spriteBatch)
+            If LevelName <> "" Then
+                GraphicsDevice.Clear(Color.CornflowerBlue)
+                Editor.Draw(spriteBatch)
+            Else
+                GraphicsDevice.Clear(Color.Black)
+                spriteBatch.Begin()
+                spriteBatch.DrawString(FontKoot, "Select a level in the main window to start!", New Vector2(100, 300), Color.White, 0, Nothing, 3, Nothing, Nothing)
+                spriteBatch.End()
+            End If
 
 
 
