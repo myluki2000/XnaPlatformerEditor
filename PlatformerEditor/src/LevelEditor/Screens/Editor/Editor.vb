@@ -21,7 +21,7 @@ Namespace LevelEditor
                 Dim WithEvents btnSave As New Button With {.rect = New Rectangle(370, 10, 90, 30), .Text = "Save Level"}
                 Dim WithEvents btnTextures As New Button With {.rect = New Rectangle(470, 10, 90, 30), .Text = "Textures"}
                 Dim WithEvents btnEditLight As New Button With {.rect = New Rectangle(570, 10, 100, 30), .Text = "Edit Lighting", .ToggleButton = True}
-                Dim WithEvents btnLevelProperties As New Button With {.rect = New Rectangle(680, 10, 100, 30), .Text = "Level Properties"}
+                Dim WithEvents btnLevelProperties As New Button With {.rect = New Rectangle(680, 10, 140, 30), .Text = "Level Properties"}
 
                 Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 140, 10, 130, 30), "Z-Index:")
                 Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
@@ -102,6 +102,7 @@ Namespace LevelEditor
                     UIElements.Add(btnListTechnical)
                     UIElements.Add(btnTextures)
                     UIElements.Add(btnEditLight)
+                    UIElements.Add(btnLevelProperties)
 
                     ELElements.Add(btnELAcceptEdit)
                     ELElements.Add(btnELReset)

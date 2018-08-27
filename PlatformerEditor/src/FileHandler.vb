@@ -22,7 +22,7 @@ Public Class FileHandler
             _placedObj.Scale = CInt(xele.Element("Scale").Value)
             _placedObj.zIndex = CInt(xele.Element("Z-Index").Value)
 
-            Throw New NotImplementedException("Lots of properties missing here!")
+            'Throw New NotImplementedException("Lots of properties missing here!")
 
             _placedObjects.Add(_placedObj)
         Next
