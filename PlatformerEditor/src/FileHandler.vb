@@ -9,10 +9,12 @@ Public Class FileHandler
 
 #Region "Level"
 
-    Public Shared Function LoadLevel(_path As String) As List(Of WorldObject)
+    Public Shared Function LoadLevel(_path As String) As Level
         Dim _placedObjects As New List(Of WorldObject)
 
-        For Each xele In XElement.Load(_path).Element("WorldObjects").Elements
+        Dim lvlXEle = XElement.Load(_path)
+
+        For Each xele In lvlXEle.Element("WorldObjects").Elements
             Dim _placedObj As New WorldObject
             _placedObj.Name = xele.Attribute("Name").Value
             _placedObj.rect.X = CInt(xele.Element("X").Value)
@@ -21,13 +23,18 @@ Public Class FileHandler
             _placedObj.rect.Height = CInt(xele.Element("Height").Value)
             _placedObj.Scale = CInt(xele.Element("Scale").Value)
             _placedObj.zIndex = CInt(xele.Element("Z-Index").Value)
-
-            'Throw New NotImplementedException("Lots of properties missing here!")
+            _placedObj.ParallaxMultiplier = CSng(xele.Element("ParallaxMultiplier").Value)
+            _placedObj.IsProp = CBool(xele.Element("IsProp").Value)
 
             _placedObjects.Add(_placedObj)
         Next
 
-        Return _placedObjects
+        Dim lvl As New Level With {.PlacedObjects = _placedObjects}
+
+        lvl.BackgroundImagePath = lvlXEle.Element("Properties").Element("BackgroundImagePath").Value
+        lvl.WorldObjects = LoadLevelTextures(_path)
+
+        Return lvl
     End Function
 
     Public Shared Function LoadLevelTextures(_path As String) As List(Of WorldObject)
@@ -38,6 +45,8 @@ Public Class FileHandler
 
             _wObj.Name = xele.Element("Name").Value
             _wObj.TexturePath = xele.Element("TexturePath").Value
+            _wObj.HasRandomTextureRotation = CBool(xele.Element("RandomTextureRotation").Value)
+            _wObj.IsFoliage = CBool(xele.Element("IsFoliage").Value)
 
             _worldObjects.Add(_wObj)
         Next
@@ -194,8 +203,11 @@ Public Class FileHandler
         Dim file As XElement = XElement.Load(Path.Combine(WorldPath, "world.pwrld"))
 
         For Each xele In file.Element("Levels").Elements
-            MainWindow.Levels.Add(New Level With {.Name = xele.Element("Name").Value,
-                       .PlacedObjects = LoadLevel(Path.Combine(_path, "Levels", xele.Element("Name").Value & ".plvl")), .WorldObjects = LoadLevelTextures(Path.Combine(_path, "Levels", xele.Element("Name").Value & ".plvl"))})
+            Dim lvl = LoadLevel(Path.Combine(_path, "Levels", xele.Element("Name").Value & ".plvl"))
+            lvl.Name = xele.Element("Name").Value
+
+            MainWindow.Levels.Add(lvl)
+
         Next
 
         MainWindow.f.LevelsListChanged()
