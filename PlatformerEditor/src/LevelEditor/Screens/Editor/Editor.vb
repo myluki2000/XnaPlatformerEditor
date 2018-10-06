@@ -322,11 +322,14 @@ Namespace LevelEditor
                 Private Sub btnSave_Click() Handles btnSave.Clicked
                     Dim Level As Level = MainWindow.Levels.Find(Function(x) x.Name = Main.LevelName)
 
-                    If Level IsNot Nothing Then
-                        MainWindow.Levels.Remove(Level)
+                    If Level Is Nothing Then
+                        Level = New Level
                     End If
 
-                    MainWindow.Levels.Add(New Level With {.Name = Main.LevelName, .PlacedObjects = PlacedObjects, .WorldObjects = New List(Of WorldObject)(WorldObjects), .LightPolygons = LightPolygons})
+                    Level.PlacedObjects = PlacedObjects
+                    Level.WorldObjects = New List(Of WorldObject)(WorldObjects)
+                    Level.LightPolygons = LightPolygons
+
 
                     MainWindow.f.LevelsListChanged()
                 End Sub

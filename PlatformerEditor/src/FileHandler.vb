@@ -19,8 +19,6 @@ Public Class FileHandler
             _placedObj.Name = xele.Attribute("Name").Value
             _placedObj.rect.X = CInt(xele.Element("X").Value)
             _placedObj.rect.Y = CInt(xele.Element("Y").Value)
-            _placedObj.rect.Width = CInt(xele.Element("Width").Value)
-            _placedObj.rect.Height = CInt(xele.Element("Height").Value)
             _placedObj.Scale = CInt(xele.Element("Scale").Value)
             _placedObj.zIndex = CInt(xele.Element("Z-Index").Value)
             _placedObj.ParallaxMultiplier = CSng(xele.Element("ParallaxMultiplier").Value)
@@ -47,6 +45,8 @@ Public Class FileHandler
             _wObj.TexturePath = xele.Element("TexturePath").Value
             _wObj.HasRandomTextureRotation = CBool(xele.Element("RandomTextureRotation").Value)
             _wObj.IsFoliage = CBool(xele.Element("IsFoliage").Value)
+            _wObj.rect.Width = CInt(xele.Element("Width").Value)
+            _wObj.rect.Height = CInt(xele.Element("Height").Value)
 
             _worldObjects.Add(_wObj)
         Next
@@ -126,7 +126,9 @@ Public Class FileHandler
                                         New XElement("Name", wObj.Name),
                                         New XElement("TexturePath", wObj.TexturePath),
                                         New XElement("RandomTextureRotation", wObj.HasRandomTextureRotation.ToString),
-                                        New XElement("IsFoliage", wObj.IsFoliage.ToString))),
+                                        New XElement("IsFoliage", wObj.IsFoliage.ToString),
+                                        New XElement("Width", wObj.rect.Width),
+                                        New XElement("Height", wObj.rect.Height))),
                                  New XElement("WorldObjects",
                                     From obj In _lvl.PlacedObjects.FindAll(Function(x) x.GetType = GetType(WorldObject))
                                     Select New XElement("Object", New XAttribute("Name", obj.Name),

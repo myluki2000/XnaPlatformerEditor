@@ -26,6 +26,8 @@ Module GlobalVariables
                 For Each _wObj In WorldObjects
                     If _wObj.Name = _placedObj.Name Then
                         _placedObj.Texture = _wObj.Texture
+                        _placedObj.rect.Width = _wObj.rect.Width
+                        _placedObj.rect.Height = _wObj.rect.Height
                     End If
                 Next
             Next
