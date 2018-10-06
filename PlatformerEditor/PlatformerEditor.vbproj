@@ -56,6 +56,11 @@
     <Import Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="src\Animations\Animation.vb" />
     <Compile Include="src\LevelEditor\UI\LevelPropertiesWindow\LevelPropertiesWindow.Designer.vb">
       <DependentUpon>LevelPropertiesWindow.vb</DependentUpon>
@@ -288,6 +293,10 @@
     <None Include="app.config" />
     <None Include="Content\Fonts\Koot.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup />

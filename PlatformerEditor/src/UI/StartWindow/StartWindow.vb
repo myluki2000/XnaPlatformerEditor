@@ -12,6 +12,9 @@ Public Class StartWindow
         fbdWorldPath.ShowDialog()
 
         If fbdWorldPath.SelectedPath IsNot "" Then
+            My.Settings.LastWorldPath = fbdWorldPath.SelectedPath
+            My.Settings.Save()
+
             FileHandler.LoadWorld(fbdWorldPath.SelectedPath)
 
             EndExecution = False
@@ -25,5 +28,21 @@ Public Class StartWindow
         End If
 
         EndExecution = True
+    End Sub
+
+    Private Sub StartWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If My.Settings.LastWorldPath <> "" Then
+            lblLastWorldPath.Text = "Last World: " & My.Settings.LastWorldPath
+            btnLoadLast.Enabled = True
+        End If
+    End Sub
+
+    Private Sub btnLoadLast_Click(sender As Object, e As EventArgs) Handles btnLoadLast.Click
+        If My.Settings.LastWorldPath <> "" Then
+            FileHandler.LoadWorld(My.Settings.LastWorldPath)
+
+            EndExecution = False
+            Me.Close()
+        End If
     End Sub
 End Class
