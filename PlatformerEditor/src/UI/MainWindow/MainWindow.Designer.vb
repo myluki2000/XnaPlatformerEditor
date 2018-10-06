@@ -39,10 +39,11 @@ Partial Class MainWindow
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.btnAddChar = New System.Windows.Forms.Button()
         Me.tpDialogues = New System.Windows.Forms.TabPage()
-        Me.btnSaveWorld = New System.Windows.Forms.Button()
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.Panel5 = New System.Windows.Forms.Panel()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnSaveWorld = New System.Windows.Forms.Button()
+        Me.btnDeleteLevel = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.tpLevels.SuspendLayout()
         Me.Panel3.SuspendLayout()
@@ -108,6 +109,7 @@ Partial Class MainWindow
         '
         'Panel4
         '
+        Me.Panel4.Controls.Add(Me.btnDeleteLevel)
         Me.Panel4.Controls.Add(Me.btnAddLevel)
         Me.Panel4.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.Panel4.Location = New System.Drawing.Point(3, 349)
@@ -198,15 +200,6 @@ Partial Class MainWindow
         Me.tpDialogues.Text = "Dialogues"
         Me.tpDialogues.UseVisualStyleBackColor = True
         '
-        'btnSaveWorld
-        '
-        Me.btnSaveWorld.Location = New System.Drawing.Point(794, 0)
-        Me.btnSaveWorld.Name = "btnSaveWorld"
-        Me.btnSaveWorld.Size = New System.Drawing.Size(86, 20)
-        Me.btnSaveWorld.TabIndex = 1
-        Me.btnSaveWorld.Text = "Save World"
-        Me.btnSaveWorld.UseVisualStyleBackColor = True
-        '
         'ListView1
         '
         Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
@@ -233,6 +226,24 @@ Partial Class MainWindow
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "Add Dialogue"
         Me.Button1.UseVisualStyleBackColor = True
+        '
+        'btnSaveWorld
+        '
+        Me.btnSaveWorld.Location = New System.Drawing.Point(794, 0)
+        Me.btnSaveWorld.Name = "btnSaveWorld"
+        Me.btnSaveWorld.Size = New System.Drawing.Size(86, 20)
+        Me.btnSaveWorld.TabIndex = 1
+        Me.btnSaveWorld.Text = "Save World"
+        Me.btnSaveWorld.UseVisualStyleBackColor = True
+        '
+        'btnDeleteLevel
+        '
+        Me.btnDeleteLevel.Location = New System.Drawing.Point(638, 6)
+        Me.btnDeleteLevel.Name = "btnDeleteLevel"
+        Me.btnDeleteLevel.Size = New System.Drawing.Size(113, 25)
+        Me.btnDeleteLevel.TabIndex = 2
+        Me.btnDeleteLevel.Text = "Delete Level"
+        Me.btnDeleteLevel.UseVisualStyleBackColor = True
         '
         'MainWindow
         '
@@ -277,4 +288,5 @@ Partial Class MainWindow
     Friend WithEvents ListView1 As Windows.Forms.ListView
     Friend WithEvents Panel5 As Windows.Forms.Panel
     Friend WithEvents Button1 As Windows.Forms.Button
+    Friend WithEvents btnDeleteLevel As Windows.Forms.Button
 End Class

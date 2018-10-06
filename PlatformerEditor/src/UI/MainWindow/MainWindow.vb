@@ -84,4 +84,13 @@ Public Class MainWindow
     Private Sub btnSaveWorld_Click(sender As Object, e As EventArgs) Handles btnSaveWorld.Click
         FileHandler.SaveWorld()
     End Sub
+
+    Private Sub btnDeleteLevel_Click(sender As Object, e As EventArgs) Handles btnDeleteLevel.Click
+        If lvLevels.SelectedItems IsNot Nothing Then
+            Levels.Remove(Levels.Find(Function(x) x.Name = lvLevels.SelectedItems(0).Text))
+            LevelsListChanged()
+        End If
+
+        ' TODO: Remove level file as well
+    End Sub
 End Class

@@ -324,12 +324,14 @@ Namespace LevelEditor
 
                     If Level Is Nothing Then
                         Level = New Level
+                        MainWindow.Levels.Add(Level)
+
+                        Level.Name = Main.LevelName
                     End If
 
                     Level.PlacedObjects = PlacedObjects
                     Level.WorldObjects = New List(Of WorldObject)(WorldObjects)
                     Level.LightPolygons = LightPolygons
-
 
                     MainWindow.f.LevelsListChanged()
                 End Sub
