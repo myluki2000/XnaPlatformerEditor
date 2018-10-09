@@ -124,6 +124,15 @@ Namespace LevelEditor
 
                 Dim DraggingCorner As Integer = -1
                 Public Overrides Sub Draw(theSpriteBatch As SpriteBatch)
+                    ' Check if mouse in UI
+                    Dim inUIEle As Boolean = False
+                    For Each ele In UIElements
+                        If ele.rect.Contains(Mouse.GetState.Position) AndAlso ele.Visible Then
+                            inUIEle = True
+                        End If
+                    Next
+
+
                     ' No Drag if mouse not pressed
                     If Mouse.GetState.LeftButton = ButtonState.Released AndAlso Dragging <> Drag.EditingLighting Then
                         Dragging = Drag.None
@@ -147,6 +156,15 @@ Namespace LevelEditor
                         Misc.DrawRectangle(theSpriteBatch, New Rectangle(rect.Right - 6, rect.Bottom - 6, 6, 6), Color.Blue)
                     End If
 
+                    ' Draw preview of selected block at mouse cursor
+                    If SelectedPlaceObject IsNot Nothing AndAlso Not inUIEle AndAlso WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject) IsNot Nothing Then
+                        Dim selectedObj As WorldObject = WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject)
+                        theSpriteBatch.Draw(selectedObj.Texture,
+                                            New Rectangle(CInt(Math.Floor((Mouse.GetState.X - WorldMatrix.Translation.X) / 30) * 30), CInt(Math.Floor((Mouse.GetState.Y - WorldMatrix.Translation.Y) / 30) * 30), selectedObj.rect.Width, selectedObj.rect.Height),
+                                            Color.White * 0.5F)
+                    End If
+
+                    ' Draw light edit mode if activated
                     If Dragging = Drag.EditingLighting Then
                         LightEditMode(theSpriteBatch)
                     End If
@@ -155,19 +173,6 @@ Namespace LevelEditor
 
 
                     theSpriteBatch.Begin()
-                    Dim inUIEle As Boolean = False
-                    For Each ele In UIElements
-                        If ele.rect.Contains(Mouse.GetState.Position) AndAlso ele.Visible Then
-                            inUIEle = True
-                        End If
-                    Next
-                    ' Draw preview of selected block at mouse cursor
-                    If SelectedPlaceObject IsNot Nothing AndAlso Not inUIEle AndAlso WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject) IsNot Nothing Then
-                        Dim selectedObj As WorldObject = WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject)
-                        theSpriteBatch.Draw(selectedObj.Texture,
-                                            New Rectangle(CInt(Math.Floor(Mouse.GetState.X / 30) * 30), CInt(Math.Floor(Mouse.GetState.Y / 30) * 30), selectedObj.rect.Width, selectedObj.rect.Height),
-                                            Color.White * 0.5F)
-                    End If
 
                     If Dragging = Drag.EditingLighting Then
                         For Each _uiEle In ELElements
