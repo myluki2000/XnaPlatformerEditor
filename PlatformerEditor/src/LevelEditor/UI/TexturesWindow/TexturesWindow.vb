@@ -113,4 +113,9 @@ Public Class TexturesWindow
             Next
         End If
     End Sub
+
+    Private Sub btnHalveSize_Click(sender As Object, e As EventArgs) Handles btnHalveSize.Click
+        nudTileHeight.Value /= 2
+        nudTileWidth.Value /= 2
+    End Sub
 End Class

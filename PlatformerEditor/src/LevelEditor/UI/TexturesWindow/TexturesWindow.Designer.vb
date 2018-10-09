@@ -42,6 +42,7 @@ Partial Class TexturesWindow
         Me.btnDeleteTexture = New System.Windows.Forms.Button()
         Me.btnAddTexture = New System.Windows.Forms.Button()
         Me.ofdTextures = New System.Windows.Forms.OpenFileDialog()
+        Me.btnHalveSize = New System.Windows.Forms.Button()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -124,6 +125,7 @@ Partial Class TexturesWindow
         '
         'pnlProperties
         '
+        Me.pnlProperties.Controls.Add(Me.btnHalveSize)
         Me.pnlProperties.Controls.Add(Me.cbFoliage)
         Me.pnlProperties.Controls.Add(Me.cbRandomRotation)
         Me.pnlProperties.Controls.Add(Me.btnSave)
@@ -171,7 +173,7 @@ Partial Class TexturesWindow
         Me.nudTileHeight.Location = New System.Drawing.Point(70, 80)
         Me.nudTileHeight.Maximum = New Decimal(New Integer() {999999, 0, 0, 0})
         Me.nudTileHeight.Name = "nudTileHeight"
-        Me.nudTileHeight.Size = New System.Drawing.Size(190, 20)
+        Me.nudTileHeight.Size = New System.Drawing.Size(152, 20)
         Me.nudTileHeight.TabIndex = 6
         '
         'nudTileWidth
@@ -179,7 +181,7 @@ Partial Class TexturesWindow
         Me.nudTileWidth.Location = New System.Drawing.Point(70, 54)
         Me.nudTileWidth.Maximum = New Decimal(New Integer() {999999, 0, 0, 0})
         Me.nudTileWidth.Name = "nudTileWidth"
-        Me.nudTileWidth.Size = New System.Drawing.Size(190, 20)
+        Me.nudTileWidth.Size = New System.Drawing.Size(152, 20)
         Me.nudTileWidth.TabIndex = 5
         '
         'Label2
@@ -255,6 +257,15 @@ Partial Class TexturesWindow
         Me.ofdTextures.Multiselect = True
         Me.ofdTextures.RestoreDirectory = True
         '
+        'btnHalveSize
+        '
+        Me.btnHalveSize.Location = New System.Drawing.Point(228, 54)
+        Me.btnHalveSize.Name = "btnHalveSize"
+        Me.btnHalveSize.Size = New System.Drawing.Size(41, 46)
+        Me.btnHalveSize.TabIndex = 10
+        Me.btnHalveSize.Text = "/ 2"
+        Me.btnHalveSize.UseVisualStyleBackColor = True
+        '
         'TexturesWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -301,4 +312,5 @@ Partial Class TexturesWindow
     Friend WithEvents cbFoliage As Windows.Forms.CheckBox
     Friend WithEvents cbRandomRotation As Windows.Forms.CheckBox
     Friend WithEvents ofdTextures As Windows.Forms.OpenFileDialog
+    Friend WithEvents btnHalveSize As Windows.Forms.Button
 End Class
