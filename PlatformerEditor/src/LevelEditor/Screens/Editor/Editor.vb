@@ -339,6 +339,8 @@ Namespace LevelEditor
                     Level.LightPolygons = LightPolygons
 
                     MainWindow.f.LevelsListChanged()
+
+                    MsgBox("Level was saved.")
                 End Sub
 
                 Private Sub btnTextures_Click() Handles btnTextures.Clicked
