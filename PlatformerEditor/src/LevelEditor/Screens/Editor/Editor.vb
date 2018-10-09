@@ -488,12 +488,12 @@ Namespace LevelEditor
                     Dim inUIEle As Boolean = False
                     For Each ele In UIElements
                         If ele.rect.Contains(Mouse.GetState.Position) AndAlso ele.Visible Then
-                            inUIEle = True
+                            Return
                         End If
                     Next
 
 
-                    If SelectedPlaceObject IsNot Nothing AndAlso inUIEle = False Then
+                    If SelectedPlaceObject IsNot Nothing Then
                         ' If Block selected
 
                         For Each _wObj In WorldObjects
