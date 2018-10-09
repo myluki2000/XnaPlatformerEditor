@@ -372,6 +372,7 @@ Namespace LevelEditor
                 Private Sub DeleteSelectedObject()
                     If SelectedObject IsNot Nothing Then
                         PlacedObjects.Remove(SelectedObject)
+                        SelectedObject = Nothing
                     End If
                 End Sub
 

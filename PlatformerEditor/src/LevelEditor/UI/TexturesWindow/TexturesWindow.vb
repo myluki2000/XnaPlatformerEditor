@@ -35,10 +35,18 @@ Public Class TexturesWindow
                         MsgBox("Texture file does not exist. (Must be .png)")
                     End If
                 Else
-                        MsgBox("Texture file must be placed in the Content folder or a subfolder")
+                    MsgBox("Texture file must be placed in the Content folder or a subfolder")
                 End If
             End If
 
+        Next
+
+        RefreshList()
+    End Sub
+
+    Private Sub btnDeleteTexture_Click(sender As Object, e As EventArgs) Handles btnDeleteTexture.Click
+        For Each item As ListViewItem In lvTextures.SelectedItems
+            WorldObjects.Remove(WorldObjects.Find(Function(x) x.Name = item.Text))
         Next
 
         RefreshList()

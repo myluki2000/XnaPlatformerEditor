@@ -39,7 +39,7 @@ Partial Class TexturesWindow
         Me.lblTexturePath = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.pbTexturePreview = New System.Windows.Forms.PictureBox()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.btnDeleteTexture = New System.Windows.Forms.Button()
         Me.btnAddTexture = New System.Windows.Forms.Button()
         Me.ofdTextures = New System.Windows.Forms.OpenFileDialog()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -71,7 +71,7 @@ Partial Class TexturesWindow
         '
         'SplitContainer1.Panel2
         '
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Button2)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.btnDeleteTexture)
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnAddTexture)
         Me.SplitContainer1.Panel2MinSize = 40
         Me.SplitContainer1.Size = New System.Drawing.Size(815, 452)
@@ -102,7 +102,6 @@ Partial Class TexturesWindow
         Me.lvTextures.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvTextures.FullRowSelect = True
         Me.lvTextures.Location = New System.Drawing.Point(0, 0)
-        Me.lvTextures.MultiSelect = False
         Me.lvTextures.Name = "lvTextures"
         Me.lvTextures.Size = New System.Drawing.Size(539, 406)
         Me.lvTextures.TabIndex = 2
@@ -230,15 +229,15 @@ Partial Class TexturesWindow
         Me.pbTexturePreview.TabIndex = 0
         Me.pbTexturePreview.TabStop = False
         '
-        'Button2
+        'btnDeleteTexture
         '
-        Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button2.Location = New System.Drawing.Point(615, 8)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(91, 30)
-        Me.Button2.TabIndex = 1
-        Me.Button2.Text = "Delete Texture"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.btnDeleteTexture.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnDeleteTexture.Location = New System.Drawing.Point(615, 8)
+        Me.btnDeleteTexture.Name = "btnDeleteTexture"
+        Me.btnDeleteTexture.Size = New System.Drawing.Size(91, 30)
+        Me.btnDeleteTexture.TabIndex = 1
+        Me.btnDeleteTexture.Text = "Delete Texture"
+        Me.btnDeleteTexture.UseVisualStyleBackColor = True
         '
         'btnAddTexture
         '
@@ -289,7 +288,7 @@ Partial Class TexturesWindow
     Friend WithEvents chName As Windows.Forms.ColumnHeader
     Friend WithEvents chPath As Windows.Forms.ColumnHeader
     Friend WithEvents pbTexturePreview As Windows.Forms.PictureBox
-    Friend WithEvents Button2 As Windows.Forms.Button
+    Friend WithEvents btnDeleteTexture As Windows.Forms.Button
     Friend WithEvents btnAddTexture As Windows.Forms.Button
     Friend WithEvents pnlProperties As Windows.Forms.Panel
     Friend WithEvents Panel1 As Windows.Forms.Panel
