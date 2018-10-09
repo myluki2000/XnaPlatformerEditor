@@ -41,6 +41,7 @@ Partial Class TexturesWindow
         Me.pbTexturePreview = New System.Windows.Forms.PictureBox()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.btnAddTexture = New System.Windows.Forms.Button()
+        Me.ofdTextures = New System.Windows.Forms.OpenFileDialog()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -249,6 +250,12 @@ Partial Class TexturesWindow
         Me.btnAddTexture.Text = "Add Texture"
         Me.btnAddTexture.UseVisualStyleBackColor = True
         '
+        'ofdTextures
+        '
+        Me.ofdTextures.Filter = "PNG-Files | *.png"
+        Me.ofdTextures.Multiselect = True
+        Me.ofdTextures.RestoreDirectory = True
+        '
         'TexturesWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -294,4 +301,5 @@ Partial Class TexturesWindow
     Friend WithEvents lblTexturePath As Windows.Forms.Label
     Friend WithEvents cbFoliage As Windows.Forms.CheckBox
     Friend WithEvents cbRandomRotation As Windows.Forms.CheckBox
+    Friend WithEvents ofdTextures As Windows.Forms.OpenFileDialog
 End Class

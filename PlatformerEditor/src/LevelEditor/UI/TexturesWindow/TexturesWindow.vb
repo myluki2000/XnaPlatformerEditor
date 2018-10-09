@@ -10,29 +10,38 @@ Public Class TexturesWindow
     End Sub
 
     Private Sub btnAddTexture_Click(sender As Object, e As EventArgs) Handles btnAddTexture.Click
+        ofdTextures.ShowDialog()
 
-        Dim filePath As String = InputBox("Please input a relative file path in the content directory")
+        For Each filePath In ofdTextures.FileNames
 
-        If filePath <> "" Then
+            If filePath <> "" Then
+                If filePath.Contains("\Content\") Then ' Check if path is in content directory
 
-            If IO.File.Exists(IO.Path.Combine(Application.StartupPath, GlobalContent.RootDirectory, filePath) & ".png") Then
-                Dim objName As String = InputBox("Please type in a name for the new texture")
-                If objName <> "" Then
-                    Dim newObj As New WorldObject(objName, filePath)
-                    newObj.rect.Width = newObj.Texture.Width
-                    newObj.rect.Height = newObj.Texture.Height
-                    WorldObjects.Add(newObj)
+                    filePath = filePath.Split(New String() {"\Content\"}, StringSplitOptions.None)(1)
+                    filePath = filePath.Replace(".png", "")
+
+                    If IO.File.Exists(IO.Path.Combine(Application.StartupPath, GlobalContent.RootDirectory, filePath) & ".png") Then
+                        Dim objName As String = TextureNameWindow.ShowDialog(IO.Path.Combine(Application.StartupPath, GlobalContent.RootDirectory, filePath) & ".png")
+
+                        If objName <> "" Then
+                            Dim newObj As New WorldObject(objName, filePath)
+                            newObj.rect.Width = newObj.Texture.Width
+                            newObj.rect.Height = newObj.Texture.Height
+                            WorldObjects.Add(newObj)
+                        End If
+
+                    Else
+
+                        MsgBox("Texture file does not exist. (Must be .png)")
+                    End If
+                Else
+                        MsgBox("Texture file must be placed in the Content folder or a subfolder")
                 End If
-
-            Else
-
-                MsgBox("Texture file does not exist. (Must be .png)")
             End If
 
-        End If
+        Next
 
-
-            RefreshList()
+        RefreshList()
     End Sub
 
     Private Sub RefreshList()

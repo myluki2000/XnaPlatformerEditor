@@ -68,6 +68,12 @@
     <Compile Include="src\LevelEditor\UI\LevelPropertiesWindow\LevelPropertiesWindow.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="src\LevelEditor\UI\TexturesWindow\TextureNameWindow.Designer.vb">
+      <DependentUpon>TextureNameWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\LevelEditor\UI\TexturesWindow\TextureNameWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\Level\Characters\Character.vb" />
     <Compile Include="src\Level\Characters\Weapons\AR.vb" />
     <Compile Include="src\Level\Characters\Weapons\GrenadeLauncher.vb" />
@@ -248,6 +254,9 @@
   <ItemGroup>
     <EmbeddedResource Include="src\LevelEditor\UI\LevelPropertiesWindow\LevelPropertiesWindow.resx">
       <DependentUpon>LevelPropertiesWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\LevelEditor\UI\TexturesWindow\TextureNameWindow.resx">
+      <DependentUpon>TextureNameWindow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\UI\CharacterPresetWindow\AnimationWindow.resx">
       <DependentUpon>AnimationWindow.vb</DependentUpon>
