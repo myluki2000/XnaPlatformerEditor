@@ -434,16 +434,11 @@ Namespace LevelEditor
                                 Dragging = Drag.placing
                             End If
 
-                            If IsNothing(PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X) / 30)),
-                                                                                      CInt(Math.Floor((Mouse.GetState.Position.Y) / 30))))) Then
+                            If IsNothing(PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X - WorldMatrix.Translation.X) / 30)),
+                                                                                      CInt(Math.Floor((Mouse.GetState.Position.Y - WorldMatrix.Translation.Y) / 30))))) Then
 
                                 ' If block at mouse pos is nothing (there is no block)
                                 PlaceSelectedBlock()
-                            Else
-                                If PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X) / 30)),
-                                                                                  CInt(Math.Floor((Mouse.GetState.Position.Y) / 30)))).Name IsNot SelectedPlaceObject Then
-                                    PlaceSelectedBlock()
-                                End If
                             End If
                         End If
                     End If
