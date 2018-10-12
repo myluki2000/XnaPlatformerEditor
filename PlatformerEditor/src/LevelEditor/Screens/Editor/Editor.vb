@@ -386,8 +386,6 @@ Namespace LevelEditor
                     End If
                 End Sub
 
-
-
                 Private Sub ObjectDrag()
                     If Mouse.GetState.LeftButton = ButtonState.Pressed Then
                         If SelectedObject IsNot Nothing Then

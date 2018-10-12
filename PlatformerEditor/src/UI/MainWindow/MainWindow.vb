@@ -1,5 +1,6 @@
 ﻿Imports System.Collections.Generic
 Imports System.ComponentModel
+Imports System.Windows.Forms
 Imports Microsoft.Xna.Framework.Graphics
 
 Public Class MainWindow
@@ -62,6 +63,8 @@ Public Class MainWindow
 
         PlacedObjects = Levels.Find(Function(x) x.Name = lvLevels.SelectedItems(0).Text).PlacedObjects
         LightPolygons = Levels.Find(Function(x) x.Name = lvLevels.SelectedItems(0).Text).LightPolygons
+
+        Form.FromHandle(game.Window.Handle).Focus()
     End Sub
 
     Private Sub MainWindow_Shown(sender As Object, e As EventArgs) Handles Me.Shown

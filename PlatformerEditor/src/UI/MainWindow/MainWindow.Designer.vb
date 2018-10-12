@@ -29,6 +29,7 @@ Partial Class MainWindow
         Me.chName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chObjCount = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.btnDeleteLevel = New System.Windows.Forms.Button()
         Me.btnAddLevel = New System.Windows.Forms.Button()
         Me.tpCharacters = New System.Windows.Forms.TabPage()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -43,7 +44,6 @@ Partial Class MainWindow
         Me.Panel5 = New System.Windows.Forms.Panel()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.btnSaveWorld = New System.Windows.Forms.Button()
-        Me.btnDeleteLevel = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.tpLevels.SuspendLayout()
         Me.Panel3.SuspendLayout()
@@ -116,6 +116,15 @@ Partial Class MainWindow
         Me.Panel4.Name = "Panel4"
         Me.Panel4.Size = New System.Drawing.Size(873, 36)
         Me.Panel4.TabIndex = 1
+        '
+        'btnDeleteLevel
+        '
+        Me.btnDeleteLevel.Location = New System.Drawing.Point(638, 6)
+        Me.btnDeleteLevel.Name = "btnDeleteLevel"
+        Me.btnDeleteLevel.Size = New System.Drawing.Size(113, 25)
+        Me.btnDeleteLevel.TabIndex = 2
+        Me.btnDeleteLevel.Text = "Delete Level"
+        Me.btnDeleteLevel.UseVisualStyleBackColor = True
         '
         'btnAddLevel
         '
@@ -235,15 +244,6 @@ Partial Class MainWindow
         Me.btnSaveWorld.TabIndex = 1
         Me.btnSaveWorld.Text = "Save World"
         Me.btnSaveWorld.UseVisualStyleBackColor = True
-        '
-        'btnDeleteLevel
-        '
-        Me.btnDeleteLevel.Location = New System.Drawing.Point(638, 6)
-        Me.btnDeleteLevel.Name = "btnDeleteLevel"
-        Me.btnDeleteLevel.Size = New System.Drawing.Size(113, 25)
-        Me.btnDeleteLevel.TabIndex = 2
-        Me.btnDeleteLevel.Text = "Delete Level"
-        Me.btnDeleteLevel.UseVisualStyleBackColor = True
         '
         'MainWindow
         '
