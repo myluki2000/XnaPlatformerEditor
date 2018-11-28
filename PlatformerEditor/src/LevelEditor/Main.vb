@@ -25,6 +25,9 @@ Namespace LevelEditor
             Content.RootDirectory = "Content"
 
             Instance = Me
+
+            Dim mainWindow As New MainWindow(Me)
+            mainWindow.Show()
         End Sub
 
 
@@ -41,7 +44,6 @@ Namespace LevelEditor
 
         Protected Overrides Sub LoadContent()
             spriteBatch = New SpriteBatch(GraphicsDevice)
-            GlobalContent = Content
             FontKoot = Content.Load(Of SpriteFont)("Fonts/Koot")
 
             Editor = New Screens.Editor.Editor
@@ -73,7 +75,7 @@ Namespace LevelEditor
                     Editor.Draw(spriteBatch)
                 Else
                     GraphicsDevice.Clear(Color.Black)
-                    spriteBatch.Begin()
+                    spriteBatch.Begin(, BlendState.NonPremultiplied,,,,,)
                     spriteBatch.DrawString(FontKoot, "Select a level in the main window to start!", New Vector2(100, 300), Color.White, 0, Nothing, 3, Nothing, Nothing)
                     spriteBatch.End()
                 End If

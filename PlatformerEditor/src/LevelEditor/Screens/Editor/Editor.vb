@@ -16,8 +16,8 @@ Namespace LevelEditor
                 Dim WithEvents btnListObjects As New ButtonList With {.rect = New Rectangle(50, 50, 120, 150), .btnWidth = 40, .btnHeight = 40}
                 Dim WithEvents btnListTechnical As New ButtonList With {.rect = New Rectangle(100, 50, 300, 200), .btnWidth = 200, .btnHeight = 40}
                 Dim WithEvents btnSnapToGrid As New Button With {.rect = New Rectangle(215, 10, 105, 30), .Text = "Snap To Grid", .ToggleButton = True}
-                Dim WithEvents btnCursor As New Button With {.ToggleButton = True, .Checked = True, .rect = New Rectangle(10, 10, 30, 30), .Text = "", .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Cursor")}
-                Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(330, 10, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Delete"), .Text = ""}
+                Dim WithEvents btnCursor As New Button With {.ToggleButton = True, .Checked = True, .rect = New Rectangle(10, 10, 30, 30), .Text = "", .BackgroundTexture = TextureLoader.Load("UI/Cursor")}
+                Dim WithEvents btnDelete As New Button With {.rect = New Rectangle(330, 10, 30, 30), .BackgroundTexture = TextureLoader.Load("UI/Delete"), .Text = ""}
                 Dim WithEvents btnSave As New Button With {.rect = New Rectangle(370, 10, 90, 30), .Text = "Save Level"}
                 Dim WithEvents btnTextures As New Button With {.rect = New Rectangle(470, 10, 90, 30), .Text = "Textures"}
                 Dim WithEvents btnEditLight As New Button With {.rect = New Rectangle(570, 10, 100, 30), .Text = "Edit Lighting", .ToggleButton = True}
@@ -28,9 +28,9 @@ Namespace LevelEditor
 
 
                 ' Light Edit Mode
-                Dim WithEvents btnELAcceptEdit As New Button With {.rect = New Rectangle(10, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Checkmark"), .text = "", .Visible = False}
-                Dim WithEvents btnELReset As New Button With {.rect = New Rectangle(50, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/Delete"), .text = "", .Visible = False}
-                Dim WithEvents btnELAddCorner As New Button With {.rect = New Rectangle(90, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = GlobalContent.Load(Of Texture2D)("UI/AddCorner"), .text = "", .Visible = False}
+                Dim WithEvents btnELAcceptEdit As New Button With {.rect = New Rectangle(10, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = TextureLoader.Load("UI/Checkmark"), .Text = "", .Visible = False}
+                Dim WithEvents btnELReset As New Button With {.rect = New Rectangle(50, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = TextureLoader.Load("UI/Delete"), .Text = "", .Visible = False}
+                Dim WithEvents btnELAddCorner As New Button With {.rect = New Rectangle(90, Main.graphics.PreferredBackBufferHeight - 40, 30, 30), .BackgroundTexture = TextureLoader.Load("UI/AddCorner"), .Text = "", .Visible = False}
                 Dim WithEvents btnELNewPolygon As New Button With {.rect = New Rectangle(130, Main.graphics.PreferredBackBufferHeight - 40, 110, 30), .text = "New Polygon", .Visible = False}
 
                 Dim ELSelectedPolygon As Polygon
@@ -61,12 +61,6 @@ Namespace LevelEditor
                 End Enum
 
                 Sub New()
-                    'Load WorldObjects from XML
-                    'Dim xele As XElement = XElement.Load("tes.xml")
-                    'For Each _wObj In xele.Elements
-                    '    WorldObjects.Add(New WorldObject With {.Name = _wObj.Attribute("Name").Value, .Texture = GlobalContent.Load(Of Texture2D)(_wObj.Element("TexturePath").Value), .TexturePath = _wObj.Element("TexturePath").Value})
-                    'Next
-
 
                     RefreshBtnList()
 
@@ -138,7 +132,7 @@ Namespace LevelEditor
                         Dragging = Drag.None
                     End If
 
-                    theSpriteBatch.Begin(, , , , , , WorldMatrix)
+                    theSpriteBatch.Begin(, BlendState.NonPremultiplied, , , , , WorldMatrix)
 
                     ' Draw level objects
                     For Each _wObj In PlacedObjects
@@ -172,7 +166,7 @@ Namespace LevelEditor
                     theSpriteBatch.End()
 
 
-                    theSpriteBatch.Begin()
+                    theSpriteBatch.Begin(, BlendState.NonPremultiplied,,,,,)
 
                     If Dragging = Drag.EditingLighting Then
                         For Each _uiEle In ELElements

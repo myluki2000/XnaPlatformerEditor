@@ -13,7 +13,7 @@ Public MustInherit Class Sprite
 
     Sub New(_name As String, _texturePath As String)
         Try
-            Texture = GlobalContent.Load(Of Texture2D)(_texturePath)
+            Texture = TextureLoader.Load(_texturePath)
         Catch ex As Content.ContentLoadException
             MsgBox("Error while loading texture from path: " & _texturePath & vbNewLine & "Is there a typo or does the file not exist?")
         End Try

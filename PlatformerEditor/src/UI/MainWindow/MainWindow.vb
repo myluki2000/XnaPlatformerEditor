@@ -8,14 +8,16 @@ Public Class MainWindow
     Public Shared Levels As New List(Of Level)
     Public Shared CharacterPresets As New List(Of Character)
 
-    Private game As New LevelEditor.Main()
+    Private game As LevelEditor.Main
 
     Public Shared f As MainWindow
 
     Private WorldPath As String = ""
 
-    Sub New()
+    Sub New(game As LevelEditor.Main)
         InitializeComponent()
+
+        Me.game = game
 
         f = Me
     End Sub
@@ -56,7 +58,7 @@ Public Class MainWindow
         WorldObjects = Levels.Find(Function(x) x.Name = lvLevels.SelectedItems(0).Text).WorldObjects
 
         For Each wObj In WorldObjects
-            wObj.Texture = GlobalContent.Load(Of Texture2D)(wObj.TexturePath)
+            wObj.Texture = TextureLoader.Load(wObj.TexturePath)
         Next
 
         game.Editor.RefreshBtnList()
@@ -68,7 +70,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub MainWindow_Shown(sender As Object, e As EventArgs) Handles Me.Shown
-        game.Run()
+
     End Sub
 
     Private Sub MainWindow_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing

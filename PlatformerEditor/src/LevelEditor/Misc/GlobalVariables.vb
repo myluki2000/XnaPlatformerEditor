@@ -4,7 +4,6 @@ Imports Microsoft.Xna.Framework
 Module GlobalVariables
     Public MouseLastState As Input.MouseState
     Public FontKoot As Graphics.SpriteFont
-    Public GlobalContent As Content.ContentManager
 
     Public WorldMatrix As New Matrix()
 

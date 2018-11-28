@@ -20,8 +20,8 @@ Public Class TexturesWindow
                     filePath = filePath.Split(New String() {"\Content\"}, StringSplitOptions.None)(1)
                     filePath = filePath.Replace(".png", "")
 
-                    If IO.File.Exists(IO.Path.Combine(Application.StartupPath, GlobalContent.RootDirectory, filePath) & ".png") Then
-                        Dim objName As String = TextureNameWindow.ShowDialog(IO.Path.Combine(Application.StartupPath, GlobalContent.RootDirectory, filePath) & ".png")
+                    If IO.File.Exists(IO.Path.Combine(Application.StartupPath, "Content", filePath) & ".png") Then
+                        Dim objName As String = TextureNameWindow.ShowDialog(IO.Path.Combine(Application.StartupPath, "Content", filePath) & ".png")
 
                         If objName <> "" Then
                             Dim newObj As New WorldObject(objName, filePath)
