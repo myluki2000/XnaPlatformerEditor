@@ -384,8 +384,9 @@ Namespace LevelEditor
                     If Mouse.GetState.LeftButton = ButtonState.Pressed Then
                         If SelectedObject IsNot Nothing Then
 
-                            If SelectedObject.getScreenRect.Contains(Mouse.GetState.Position) AndAlso
-                        New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6).Contains(Mouse.GetState.Position) = False Then
+                            If SelectedObject.getScreen1Rect.Contains(Mouse.GetState.Position) Then 'AndAlso
+                                'New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6).Contains(Mouse.GetState.Position) = False Then
+                                Diagnostics.Debug.WriteLine("Trying to drag")
                                 If MouseLastState.LeftButton = ButtonState.Released Then
                                     ' Drag Start
 
