@@ -22,6 +22,7 @@ Namespace LevelEditor
                 Dim WithEvents btnTextures As New Button With {.rect = New Rectangle(470, 10, 90, 30), .Text = "Textures"}
                 Dim WithEvents btnEditLight As New Button With {.rect = New Rectangle(570, 10, 100, 30), .Text = "Edit Lighting", .ToggleButton = True}
                 Dim WithEvents btnLevelProperties As New Button With {.rect = New Rectangle(680, 10, 140, 30), .Text = "Level Properties"}
+                Dim WithEvents btnSetZoom As New Button With {.rect = New Rectangle(830, 10, 100, 30), .Text = "Set Zoom"}
 
                 Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 140, 10, 130, 30), "Z-Index:")
                 Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
@@ -42,7 +43,7 @@ Namespace LevelEditor
                 Dim ELElements As New List(Of UIElement)
 #End Region
 
-
+                Public Shared Camera As New Camera()
 
                 Dim SelectedPlaceObject As String
                 Dim SelectedObject As WorldObject
@@ -97,14 +98,13 @@ Namespace LevelEditor
                     UIElements.Add(btnTextures)
                     UIElements.Add(btnEditLight)
                     UIElements.Add(btnLevelProperties)
+                    UIElements.Add(btnSetZoom)
 
                     ELElements.Add(btnELAcceptEdit)
                     ELElements.Add(btnELReset)
                     ELElements.Add(btnELAddCorner)
                     ELElements.Add(btnELNewPolygon)
 #End Region
-
-                    Matrix.CreateTranslation(0, 0, 0, WorldMatrix)
                 End Sub
 
                 Public Overrides Sub Update(_gameTime As GameTime)
@@ -132,15 +132,23 @@ Namespace LevelEditor
                         Dragging = Drag.None
                     End If
 
-                    theSpriteBatch.Begin(, BlendState.NonPremultiplied, , , , , WorldMatrix)
+
 
                     ' Draw level objects
                     For Each _wObj In PlacedObjects
+                        If _wObj.ParallaxMultiplier <> 1.0F Then
+                            theSpriteBatch.Begin(, BlendState.NonPremultiplied, , , , , Camera.GetMatrix(New Vector3(_wObj.ParallaxMultiplier)))
+                        Else
+                            theSpriteBatch.Begin(, BlendState.NonPremultiplied, , , , , Camera.GetMatrix())
+                        End If
                         _wObj.Draw(theSpriteBatch)
 
+                        theSpriteBatch.End()
                         ' Debug Feature: Draw outline around objects
                         ' Misc.DrawOutline(theSpriteBatch, _wObj.getScreenRect, Color.Red, 5)
                     Next
+
+                    theSpriteBatch.Begin(, BlendState.NonPremultiplied, , , , , Camera.GetMatrix())
 
                     ' Draw outline around selected object + corner
                     Dim selectedObjIndex As Integer = PlacedObjects.IndexOf(SelectedObject)
@@ -154,7 +162,7 @@ Namespace LevelEditor
                     If SelectedPlaceObject IsNot Nothing AndAlso Not inUIEle AndAlso WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject) IsNot Nothing Then
                         Dim selectedObj As WorldObject = WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject)
                         theSpriteBatch.Draw(selectedObj.Texture,
-                                            New Rectangle(CInt(Math.Floor((Mouse.GetState.X - WorldMatrix.Translation.X) / 30) * 30), CInt(Math.Floor((Mouse.GetState.Y - WorldMatrix.Translation.Y) / 30) * 30), selectedObj.rect.Width, selectedObj.rect.Height),
+                                            New Rectangle(CInt(Math.Floor((Mouse.GetState.X - Camera.Translation.X) / 30) * 30), CInt(Math.Floor((Mouse.GetState.Y - Camera.Translation.Y) / 30) * 30), selectedObj.rect.Width, selectedObj.rect.Height),
                                             Color.White * 0.5F)
                     End If
 
@@ -221,10 +229,10 @@ Namespace LevelEditor
                 Private Sub TransformMatrixDrag()
                     If Mouse.GetState.MiddleButton = ButtonState.Pressed AndAlso MouseLastState.MiddleButton = ButtonState.Released Then
                         StartPoint = Mouse.GetState.Position
-                        MatrixStart = WorldMatrix.Translation
+                        MatrixStart = Camera.Translation
                     ElseIf Mouse.GetState.MiddleButton = ButtonState.Pressed Then
                         Dim diff As Vector2 = (Mouse.GetState.Position - StartPoint).ToVector2
-                        WorldMatrix.Translation = MatrixStart + New Vector3(diff.X, diff.Y, 0)
+                        Camera.Translation = MatrixStart + New Vector3(diff.X, diff.Y, 0)
                     End If
                 End Sub
 
@@ -363,6 +371,10 @@ Namespace LevelEditor
                     Dim f As New LevelPropertiesWindow
                     f.ShowDialog()
                 End Sub
+
+                Private Sub btnSetZoom_Clicked() Handles btnSetZoom.Clicked
+                    Camera.Scale = New Vector3(Single.Parse(InputBox("Type in zoom level"), Globalization.CultureInfo.InvariantCulture))
+                End Sub
 #End Region
 
                 Private Sub DeleteSelectedObject()
@@ -435,8 +447,8 @@ Namespace LevelEditor
                                 Dragging = Drag.placing
                             End If
 
-                            If IsNothing(PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X - WorldMatrix.Translation.X) / 30)),
-                                                                                      CInt(Math.Floor((Mouse.GetState.Position.Y - WorldMatrix.Translation.Y) / 30))))) Then
+                            If IsNothing(PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X - Camera.Translation.X) / 30)),
+                                                                                      CInt(Math.Floor((Mouse.GetState.Position.Y - Camera.Translation.Y) / 30))))) Then
 
                                 ' If block at mouse pos is nothing (there is no block)
                                 PlaceSelectedBlock()
@@ -495,8 +507,8 @@ Namespace LevelEditor
                         For Each _wObj In WorldObjects
                             If _wObj.Name = SelectedPlaceObject Then
                                 Dim PlacingObject As WorldObject = _wObj.ShallowCopy()
-                                PlacingObject.rect.X = CInt(Math.Floor((Mouse.GetState.Position.X - WorldMatrix.Translation.X) / 30))
-                                PlacingObject.rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - WorldMatrix.Translation.Y) / 30))
+                                PlacingObject.rect.X = CInt(Math.Floor((Mouse.GetState.Position.X - Camera.Translation.X) / 30))
+                                PlacingObject.rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - Camera.Translation.Y) / 30))
                                 PlacingObject.rect.Width = PlacingObject.rect.Width
                                 PlacingObject.rect.Height = PlacingObject.rect.Height
                                 PlacingObject.zIndex = NUDzindex.Value

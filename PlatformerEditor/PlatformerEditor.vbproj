@@ -72,6 +72,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="src\Animations\Animation.vb" />
+    <Compile Include="src\LevelEditor\Misc\Camera.vb" />
     <Compile Include="src\LevelEditor\Misc\TextureLoader.vb" />
     <Compile Include="src\LevelEditor\UI\LevelPropertiesWindow\LevelPropertiesWindow.Designer.vb">
       <DependentUpon>LevelPropertiesWindow.vb</DependentUpon>

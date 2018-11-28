@@ -5,8 +5,6 @@ Module GlobalVariables
     Public MouseLastState As Input.MouseState
     Public FontKoot As Graphics.SpriteFont
 
-    Public WorldMatrix As New Matrix()
-
 #Region "Declare lists to hold world objects"
     Public WorldObjects As New List(Of WorldObject)
     Public TechnicalObjects As New List(Of TechnicalObject)
