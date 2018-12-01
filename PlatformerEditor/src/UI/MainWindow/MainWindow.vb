@@ -66,6 +66,8 @@ Public Class MainWindow
         PlacedObjects = Levels.Find(Function(x) x.Name = lvLevels.SelectedItems(0).Text).PlacedObjects
         LightPolygons = Levels.Find(Function(x) x.Name = lvLevels.SelectedItems(0).Text).LightPolygons
 
+        game.Editor.Camera = New Camera()
+
         Form.FromHandle(game.Window.Handle).Focus()
     End Sub
 

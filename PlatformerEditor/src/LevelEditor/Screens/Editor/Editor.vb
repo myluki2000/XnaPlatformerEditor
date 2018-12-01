@@ -23,6 +23,7 @@ Namespace LevelEditor
                 Dim WithEvents btnEditLight As New Button With {.rect = New Rectangle(570, 10, 100, 30), .Text = "Edit Lighting", .ToggleButton = True}
                 Dim WithEvents btnLevelProperties As New Button With {.rect = New Rectangle(680, 10, 140, 30), .Text = "Level Properties"}
                 Dim WithEvents btnSetZoom As New Button With {.rect = New Rectangle(830, 10, 100, 30), .Text = "Set Zoom"}
+                Dim WithEvents btnParallax As New Button With {.rect = New Rectangle(940, 10, 120, 30), .Text = "Show Parallax", .ToggleButton = True}
 
                 Dim WithEvents NUDzindex As New NumericUpDown(New Rectangle(Main.graphics.PreferredBackBufferWidth - 140, 10, 130, 30), "Z-Index:")
                 Dim UIPanel As New UIPanel(New Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, 50))
@@ -43,7 +44,7 @@ Namespace LevelEditor
                 Dim ELElements As New List(Of UIElement)
 #End Region
 
-                Public Shared Camera As New Camera()
+                Public Camera As New Camera()
 
                 Dim SelectedPlaceObject As String
                 Dim SelectedObject As WorldObject
@@ -99,6 +100,7 @@ Namespace LevelEditor
                     UIElements.Add(btnEditLight)
                     UIElements.Add(btnLevelProperties)
                     UIElements.Add(btnSetZoom)
+                    UIElements.Add(btnParallax)
 
                     ELElements.Add(btnELAcceptEdit)
                     ELElements.Add(btnELReset)
@@ -136,7 +138,7 @@ Namespace LevelEditor
 
                     ' Draw level objects
                     For Each _wObj In PlacedObjects
-                        If _wObj.ParallaxMultiplier <> 1.0F Then
+                        If _wObj.ParallaxMultiplier <> 1.0F AndAlso btnParallax.Checked Then
                             theSpriteBatch.Begin(, BlendState.NonPremultiplied, , , , , Camera.GetMatrix(New Vector3(_wObj.ParallaxMultiplier)))
                         Else
                             theSpriteBatch.Begin(, BlendState.NonPremultiplied, , , , , Camera.GetMatrix())
@@ -176,6 +178,7 @@ Namespace LevelEditor
 
                     theSpriteBatch.Begin(, BlendState.NonPremultiplied,,,,,)
 
+                    ' Draw controls for lighting editor mode
                     If Dragging = Drag.EditingLighting Then
                         For Each _uiEle In ELElements
                             _uiEle.Draw(theSpriteBatch)
@@ -183,7 +186,7 @@ Namespace LevelEditor
                         theSpriteBatch.DrawString(FontKoot, "Lighting Editor Mode", New Vector2(10, Main.graphics.PreferredBackBufferHeight - 60), Color.Black)
                     End If
 
-
+                    ' Draw UI Elements
                     For Each ele In UIElements
                         ele.Draw(theSpriteBatch)
                     Next
@@ -216,6 +219,7 @@ Namespace LevelEditor
                     ObjectDrag()
                     TransformMatrixDrag()
 
+                    ' Show WorldObject property window when double clicked on it
                     If ClickHandler.CheckForDoubleClick(gameTime) Then
                         If SelectedObject IsNot Nothing Then
                             Dim propWindow As New PropertiesWindow
@@ -242,7 +246,7 @@ Namespace LevelEditor
                     End If
                 End Sub
 
-#Region "Button Event Handlers"
+#Region "Controls Event Handlers"
 
                 Private Sub btnListObjectsButton_Click(sender As Object)
                     Dim SenderBtn = DirectCast(sender, Button)
@@ -375,6 +379,14 @@ Namespace LevelEditor
                 Private Sub btnSetZoom_Clicked() Handles btnSetZoom.Clicked
                     Camera.Scale = New Vector3(Single.Parse(InputBox("Type in zoom level"), Globalization.CultureInfo.InvariantCulture))
                 End Sub
+
+                Private Sub NUDzIndex_ValueChanged() Handles NUDzindex.ValueChanged
+                    If SelectedObject IsNot Nothing Then
+                        PlacedObjects(PlacedObjects.IndexOf(SelectedObject)).zIndex = NUDzindex.Value
+                        SelectedObject.zIndex = NUDzindex.Value
+                        PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
+                    End If
+                End Sub
 #End Region
 
                 Private Sub DeleteSelectedObject()
@@ -384,21 +396,14 @@ Namespace LevelEditor
                     End If
                 End Sub
 
-                Private Sub NUDzIndex_ValueChanged() Handles NUDzindex.ValueChanged
-                    If SelectedObject IsNot Nothing Then
-                        PlacedObjects(PlacedObjects.IndexOf(SelectedObject)).zIndex = NUDzindex.Value
-                        SelectedObject.zIndex = NUDzindex.Value
-                        PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
-                    End If
-                End Sub
+
 
                 Private Sub ObjectDrag()
                     If Mouse.GetState.LeftButton = ButtonState.Pressed Then
                         If SelectedObject IsNot Nothing Then
 
-                            If SelectedObject.getScreen1Rect.Contains(Mouse.GetState.Position) Then 'AndAlso
-                                'New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6).Contains(Mouse.GetState.Position) = False Then
-                                Diagnostics.Debug.WriteLine("Trying to drag")
+                            If SelectedObject.getTrueRect.Contains(Utility.ScreenPosToWorldPos(Mouse.GetState.Position)) AndAlso
+                                Not (New Rectangle(SelectedObject.getTrueRect.Right - 6, SelectedObject.getTrueRect.Bottom - 6, 6, 6)).Contains(Utility.ScreenPosToWorldPos(Mouse.GetState.Position)) Then
                                 If MouseLastState.LeftButton = ButtonState.Released Then
                                     ' Drag Start
 
@@ -456,6 +461,8 @@ Namespace LevelEditor
                         End If
                     End If
 
+
+                    ' Select WorldObject which is clicked on
                     If Mouse.GetState.LeftButton = ButtonState.Released AndAlso Mouse.GetState.Position.X > -1 AndAlso Mouse.GetState.Position.Y > -1 AndAlso MouseLastState.LeftButton = ButtonState.Pressed Then
                         Dim inUIEle As Boolean = False
                         For Each ele In UIElements
@@ -471,7 +478,7 @@ Namespace LevelEditor
                                 Dim BlockFound As Boolean = False
                                 For i As Integer = PlacedObjects.Count - 1 To 0 Step -1
                                     Dim _wObj As WorldObject = PlacedObjects(i)
-                                    If _wObj.getScreen1Rect.Contains(Mouse.GetState.Position) Then
+                                    If _wObj.getTrueRect.Contains(Utility.ScreenPosToWorldPos(Mouse.GetState.Position)) Then
                                         SelectedObject = _wObj
                                         SelectedObjectChanged()
                                         BlockFound = True

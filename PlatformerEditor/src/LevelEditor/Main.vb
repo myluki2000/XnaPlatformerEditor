@@ -17,7 +17,7 @@ Namespace LevelEditor
 
         Public Shared LevelName As String = ""
 
-        Public Shared Instance As Game
+        Public Shared Instance As Main
 
         Public Sub New()
             MyBase.New()

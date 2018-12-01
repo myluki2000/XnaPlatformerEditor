@@ -8,7 +8,6 @@ Public Class Camera
         Return Matrix.CreateTranslation(Translation) *
                 Matrix.CreateTranslation(New Vector3(0, 150, 0)) *
                 Matrix.CreateScale(Scale) *
-                Matrix.CreateScale(CSng(LevelEditor.Main.graphics.PreferredBackBufferHeight / 1080)) *
                 Matrix.CreateTranslation(New Vector3(CSng(LevelEditor.Main.graphics.GraphicsDevice.Viewport.Width / 2), CSng(LevelEditor.Main.graphics.GraphicsDevice.Viewport.Height / 2), 0))
     End Function
 
@@ -16,7 +15,6 @@ Public Class Camera
         Return Matrix.CreateTranslation(Translation * New Vector3(1 / parallax.X, 1, 1)) *
                 Matrix.CreateTranslation(New Vector3(0, 150, 0)) *
                 Matrix.CreateScale(Scale) *
-                Matrix.CreateScale(CSng(LevelEditor.Main.graphics.PreferredBackBufferHeight / 1080)) *
                 Matrix.CreateTranslation(New Vector3(CSng(LevelEditor.Main.graphics.GraphicsDevice.Viewport.Width / 2), CSng(LevelEditor.Main.graphics.GraphicsDevice.Viewport.Height / 2), 0))
 
     End Function

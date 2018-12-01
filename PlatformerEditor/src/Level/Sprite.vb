@@ -41,8 +41,15 @@ Public MustInherit Class Sprite
 
     End Function
 
+    Public Function getTrueRect() As Rectangle
+        Return getScreenRect()
+    End Function
+
     Public Function getScreen1Rect() As Rectangle ' Matrix corrected screen rect function
-        Return New Rectangle(CInt(rect.X * 30 + LevelEditor.Screens.Editor.Editor.Camera.Translation.X), CInt(rect.Y * 30 + LevelEditor.Screens.Editor.Editor.Camera.Translation.Y), CInt(rect.Width * Scale), CInt(rect.Height * Scale))
+        Return New Rectangle(CInt(rect.X * 30 + LevelEditor.Main.Instance.Editor.Camera.Translation.X),
+                             CInt(rect.Y * 30 + LevelEditor.Main.Instance.Editor.Camera.Translation.Y),
+                             CInt(rect.Width * Scale),
+                             CInt(rect.Height * Scale))
 
     End Function
 End Class
