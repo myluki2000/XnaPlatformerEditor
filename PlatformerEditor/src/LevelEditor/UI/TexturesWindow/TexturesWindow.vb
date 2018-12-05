@@ -106,8 +106,6 @@ Public Class TexturesWindow
             selectedWObj.HasRandomTextureRotation = cbRandomRotation.Checked
 
             For Each selectedWObj In PlacedObjects.FindAll(Function(x) x.Name = lvTextures.SelectedItems(0).Text)
-                selectedWObj.rect.Width = CInt(nudTileWidth.Value)
-                selectedWObj.rect.Height = CInt(nudTileHeight.Value)
                 selectedWObj.IsFoliage = cbFoliage.Checked
                 selectedWObj.HasRandomTextureRotation = cbRandomRotation.Checked
             Next

@@ -1,10 +1,7 @@
 #Region "Using Statements"
-Imports System.Collections.Generic
 Imports Microsoft.Xna.Framework
-Imports Microsoft.Xna.Framework.Content
 Imports Microsoft.Xna.Framework.Graphics
 Imports Microsoft.Xna.Framework.Input
-Imports Microsoft.Xna.Framework.Storage
 #End Region
 
 Namespace LevelEditor

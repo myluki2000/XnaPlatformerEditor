@@ -56,7 +56,6 @@ Namespace LevelEditor
 
                 Private Enum Drag
                     worldObject
-                    corner
                     None
                     placing
                     EditingLighting
@@ -164,7 +163,7 @@ Namespace LevelEditor
                     If SelectedPlaceObject IsNot Nothing AndAlso Not inUIEle AndAlso WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject) IsNot Nothing Then
                         Dim selectedObj As WorldObject = WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject)
                         theSpriteBatch.Draw(selectedObj.Texture,
-                                            New Rectangle(CInt(Math.Floor((Mouse.GetState.X - Camera.Translation.X) / 30) * 30), CInt(Math.Floor((Mouse.GetState.Y - Camera.Translation.Y) / 30) * 30), selectedObj.rect.Width, selectedObj.rect.Height),
+                                            New Rectangle(CInt(Math.Floor(Utility.ScreenPosToWorldPos(Mouse.GetState.Position).X / 30) * 30), CInt(Math.Floor(Utility.ScreenPosToWorldPos(Mouse.GetState.Position).Y / 30) * 30), selectedObj.rect.Width, selectedObj.rect.Height),
                                             Color.White * 0.5F)
                     End If
 
@@ -384,7 +383,7 @@ Namespace LevelEditor
                     If SelectedObject IsNot Nothing Then
                         PlacedObjects(PlacedObjects.IndexOf(SelectedObject)).zIndex = NUDzindex.Value
                         SelectedObject.zIndex = NUDzindex.Value
-                        PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
+                        PlacedObjects.Sort(Function(x, y) x.zIndex.CompareTo(y.zIndex))
                     End If
                 End Sub
 #End Region
@@ -395,8 +394,6 @@ Namespace LevelEditor
                         SelectedObject = Nothing
                     End If
                 End Sub
-
-
 
                 Private Sub ObjectDrag()
                     If Mouse.GetState.LeftButton = ButtonState.Pressed Then
@@ -414,10 +411,7 @@ Namespace LevelEditor
                                     Dragging = Drag.worldObject
                                 End If
                             End If
-                            If SelectedObject IsNot Nothing AndAlso New Rectangle(SelectedObject.getScreenRect.Right - 6, SelectedObject.getScreenRect.Bottom - 6, 6, 6).Contains(Mouse.GetState.Position) _
-                        AndAlso Dragging = Drag.None Then
-                                Dragging = Drag.corner
-                            End If
+
 
 
                             Dim index As Integer = PlacedObjects.IndexOf(SelectedObject)
@@ -427,23 +421,6 @@ Namespace LevelEditor
                                         PlacedObjects(index).rect.X = CInt(Math.Floor((Mouse.GetState.Position.X - DragMouseShift.X) / 30))
                                         PlacedObjects(index).rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - DragMouseShift.Y) / 30))
                                         SelectedObject = PlacedObjects(index)
-
-                                    Case Drag.corner
-                                        If SelectedObject.Texture IsNot Nothing Then ' If SelectedObject has a texture (is scalable)
-                                            Dim distFromStart As Integer
-                                            Dim scale As Integer
-                                            If Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X < Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y Then
-                                                distFromStart = Mouse.GetState.Position.X - PlacedObjects(index).getScreenRect.X
-                                                scale = CInt(distFromStart / PlacedObjects(index).Texture.Width)
-                                            Else
-                                                distFromStart = Mouse.GetState.Position.Y - PlacedObjects(index).getScreenRect.Y
-                                                scale = CInt(distFromStart / PlacedObjects(index).Texture.Height)
-                                            End If
-                                            If scale < 1 Then
-                                                scale = 1
-                                            End If
-                                            PlacedObjects(index).Scale = scale
-                                        End If
                                 End Select
                             End If
                         Else
@@ -452,8 +429,8 @@ Namespace LevelEditor
                                 Dragging = Drag.placing
                             End If
 
-                            If IsNothing(PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Mouse.GetState.Position.X - Camera.Translation.X) / 30)),
-                                                                                      CInt(Math.Floor((Mouse.GetState.Position.Y - Camera.Translation.Y) / 30))))) Then
+                            If IsNothing(PlacedObjects.Find(Function(x) x.rect.Location = New Point(CInt(Math.Floor((Utility.ScreenPosToWorldPos(Mouse.GetState.Position) / 30).X)),
+                                                                                                    CInt(Math.Floor((Utility.ScreenPosToWorldPos(Mouse.GetState.Position) / 30).Y))))) Then
 
                                 ' If block at mouse pos is nothing (there is no block)
                                 PlaceSelectedBlock()
@@ -514,13 +491,13 @@ Namespace LevelEditor
                         For Each _wObj In WorldObjects
                             If _wObj.Name = SelectedPlaceObject Then
                                 Dim PlacingObject As WorldObject = _wObj.ShallowCopy()
-                                PlacingObject.rect.X = CInt(Math.Floor((Mouse.GetState.Position.X - Camera.Translation.X) / 30))
-                                PlacingObject.rect.Y = CInt(Math.Floor((Mouse.GetState.Position.Y - Camera.Translation.Y) / 30))
+                                PlacingObject.rect.X = CInt(Math.Floor((Utility.ScreenPosToWorldPos(Mouse.GetState.Position) / 30).X))
+                                PlacingObject.rect.Y = CInt(Math.Floor((Utility.ScreenPosToWorldPos(Mouse.GetState.Position) / 30).Y))
                                 PlacingObject.rect.Width = PlacingObject.rect.Width
                                 PlacingObject.rect.Height = PlacingObject.rect.Height
                                 PlacingObject.zIndex = NUDzindex.Value
                                 PlacedObjects.Add(PlacingObject)
-                                PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
+                                PlacedObjects.Sort(Function(x, y) x.zIndex.CompareTo(y.zIndex))
                                 Exit For
                             End If
                         Next
@@ -528,8 +505,8 @@ Namespace LevelEditor
                         For Each _wObj In TechnicalObjects
                             If _wObj.Name = SelectedPlaceObject Then
                                 Dim PlacingObject As WorldObject = _wObj.ShallowCopy()
-                                PlacingObject.rect.X = CInt(Math.Floor(Mouse.GetState.Position.X / 30))
-                                PlacingObject.rect.Y = CInt(Math.Floor(Mouse.GetState.Position.Y / 30))
+                                PlacingObject.rect.X = CInt(Math.Floor((Utility.ScreenPosToWorldPos(Mouse.GetState.Position) / 30).X))
+                                PlacingObject.rect.Y = CInt(Math.Floor((Utility.ScreenPosToWorldPos(Mouse.GetState.Position) / 30).Y))
                                 PlacingObject.rect.Width = 30
                                 PlacingObject.rect.Height = 30
                                 PlacingObject.zIndex = NUDzindex.Value
@@ -540,7 +517,7 @@ Namespace LevelEditor
 
 
                                 PlacedObjects.Add(PlacingObject)
-                                PlacedObjects = PlacedObjects.OrderBy(Function(x) x.zIndex).ToList
+                                PlacedObjects.Sort(Function(x, y) x.zIndex.CompareTo(y.zIndex))
                                 Exit For
                             End If
                         Next

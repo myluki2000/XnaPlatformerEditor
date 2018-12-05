@@ -79,6 +79,8 @@ Public Class PropertiesWindow
 
             Case ObjectTypes.Generic
                 Dim _genericObj = wObj
+                AddControl(New PanelPropertiesTB("TBWidth", "Width", _genericObj.rect.Width.ToString))
+                AddControl(New PanelPropertiesTB("TBHeight", "Height", _genericObj.rect.Height.ToString))
                 AddControl(New PanelPropertiesTB("TBParallaxMultiplier", "Parallax Multiplier", _genericObj.ParallaxMultiplier.ToString(Globalization.CultureInfo.InvariantCulture)))
                 AddControl(New PanelPropertiesCB("CBIsProp", _genericObj.IsProp, "Is Prop"))
         End Select
@@ -134,6 +136,8 @@ Public Class PropertiesWindow
 
             Case ObjectTypes.Generic
                 Dim newObj As WorldObject = wObj
+                newObj.rect.Width = Integer.Parse(FindControl("TBWidth").Text)
+                newObj.rect.Height = Integer.Parse(FindControl("TBHeight").Text)
                 newObj.ParallaxMultiplier = Single.Parse(FindControl("TBParallaxMultiplier").Text, Globalization.CultureInfo.InvariantCulture)
                 newObj.IsProp = CType(FindControl("CBIsProp"), PanelPropertiesCB).Checked
         End Select
