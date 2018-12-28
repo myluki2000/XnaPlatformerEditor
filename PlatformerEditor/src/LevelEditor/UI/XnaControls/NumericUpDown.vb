@@ -14,7 +14,7 @@ Public Class NumericUpDown
     Sub New(_destRect As Rectangle, _label As String)
         Label = _label
         rect = _destRect
-        NUDArrows = TextureLoader.Load("UI/NUDArrows")
+        NUDArrows = TextureLoader.Load("Content/UI/NUDArrows")
 
         Visible = True
     End Sub

@@ -15,10 +15,10 @@ Public Class TexturesWindow
         For Each filePath In ofdTextures.FileNames
 
             If filePath <> "" Then
-                If filePath.Contains("\Content\") Then ' Check if path is in content directory
+                'If filePath.Contains("\Content\") Then ' Check if path is in content directory
 
-                    filePath = filePath.Split(New String() {"\Content\"}, StringSplitOptions.None)(1)
-                    filePath = filePath.Replace(".png", "")
+                'filePath = filePath.Split(New String() {"\Content\"}, StringSplitOptions.None)(1)
+                filePath = filePath.Replace(".png", "")
 
                     If IO.File.Exists(IO.Path.Combine(Application.StartupPath, "Content", filePath) & ".png") Then
                         Dim objName As String = TextureNameWindow.ShowDialog(IO.Path.Combine(Application.StartupPath, "Content", filePath) & ".png")
@@ -34,9 +34,9 @@ Public Class TexturesWindow
 
                         MsgBox("Texture file does not exist. (Must be .png)")
                     End If
-                Else
-                    MsgBox("Texture file must be placed in the Content folder or a subfolder")
-                End If
+                'Else
+                'MsgBox("Texture file must be placed in the Content folder or a subfolder")
+                'End If
             End If
 
         Next

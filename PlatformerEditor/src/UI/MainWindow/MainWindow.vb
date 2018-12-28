@@ -1,5 +1,6 @@
 ﻿Imports System.Collections.Generic
 Imports System.ComponentModel
+Imports System.IO
 Imports System.Windows.Forms
 Imports Microsoft.Xna.Framework.Graphics
 
@@ -58,7 +59,7 @@ Public Class MainWindow
         WorldObjects = Levels.Find(Function(x) x.Name = lvLevels.SelectedItems(0).Text).WorldObjects
 
         For Each wObj In WorldObjects
-            wObj.Texture = TextureLoader.Load(wObj.TexturePath)
+            wObj.Texture = TextureLoader.Load(Path.Combine(FileHandler.WorldPath, "..", wObj.TexturePath))
         Next
 
         game.Editor.RefreshBtnList()
