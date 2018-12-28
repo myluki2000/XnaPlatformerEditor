@@ -163,9 +163,22 @@ Namespace LevelEditor
                     If SelectedPlaceObject IsNot Nothing AndAlso Not inUIEle AndAlso WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject) IsNot Nothing Then
                         Dim selectedObj As WorldObject = WorldObjects.Find(Function(x) x.Name = SelectedPlaceObject)
                         theSpriteBatch.Draw(selectedObj.Texture,
-                                            New Rectangle(CInt(Math.Floor(Utility.ScreenPosToWorldPos(Mouse.GetState.Position).X / 30) * 30), CInt(Math.Floor(Utility.ScreenPosToWorldPos(Mouse.GetState.Position).Y / 30) * 30), selectedObj.rect.Width, selectedObj.rect.Height),
+                                            New Rectangle(CInt(Math.Floor(Utility.ScreenPosToWorldPos(Mouse.GetState.Position).X / 30) * 30),
+                                                          CInt(Math.Floor(Utility.ScreenPosToWorldPos(Mouse.GetState.Position).Y / 30) * 30),
+                                                          selectedObj.rect.Width,
+                                                          selectedObj.rect.Height),
                                             Color.White * 0.5F)
+
+                        ' Draw outline for preview
+                        Misc.DrawOutline(theSpriteBatch,
+                                         New Rectangle(CInt(Math.Floor(Utility.ScreenPosToWorldPos(Mouse.GetState.Position).X / 30) * 30),
+                                                          CInt(Math.Floor(Utility.ScreenPosToWorldPos(Mouse.GetState.Position).Y / 30) * 30),
+                                                          selectedObj.rect.Width,
+                                                          selectedObj.rect.Height),
+                                         Color.Red,
+                                         2)
                     End If
+
 
                     ' Draw light edit mode if activated
                     If Dragging = Drag.EditingLighting Then
